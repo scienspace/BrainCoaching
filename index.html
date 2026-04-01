@@ -11,8 +11,24 @@
         #app { background: white; width: 100%; max-width: 900px; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         h1 { text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 28px; }
         h2 { text-align: center; color: #2c3e50; padding-bottom: 10px; margin-bottom: 20px; font-size: 20px; }
-        .page { display: none; }
+        
+        /* 페이지 영역에 상대 위치 부여 (버전 배지 기준점) */
+        .page { display: none; position: relative; } 
         .page.active { display: block; }
+        
+        /* [새로 추가] 우측 상단 버전 배지 스타일 */
+        .version-badge {
+            position: absolute;
+            top: -15px;
+            right: 0;
+            background-color: #f1f2f6;
+            color: #7f8c8d;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
         
         /* 인적사항 폼 */
         .info-form { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -43,7 +59,7 @@
         .finish-text { text-align: center; font-size: 18px; font-weight: bold; color: #27ae60; margin: 20px 0; }
 
         /* 도입부 전용 스타일 */
-        .intro-box { text-align: center; margin-bottom: 30px; }
+        .intro-box { text-align: center; margin-bottom: 30px; padding-top: 10px; }
         .intro-img { width: 100%; max-width: 500px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .intro-contact { font-size: 22px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 1.4; }
         .intro-notice { background-color: #f8f9fa; padding: 25px; border-radius: 8px; font-size: 15px; line-height: 1.6; color: #333; text-align: left; border-left: 5px solid #3498db; }
@@ -62,7 +78,6 @@
         .result-info-box > div > span:first-child { background-color: #f4f4f4; padding: 8px; width: 40%; font-weight: bold; border-right: 1px solid #ccc; }
         .result-info-box > div > span:last-child { padding: 8px; width: 60%; }
         
-        /* 1페이지 여백 확보를 위해 차트 높이 미세 조정 */
         .chart-container { position: relative; margin: 0 auto 10px auto; width: 100%; max-width: 400px; height: 220px; display: flex; justify-content: center; align-items: center; }
         
         .type-header { display: flex; border: 2px solid #333; margin-bottom: 5px; font-size: 14px; font-weight: bold; align-items: center; }
@@ -82,6 +97,8 @@
 <div id="app">
 
     <div id="pageIntro" class="page active">
+        <div class="version-badge">v1.0</div>
+
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             
@@ -236,7 +253,7 @@
     const feedbackData = {
       "논리추론형 뇌": {
         "high": {
-          "psychology": [ "모든 일에 정확하고 체계적이며 논리적인 언어표현력이 뛰어나다.", "계획을 잘 세우고 효율적이고 합리적으로 일을 처리한다.", "지속적인 자기 계발로 장기적인 성공 목표를 성취해 나간다." ],
+          "psychology": [ "모든 일에 정확하고 체계적이며 논리적인 언어표현력이 뛰어나다.", "비효율적인 일을 싫어하고 합리적인 일 처리를 선호한다.", "계획을 잘 세우고 효율적이고 합리적으로 일을 처리한다.", "지속적인 자기 계발로 장기적인 성공 목표를 성취해 나간다." ],
           "learning": [ "자기 스스로 학습계획을 세워서 지속적으로 실천한다.", "조용하고 잘 정돈된 공부 장소를 선호한다.", "논리적이고 분석적인 토의 및 토론을 좋아한다." ]
         },
         "low": {
@@ -385,10 +402,10 @@
 
     let radarChartInstance = null;
 
-function submitTest() {
+    function submitTest() {
         let isAllAnswered = true;
         let unansweredQuestion = 0;
-        const allAnswers = []; // 모든 60개 문항의 개별 점수를 담을 배열
+        const allAnswers = [];
 
         for(let i = 1; i <= surveyData.totalQuestions; i++) {
             const selected = document.querySelector(`input[name="q${i}"]:checked`);
@@ -397,7 +414,7 @@ function submitTest() {
                 unansweredQuestion = i;
                 break;
             }
-            allAnswers.push(parseInt(selected.value)); // 개별 점수 저장
+            allAnswers.push(parseInt(selected.value));
         }
 
         if(!isAllAnswered) {
@@ -405,7 +422,6 @@ function submitTest() {
             return;
         }
 
-        // 유형별 총점 계산
         const scores = [0, 0, 0, 0, 0, 0];
         const chartLabels = surveyData.categories.map(cat => cat.title);
         
@@ -435,7 +451,6 @@ function submitTest() {
             if(score < minScore) { minScore = score; lowestType = chartLabels[index]; }
         });
 
-        // 🚀 구글 시트 전송 데이터 구성 (개별 점수 포함)
         const payload = {
             name: studentName,
             birth: birthDate,
@@ -443,10 +458,11 @@ function submitTest() {
             school: schoolName,
             testDate: testDate,
             expert: expertName,
-            scores: scores,       // 6개 총점 배열
-            allAnswers: allAnswers, // 60개 개별 점수 배열
+            scores: scores,
+            allAnswers: allAnswers,
             primaryType: primaryType
         };
+
 
         // const GOOGLE_APP_SCRIPT_URL = '여기에_새로_배포한_웹앱_URL을_넣으세요';
 
@@ -458,22 +474,28 @@ function submitTest() {
 
         // v0.2
         // 유형별 총점과 개별 항목 모두 구글 시트에 기록
+        //const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJgivRYu-rXZ1EkWRhPgOkGxo-3Qhs8hh1WTIVAM1IBTs0IDHtR9SSjFgIbu0Anokntg/exec';
+
         const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJgivRYu-rXZ1EkWRhPgOkGxo-3Qhs8hh1WTIVAM1IBTs0IDHtR9SSjFgIbu0Anokntg/exec';
 
-        fetch(GOOGLE_APP_SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(payload)
-        })
-        .then(response => console.log('데이터 저장 완료'))
-        .catch(error => console.error('저장 실패:', error));
+        // URL 값이 존재하기만 하면 무조건 전송하도록 수정 (가장 깔끔한 방법)
+        if (GOOGLE_APP_SCRIPT_URL) {
+            fetch(GOOGLE_APP_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => console.log('데이터 저장 완료'))
+            .catch(error => console.error('저장 실패:', error));
+        }
 
-        // 결과 페이지 렌더링 (기존 로직 동일)
         document.getElementById('resPrimaryType').innerText = primaryType;
+
         document.getElementById('resPsychHigh').innerHTML = makeListHTML(feedbackData[primaryType].high.psychology);
         document.getElementById('resLearnHigh').innerHTML = makeListHTML(feedbackData[primaryType].high.learning);
         document.getElementById('resCareer').innerHTML = makeListHTML(feedbackData[primaryType].career);
         document.getElementById('resJobs').innerText = feedbackData[primaryType].jobs;
+
         document.getElementById('resPsychLow').innerHTML = makeListHTML(feedbackData[lowestType].low.psychology);
         document.getElementById('resLearnLow').innerHTML = makeListHTML(feedbackData[lowestType].low.learning);
 
@@ -515,7 +537,7 @@ function submitTest() {
     // 로딩 메시지 수정: 화질이 높아진 만큼 화면을 캡처하는 데 걸리는 시간(최대 5~10초)이 조금 더 늘어났습니다. 사용자가 멈춘 것으로 오해하지 않도록 버튼 메시지를 (최대 10초 소요)로 수정
     // v0.6
     // PC인지 스마트폰(모바일)인지 기기를 명확하게 구분하는 로직(isMobile)을 추가, 모바일일 때만 팝업이 뜨고 PC에서는 무조건 즉시 다운로드되도록 수정
-    // =========================================================================
+    // =========================================================================    
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
@@ -542,7 +564,6 @@ function submitTest() {
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        // 🚀 [수정] 기기 판별 강화 (아이폰 여부 및 전체 모바일 여부 분리)
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || isIOS;
 
@@ -571,7 +592,6 @@ function submitTest() {
 
             const file = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
 
-            // 🚀 [수정] 접속한 기기가 모바일(isMobile)일 때만 공유 팝업 실행
             if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
                 navigator.share({
                     files: [file],
@@ -581,7 +601,6 @@ function submitTest() {
                     console.log('공유 취소됨');
                 });
             } else {
-                // 🚀 PC 브라우저일 경우 무조건 다이렉트 다운로드 실행
                 const url = window.URL.createObjectURL(pdfBlob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
