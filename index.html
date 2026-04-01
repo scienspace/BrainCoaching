@@ -452,9 +452,11 @@ function submitTest() {
 
         // ★여기에 1단계에서 복사해 둔 '웹 앱 URL'을 따옴표 안에 붙여넣으세요!★
 
+        // v0.1
         // 유형별 총점만 구글 시트에 기록
         // const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGOdCJKe4xzkqiqmJyCnHT0H5Eb2oqrptI3pO-FetbuQtxLNGs4x0GjJSd3lCPKV_xUw/exec'; 
-        
+
+        // v0.2
         // 유형별 총점과 개별 항목 모두 구글 시트에 기록
         const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJgivRYu-rXZ1EkWRhPgOkGxo-3Qhs8hh1WTIVAM1IBTs0IDHtR9SSjFgIbu0Anokntg/exec';
 
@@ -503,6 +505,7 @@ function submitTest() {
 
     // =========================================================================
     // [수정됨] 파일명 조합 방식 변경 (성명_생년월일_성별_학교_검사날짜.pdf)
+    // v0.3 : 아이폰 pdf 다운로드 문제 수정
     // =========================================================================
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
@@ -511,12 +514,13 @@ function submitTest() {
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        // 파일명 조합 로직
+        // 파일명 조합
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}.pdf`;
 
         const element = document.getElementById('captureArea');
         const canvas = document.getElementById('radarChart');
         
+        // 차트 캔버스를 고정 이미지로 변환
         const tempImg = document.createElement('img');
         tempImg.id = 'tempChartImg';
         tempImg.src = radarChartInstance.toBase64Image();
@@ -525,13 +529,44 @@ function submitTest() {
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        html2pdf().set({
+        // 🚀 [핵심 1] 아이폰(iOS) 기기 판별
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        // 🚀 [핵심 2] 스마트폰 렌더링 지연 시간 동안 사용자 안심용 알림창
+        alert("PDF 결과지를 생성하고 있습니다.\n스마트폰 환경에 따라 3~5초 정도 소요됩니다.");
+
+        const opt = {
             margin: 0, 
             filename: pdfFilename, 
             image: { type: 'jpeg', quality: 1.0 },
-            html2canvas: { scale: 2, useCORS: true, scrollY: 0 }, 
+            // 🚀 [핵심 3] 아이폰 메모리 초과로 인한 튕김 현상을 막기 위해 iOS만 해상도(scale)를 1.5로 하향
+            html2canvas: { scale: isIOS ? 1.5 : 2, useCORS: true, scrollY: 0 }, 
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).from(element).save().then(() => {
+        };
+
+        // 🚀 [핵심 4] 다운로드 방식 통일 (아이폰 사파리 보안 우회)
+        html2pdf().set(opt).from(element).output('blob').then(function(blob) {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = pdfFilename;
+            document.body.appendChild(a);
+            
+            // 가짜 앵커(a) 태그를 만들어 강제 클릭 유발 (iOS 사파리 다운로드 프롬프트 실행됨)
+            a.click();
+            
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            }, 100);
+            
+            // 화면 원상 복구
+            document.getElementById('tempChartImg').remove();
+            canvas.style.display = 'block';
+            
+        }).catch(function(error) {
+            alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
             document.getElementById('tempChartImg').remove();
             canvas.style.display = 'block';
         });
