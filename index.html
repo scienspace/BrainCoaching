@@ -506,6 +506,9 @@ function submitTest() {
     // =========================================================================
     // [수정됨] 파일명 조합 방식 변경 (성명_생년월일_성별_학교_검사날짜.pdf)
     // v0.3 : 아이폰 pdf 다운로드 문제 수정
+    // v0.4 : 1) alert 창 대신 버튼 글자를 바꿔서 시각적 효과를 주고, 2) 
+    // 아이폰에서는 '파일 다운로드' 대신 '기기 자체 공유(파일 앱에 저장, 카카오톡 전송 등)' 
+    // 기능이 뜨도록 네이티브 API(navigator.share)를 적용
     // =========================================================================
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
@@ -514,13 +517,18 @@ function submitTest() {
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        // 파일명 조합
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}.pdf`;
 
         const element = document.getElementById('captureArea');
         const canvas = document.getElementById('radarChart');
         
-        // 차트 캔버스를 고정 이미지로 변환
+        // 버튼 텍스트 변경으로 시각적 피드백 제공 (alert 창 사용 금지 - iOS 다운로드 차단 원인)
+        const pdfBtn = document.querySelector('.btn-pdf');
+        const originalBtnText = pdfBtn.innerText;
+        pdfBtn.innerText = "PDF 생성 중... 잠시만 대기해주세요";
+        pdfBtn.style.backgroundColor = "#7f8c8d";
+        pdfBtn.disabled = true;
+        
         const tempImg = document.createElement('img');
         tempImg.id = 'tempChartImg';
         tempImg.src = radarChartInstance.toBase64Image();
@@ -529,44 +537,58 @@ function submitTest() {
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        // 🚀 [핵심 1] 아이폰(iOS) 기기 판별
+        // 아이폰 여부 판별
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-        // 🚀 [핵심 2] 스마트폰 렌더링 지연 시간 동안 사용자 안심용 알림창
-        alert("PDF 결과지를 생성하고 있습니다.\n스마트폰 환경에 따라 3~5초 정도 소요됩니다.");
 
         const opt = {
             margin: 0, 
             filename: pdfFilename, 
             image: { type: 'jpeg', quality: 1.0 },
-            // 🚀 [핵심 3] 아이폰 메모리 초과로 인한 튕김 현상을 막기 위해 iOS만 해상도(scale)를 1.5로 하향
             html2canvas: { scale: isIOS ? 1.5 : 2, useCORS: true, scrollY: 0 }, 
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        // 🚀 [핵심 4] 다운로드 방식 통일 (아이폰 사파리 보안 우회)
-        html2pdf().set(opt).from(element).output('blob').then(function(blob) {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = pdfFilename;
-            document.body.appendChild(a);
+        // PDF를 생성하여 Blob(파일 덩어리) 형태로 추출
+        html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
             
-            // 가짜 앵커(a) 태그를 만들어 강제 클릭 유발 (iOS 사파리 다운로드 프롬프트 실행됨)
-            a.click();
-            
-            setTimeout(() => {
-                window.URL.revokeObjectURL(url);
-                a.remove();
-            }, 100);
-            
-            // 화면 원상 복구
+            // UI 원상복구
+            pdfBtn.innerText = originalBtnText;
+            pdfBtn.style.backgroundColor = "#2ecc71";
+            pdfBtn.disabled = false;
             document.getElementById('tempChartImg').remove();
             canvas.style.display = 'block';
-            
+
+            // 파일 객체 생성
+            const file = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
+
+            // 🚀 [해결 핵심] 모바일(아이폰 등)일 경우 네이티브 공유 API 사용 (파일에 저장, 카카오톡 공유 등 가능)
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({
+                    files: [file],
+                    title: '두뇌심리검사 결과',
+                    text: '검사 결과 PDF 파일입니다.'
+                }).catch(function(error) {
+                    console.log('공유 취소 또는 실패:', error);
+                });
+            } else {
+                // PC 브라우저용 일반 다운로드 (기존 방식)
+                const url = window.URL.createObjectURL(pdfBlob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = pdfFilename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                }, 100);
+            }
         }).catch(function(error) {
             alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
+            pdfBtn.innerText = originalBtnText;
+            pdfBtn.style.backgroundColor = "#2ecc71";
+            pdfBtn.disabled = false;
             document.getElementById('tempChartImg').remove();
             canvas.style.display = 'block';
         });
