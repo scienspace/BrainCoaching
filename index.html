@@ -385,16 +385,19 @@
 
     let radarChartInstance = null;
 
-    function submitTest() {
+function submitTest() {
         let isAllAnswered = true;
         let unansweredQuestion = 0;
+        const allAnswers = []; // 모든 60개 문항의 개별 점수를 담을 배열
 
         for(let i = 1; i <= surveyData.totalQuestions; i++) {
-            if(!document.querySelector(`input[name="q${i}"]:checked`)) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if(!selected) {
                 isAllAnswered = false;
                 unansweredQuestion = i;
                 break;
             }
+            allAnswers.push(parseInt(selected.value)); // 개별 점수 저장
         }
 
         if(!isAllAnswered) {
@@ -402,20 +405,27 @@
             return;
         }
 
+        // 유형별 총점 계산
         const scores = [0, 0, 0, 0, 0, 0];
         const chartLabels = surveyData.categories.map(cat => cat.title);
         
-        for(let i = 1; i <= surveyData.totalQuestions; i++) {
-            const val = parseInt(document.querySelector(`input[name="q${i}"]:checked`).value);
-            scores[Math.ceil(i / 10) - 1] += val;
-        }
+        allAnswers.forEach((val, idx) => {
+            scores[Math.floor(idx / 10)] += val;
+        });
 
-        document.getElementById('resName').innerText = document.getElementById('studentName').value;
-        document.getElementById('resBirth').innerText = document.getElementById('birthDate').value || " ";
-        document.getElementById('resGender').innerText = document.getElementById('gender').value || " ";
-        document.getElementById('resSchool').innerText = document.getElementById('schoolName').value || " ";
-        document.getElementById('resDate').innerText = document.getElementById('testDate').value || " ";
-        document.getElementById('resExpert').innerText = document.getElementById('expertName').value || " ";
+        const studentName = document.getElementById('studentName').value || "성명미상";
+        const birthDate = document.getElementById('birthDate').value || "미상";
+        const gender = document.getElementById('gender').value || "미상";
+        const schoolName = document.getElementById('schoolName').value || "미상";
+        const testDate = document.getElementById('testDate').value || "미상";
+        const expertName = document.getElementById('expertName').value || "미상";
+
+        document.getElementById('resName').innerText = studentName;
+        document.getElementById('resBirth').innerText = birthDate;
+        document.getElementById('resGender').innerText = gender;
+        document.getElementById('resSchool').innerText = schoolName;
+        document.getElementById('resDate').innerText = testDate;
+        document.getElementById('resExpert').innerText = expertName;
 
         let maxScore = -1, minScore = 999;
         let primaryType = "", lowestType = "";
@@ -425,13 +435,43 @@
             if(score < minScore) { minScore = score; lowestType = chartLabels[index]; }
         });
 
-        document.getElementById('resPrimaryType').innerText = primaryType;
+        // 🚀 구글 시트 전송 데이터 구성 (개별 점수 포함)
+        const payload = {
+            name: studentName,
+            birth: birthDate,
+            gender: gender,
+            school: schoolName,
+            testDate: testDate,
+            expert: expertName,
+            scores: scores,       // 6개 총점 배열
+            allAnswers: allAnswers, // 60개 개별 점수 배열
+            primaryType: primaryType
+        };
 
+        // const GOOGLE_APP_SCRIPT_URL = '여기에_새로_배포한_웹앱_URL을_넣으세요';
+
+        // ★여기에 1단계에서 복사해 둔 '웹 앱 URL'을 따옴표 안에 붙여넣으세요!★
+
+        // 유형별 총점만 구글 시트에 기록
+        // const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGOdCJKe4xzkqiqmJyCnHT0H5Eb2oqrptI3pO-FetbuQtxLNGs4x0GjJSd3lCPKV_xUw/exec'; 
+        
+        // 유형별 총점과 개별 항목 모두 구글 시트에 기록
+        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJgivRYu-rXZ1EkWRhPgOkGxo-3Qhs8hh1WTIVAM1IBTs0IDHtR9SSjFgIbu0Anokntg/exec';
+
+        fetch(GOOGLE_APP_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => console.log('데이터 저장 완료'))
+        .catch(error => console.error('저장 실패:', error));
+
+        // 결과 페이지 렌더링 (기존 로직 동일)
+        document.getElementById('resPrimaryType').innerText = primaryType;
         document.getElementById('resPsychHigh').innerHTML = makeListHTML(feedbackData[primaryType].high.psychology);
         document.getElementById('resLearnHigh').innerHTML = makeListHTML(feedbackData[primaryType].high.learning);
         document.getElementById('resCareer').innerHTML = makeListHTML(feedbackData[primaryType].career);
         document.getElementById('resJobs').innerText = feedbackData[primaryType].jobs;
-
         document.getElementById('resPsychLow').innerHTML = makeListHTML(feedbackData[lowestType].low.psychology);
         document.getElementById('resLearnLow').innerHTML = makeListHTML(feedbackData[lowestType].low.learning);
 
