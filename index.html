@@ -513,86 +513,75 @@ function submitTest() {
     // 해상도 배율(scale) 향상: PC에서는 3배(기존 2배), 아이폰에서는 2.2배(기존 1.5배)로 해상도를 높여 인쇄물 수준의 선명도를 확보
     // PNG 포맷 사용: 기존 JPEG의 손실 압축 방식을 버리고 비손실 압축인 PNG 방식으로 화면을 캡처하여, 글자와 차트의 경계선이 뭉개지지 않고 날카롭게 표현
     // 로딩 메시지 수정: 화질이 높아진 만큼 화면을 캡처하는 데 걸리는 시간(최대 5~10초)이 조금 더 늘어났습니다. 사용자가 멈춘 것으로 오해하지 않도록 버튼 메시지를 (최대 10초 소요)로 수정
+    // v0.6
+    // PC인지 스마트폰(모바일)인지 기기를 명확하게 구분하는 로직(isMobile)을 추가, 모바일일 때만 팝업이 뜨고 PC에서는 무조건 즉시 다운로드되도록 수정
     // =========================================================================
     function downloadPDF() {
-        // [수정됨] 파일명 조합 방식 변경 (성명_생년월일_성별_학교_검사날짜.pdf)
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
         const gender = document.getElementById('gender').value || '성별미상';
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        // 파일명 조합 로직
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}.pdf`;
 
         const element = document.getElementById('captureArea');
         const canvas = document.getElementById('radarChart');
         
-        // 버튼 텍스트 변경으로 시각적 피드백 제공 (alert 창 사용 금지 - iOS 다운로드 차단 원인)
         const pdfBtn = document.querySelector('.btn-pdf');
         const originalBtnText = pdfBtn.innerText;
         pdfBtn.innerText = "고화질 PDF 생성 중... (최대 10초 소요)";
         pdfBtn.style.backgroundColor = "#7f8c8d";
         pdfBtn.disabled = true;
         
-        // [최적화 1] 차트 캔버스를 고해상도 이미지로 변환 (PNG 형식 사용)
         const tempImg = document.createElement('img');
         tempImg.id = 'tempChartImg';
-        // Chart.js의 toBase64Image는 기본적으로 PNG이므로 선명도가 높음
         tempImg.src = radarChartInstance.toBase64Image();
         tempImg.style.width = '100%'; tempImg.style.height = '100%'; tempImg.style.objectFit = 'contain';
         
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        // 아이폰 여부 판별
+        // 🚀 [수정] 기기 판별 강화 (아이폰 여부 및 전체 모바일 여부 분리)
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || isIOS;
 
-        // 🚀 [화질 개선 핵심 설정]
         const opt = {
             margin: 0, 
             filename: pdfFilename, 
-            // 🚀 [수정] 이미지 포맷을 jpeg에서 png로 변경 (압축률을 낮춰 글자 선명도 확보)
             image: { type: 'png', quality: 1.0 }, 
-            
-            // 🚀 [수정] 해상도 배율(scale)을 대폭 향상 (A4 기준 300DPI급 선명도 확보)
-            // 아이폰은 메모리 제한이 있으므로 PC보다는 낮게 설정하되, 이전(1.5)보다 높은 2.2 설정
-            // PC 환경은 강력하므로 3.0으로 설정하여 최상의 화질 제공
             html2canvas: { 
                 scale: isIOS ? 2.2 : 3.0, 
                 useCORS: true, 
                 scrollY: 0,
-                dpi: 300, // DPI 명시적 설정
-                letterRendering: true, // 글자 렌더링 최적화
+                dpi: 300,
+                letterRendering: true,
                 allowTaint: true
             }, 
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
 
-        // PDF를 생성하여 Blob(파일 덩어리) 형태로 추출
         html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
             
-            // UI 원상복구
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
             pdfBtn.disabled = false;
             document.getElementById('tempChartImg').remove();
             canvas.style.display = 'block';
 
-            // 파일 객체 생성
             const file = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
 
-            // [해결 핵심] 모바일(아이폰 등)일 경우 네이티브 공유 API 사용 (파일에 저장, 카카오톡 공유 등 가능)
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            // 🚀 [수정] 접속한 기기가 모바일(isMobile)일 때만 공유 팝업 실행
+            if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
                 navigator.share({
                     files: [file],
                     title: '두뇌심리검사 결과',
                     text: '검사 결과 PDF 파일입니다.'
                 }).catch(function(error) {
-                    // 공유 취소 시 에러 출력 불필요
+                    console.log('공유 취소됨');
                 });
             } else {
-                // PC 브라우저용 일반 다운로드 (기존 방식)
+                // 🚀 PC 브라우저일 경우 무조건 다이렉트 다운로드 실행
                 const url = window.URL.createObjectURL(pdfBlob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
@@ -607,7 +596,6 @@ function submitTest() {
             }
         }).catch(function(error) {
             alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
-            // UI 원상복구
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
             pdfBtn.disabled = false;
