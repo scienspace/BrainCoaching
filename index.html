@@ -12,11 +12,10 @@
         h1 { text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 28px; }
         h2 { text-align: center; color: #2c3e50; padding-bottom: 10px; margin-bottom: 20px; font-size: 20px; }
         
-        /* 페이지 영역에 상대 위치 부여 (버전 배지 기준점) */
         .page { display: none; position: relative; } 
         .page.active { display: block; }
         
-        /* [새로 추가] 우측 상단 버전 배지 스타일 */
+        /* 도입부 우측 상단 버전 배지 */
         .version-badge {
             position: absolute;
             top: -15px;
@@ -29,14 +28,26 @@
             font-weight: bold;
             letter-spacing: 0.5px;
         }
+
+        /* [새로 추가] 결과지 & PDF 우측 상단 버전 배지 */
+        .version-badge-result {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            background-color: #f1f2f6;
+            color: #7f8c8d;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
         
-        /* 인적사항 폼 */
         .info-form { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .info-group { display: flex; flex-direction: column; }
         .info-group label { font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #495057; }
         .info-group input, .info-group select { padding: 10px; border: 1px solid #ced4da; border-radius: 5px; font-size: 15px; }
         
-        /* 문항 테이블 */
         .table-container { width: 100%; overflow-x: auto; margin-bottom: 20px; border: 1px solid #e0e0e0; border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; min-width: 650px; }
         th { color: white; padding: 12px 5px; font-size: 14px; text-align: center; white-space: nowrap; }
@@ -47,7 +58,6 @@
         td.q-text { text-align: left; font-weight: 500; font-size: 15px; color: #333; padding-left: 15px; word-break: keep-all; }
         input[type="radio"] { transform: scale(1.3); cursor: pointer; margin: 0; }
 
-        /* 버튼 */
         .btn-group { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
         .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .btn-prev { background-color: #95a5a6; color: white; }
@@ -58,7 +68,6 @@
         .btn-start:hover, .btn-pdf:hover { background-color: #27ae60; }
         .finish-text { text-align: center; font-size: 18px; font-weight: bold; color: #27ae60; margin: 20px 0; }
 
-        /* 도입부 전용 스타일 */
         .intro-box { text-align: center; margin-bottom: 30px; padding-top: 10px; }
         .intro-img { width: 100%; max-width: 500px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .intro-contact { font-size: 22px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; line-height: 1.4; }
@@ -66,7 +75,6 @@
         .intro-notice p { margin: 0 0 10px 0; word-break: keep-all; }
         .intro-notice p:last-child { margin: 0; }
 
-        /* PDF 1페이지 강제 고정 캡처용 CSS */
         .capture-wrapper { width: 100%; overflow-x: auto; background-color: #f0f0f0; padding: 10px; border-radius: 8px; margin-bottom: 20px; }
         #captureArea { background-color: white; width: 794px; height: 1122px; padding: 40px; box-sizing: border-box; margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); position: relative; }
         
@@ -97,7 +105,7 @@
 <div id="app">
 
     <div id="pageIntro" class="page active">
-        <div class="version-badge">v1.0</div>
+        <div class="version-badge">v1.1</div>
 
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
@@ -149,6 +157,8 @@
     <div id="resultPage" class="page">
         <div class="capture-wrapper">
             <div id="captureArea">
+                <div class="version-badge-result">v1.0</div>
+                
                 <h1 class="result-title">[두뇌심리 성향 및 유형 진단 검사 결과]</h1>
                 
                 <div class="result-info-box">
@@ -246,7 +256,7 @@
         { "id": 3, "title": "실행통제형 뇌", "color": "#2ecc71", "questions": [ "나는 약속시간을 거의 잘 지킨다.", "나는 계획한 대로 잘 실천한다.", "나는 새로운 것을 시작할 때 두렵다.", "나는 나의 방과 책상을 잘 정리정돈한다.", "나는 해야 할 일들을 구체적으로 메모하여 처리한다.", "나는 물건의 사용설명서 내용을 자세히 읽는다.", "나는 변화가 많은 것보다는 안정적인 것을 더 좋아한다.", "나는 일을 처리할 때 정해진 순서와 방법대로 따라한다.", "나는 구성원들과 일을 같이할 때 자세하게 알려주는 편이다.", "나는 내가 하던 방법과 형식을 잘 바꾸지 않는다." ] },
         { "id": 4, "title": "공감조화형 뇌", "color": "#e84393", "questions": [ "나는 처음 보는 사람도 쉽게 사귄다.", "나는 다른 사람들의 부탁을 잘 들어준다.", "나는 음악 듣는 것을 매우 좋아한다.", "나는 다른 사람보다 내가 먼저 인사한다.", "나는 사람들과 만나면 말을 많이 하는 편이다.", "나는 슬픈 영화나 연속극을 보면서 눈물을 잘 흘린다.", "나는 혼자서도 분위기나 기분에 잘 빠져든다.", "나는 눈치있다는 말을 많이 듣는다.", "나는 얼굴표정이나 몸짓 등으로 구체적인 특성을 표현하면서 말을 한다.", "나는 다른 사람들이 어떻게 느끼고 있는지를 쉽게 잘 알아낸다." ] },
         { "id": 5, "title": "통찰교정형 뇌", "color": "#e67e22", "questions": [ "나는 어렵고 힘든 일이 있어도 최선을 다한다.", "나는 내가 세운 목표를 달성하기 위해 실천을 잘한다.", "나는 모든 일에 열정적이고 적극적이다.", "나는 새로운 도전을 좋아한다.", "나는 내 자신을 믿는다.", "나는 어려운 일에 앞장서서 행동한다.", "나는 생활 속에서 즐거운 활동을 찾아낸다.", "나는 변화에 능동적으로 맞서 이겨낸다.", "나는 문제가 생겼을 때 적극적으로 해결하려고 노력한다.", "나는 바람직한 가치관을 가지고 있다." ] },
-        { "id": 6, "title": "돌봄헌신형 뇌", "color": "#16a085", "questions": [ "나는 친절하다는 말을 자주 듣는다.", "나는 친구의 고민을 잘 들어준다.", "나는 다른 사람을 잘 도와준다.", "나는 말한 것을 지키려고 노력한다.", "나는 다른 사람에게 모범을 보여야 한다고 생각한다.", "나는 내가 속한 단체가 함께하는 것이 중요하다고 생각한다.", "나는 개인의 이익보다는 전체 이익을 중요시한다.", "나는 다른 사람의 부탁을 잘 받아들인다.", "나는 말을 할 때 나의 감정이나 느낌보다는 다른 사람들의 감정이나 느낌을 중요시한다.", "나는 결정을 할 때 다른 사람들의 요구와 이해를 깊이 참고하여 알아준다." ] }
+        { "id": 6, "title": "돌봄헌신형 뇌", "color": "#16a085", "questions": [ "나는 친절하다는 말을 자주 듣는다.", "나는 친구의 고민을 잘 들어준다.", "나는 다른 사람을 잘 도와준다.", "나는 말한 것을 지키려고 노력한다.", "나는 다른 사람에게 모범을 보여야 단다고 생각한다.", "나는 내가 속한 단체가 함께하는 것이 중요하다고 생각한다.", "나는 개인의 이익보다는 전체 이익을 중요시한다.", "나는 다른 사람의 부탁을 잘 받아들인다.", "나는 말을 할 때 나의 감정이나 느낌보다는 다른 사람들의 감정이나 느낌을 중요시한다.", "나는 결정을 할 때 다른 사람들의 요구와 이해를 깊이 참고하여 알아준다." ] }
       ]
     };
 
@@ -451,6 +461,9 @@
             if(score < minScore) { minScore = score; lowestType = chartLabels[index]; }
         });
 
+        // 🚀 [추가됨] 화면의 버전 배지에서 텍스트(예: v1.0)를 읽어옵니다.
+        const currentVersion = document.querySelector('.version-badge').innerText;
+
         const payload = {
             name: studentName,
             birth: birthDate,
@@ -460,32 +473,20 @@
             expert: expertName,
             scores: scores,
             allAnswers: allAnswers,
-            primaryType: primaryType
+            primaryType: primaryType,
+            version: currentVersion // 🚀 [추가됨] 구글 시트로 보낼 데이터에 버전 정보 탑재
         };
 
-
-        // const GOOGLE_APP_SCRIPT_URL = '여기에_새로_배포한_웹앱_URL을_넣으세요';
-
-        // ★여기에 1단계에서 복사해 둔 '웹 앱 URL'을 따옴표 안에 붙여넣으세요!★
-
-        // v0.1
-        // 유형별 총점만 구글 시트에 기록
-        // const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGOdCJKe4xzkqiqmJyCnHT0H5Eb2oqrptI3pO-FetbuQtxLNGs4x0GjJSd3lCPKV_xUw/exec'; 
-
-        // v0.2
-        // 유형별 총점과 개별 항목 모두 구글 시트에 기록
-        //const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJgivRYu-rXZ1EkWRhPgOkGxo-3Qhs8hh1WTIVAM1IBTs0IDHtR9SSjFgIbu0Anokntg/exec';
-
+        // 발급받으신 웹앱 URL을 입력하세요.
         const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJgivRYu-rXZ1EkWRhPgOkGxo-3Qhs8hh1WTIVAM1IBTs0IDHtR9SSjFgIbu0Anokntg/exec';
 
-        // URL 값이 존재하기만 하면 무조건 전송하도록 수정 (가장 깔끔한 방법)
         if (GOOGLE_APP_SCRIPT_URL) {
             fetch(GOOGLE_APP_SCRIPT_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(payload)
             })
-            .then(response => console.log('데이터 저장 완료'))
+            .then(response => console.log('데이터 저장 완료 (버전 포함)'))
             .catch(error => console.error('저장 실패:', error));
         }
 
@@ -525,19 +526,6 @@
         });
     }
 
-    // =========================================================================
-    // [수정됨] 파일명 조합 방식 변경 (성명_생년월일_성별_학교_검사날짜.pdf)
-    // v0.3 : 아이폰 pdf 다운로드 문제 수정
-    // v0.4 : 1) alert 창 대신 버튼 글자를 바꿔서 시각적 효과를 주고, 2) 
-    // 아이폰에서는 '파일 다운로드' 대신 '기기 자체 공유(파일 앱에 저장, 카카오톡 전송 등)' 
-    // 기능이 뜨도록 네이티브 API(navigator.share)를 적용
-    // v0.5 : 1) 해상도를 대폭 높이고, 2) 압축률이 낮은 PNG 포맷을 사용하며, 3) 아이폰 메모리 부하를 줄이기 위한 내부 최적화
-    // 해상도 배율(scale) 향상: PC에서는 3배(기존 2배), 아이폰에서는 2.2배(기존 1.5배)로 해상도를 높여 인쇄물 수준의 선명도를 확보
-    // PNG 포맷 사용: 기존 JPEG의 손실 압축 방식을 버리고 비손실 압축인 PNG 방식으로 화면을 캡처하여, 글자와 차트의 경계선이 뭉개지지 않고 날카롭게 표현
-    // 로딩 메시지 수정: 화질이 높아진 만큼 화면을 캡처하는 데 걸리는 시간(최대 5~10초)이 조금 더 늘어났습니다. 사용자가 멈춘 것으로 오해하지 않도록 버튼 메시지를 (최대 10초 소요)로 수정
-    // v0.6
-    // PC인지 스마트폰(모바일)인지 기기를 명확하게 구분하는 로직(isMobile)을 추가, 모바일일 때만 팝업이 뜨고 PC에서는 무조건 즉시 다운로드되도록 수정
-    // =========================================================================    
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
