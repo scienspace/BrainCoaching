@@ -7,50 +7,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* 반응형 웹 디자인을 위한 모바일 퍼스트 CSS 적용 */
         * { box-sizing: border-box; } 
-        
         body { font-family: 'Pretendard', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding: 15px; }
-        
         #app { background: white; width: 100%; max-width: 900px; padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        
         h1 { text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 22px; margin-top: 10px; }
         h2 { text-align: center; color: #2c3e50; padding-bottom: 10px; margin-bottom: 20px; font-size: 18px; margin-top: 10px; }
-        
         .page { display: none; position: relative; } 
         .page.active { display: block; }
         
-        .version-badge {
-            position: absolute;
-            top: -10px;
-            right: 0;
-            background-color: #f1f2f6;
-            color: #7f8c8d;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-
-        .version-badge-result {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            background-color: #f1f2f6;
-            color: #7f8c8d;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
+        .version-badge { position: absolute; top: -10px; right: 0; background-color: #f1f2f6; color: #7f8c8d; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; letter-spacing: 0.5px; }
+        .version-badge-result { position: absolute; top: 20px; right: 30px; background-color: #f1f2f6; color: #7f8c8d; padding: 5px 12px; border-radius: 15px; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; }
         
         .notice-guide-box { padding: 15px; border-radius: 8px; margin-bottom: 25px; line-height: 1.6; color: #2c3e50; font-size: 14px; word-break: keep-all; }
-        
-        .info-form { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 30px; 
-            display: flex; flex-direction: column; gap: 15px; 
-        }
+        .info-form { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 30px; display: flex; flex-direction: column; gap: 15px; }
         .info-group { display: flex; flex-direction: column; width: 100%; }
         .info-group label { font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #495057; }
         .info-group label.required::after { content: ' *'; color: #e74c3c; }
@@ -97,29 +66,30 @@
             td { font-size: 14px; padding: 12px 5px; }
             td.q-text { font-size: 15px; }
             input[type="radio"] { transform: scale(1.3); }
-            
             .btn-group { gap: 15px; } 
             .btn { font-size: 16px; padding: 12px; }
             .btn-start, .btn-submit, .btn-pdf { font-size: 18px;}
-            
             .finish-text { font-size: 18px; }
             .version-badge { font-size: 13px; top: -15px; padding: 6px 15px; }
             .intro-contact { font-size: 22px; }
             .intro-notice { font-size: 15px; padding: 25px; }
         }
 
-        .capture-wrapper { width: 100%; overflow-x: auto; background-color: #f0f0f0; padding: 10px; border-radius: 8px; margin-bottom: 20px; }
-        #captureArea { background-color: white; width: 794px; height: 1122px; padding: 30px 40px; box-sizing: border-box; margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); position: relative; }
+        /* 🚀 PDF 변환용 4장 레이아웃 세팅 */
+        .capture-wrapper { width: 100%; overflow-x: auto; background-color: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        #captureArea { display: flex; flex-direction: column; gap: 20px; width: 794px; margin: 0 auto; }
         
-        .result-title { font-size: 24px; margin-bottom: 10px; text-align: center; font-weight: bold; color: #000; }
-        .result-info-box { border: 2px solid #333; margin-bottom: 10px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; font-size: 13px; }
+        .pdf-page { background-color: white; width: 794px; min-height: 1122px; padding: 40px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; page-break-after: always; }
+        .pdf-page:last-child { page-break-after: auto; }
+
+        .result-title { font-size: 24px; margin-bottom: 15px; text-align: center; font-weight: bold; color: #000; margin-top: 10px;}
+        .result-info-box { border: 2px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; font-size: 13px; }
         .result-info-box > div { border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; display: flex; align-items: center; }
         .result-info-box > div:nth-child(3n) { border-right: none; }
         .result-info-box > div > span:first-child { background-color: #f4f4f4; padding: 8px; width: 40%; font-weight: bold; border-right: 1px solid #ccc; }
         .result-info-box > div > span:last-child { padding: 8px; width: 60%; }
         
         .chart-container { position: relative; margin: 0 auto 10px auto; width: 100%; max-width: 550px; height: 300px; display: flex; justify-content: center; align-items: center; }
-        
         .type-header { display: flex; border: 2px solid #333; margin-bottom: 10px; font-size: 15px; font-weight: bold; align-items: center; }
         .type-header .label { background-color: #f4f4f4; padding: 10px; width: 130px; text-align: center; border-right: 1px solid #ccc; }
         .type-header .value { padding: 10px; flex: 1; color: #2980b9; }
@@ -133,25 +103,19 @@
 <body>
 
 <div id="app">
-
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v1.84</div>
-
+        <div class="version-badge" id="appVersion">v1.85</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
-            
             <div class="intro-contact">
-                문의 : 브레인코칭상담연구소<br>
-                소장 임운나(H.P: 010-8498-3689)
+                문의 : 브레인코칭상담연구소<br>소장 임운나(H.P: 010-8498-3689)
             </div>
-
             <div class="intro-notice">
                 <p>● 본 검사지와 연계한 교육, 코칭, 상담 프로그램을 도입할 수 있으니 구체적 문의는 브레인코칭상담연구소 임운나(H.P: 010-8498-3689)소장님께 하시면 됩니다.</p>
                 <p>● 본 검사지의 저작권은 브레인코칭상담연구소에 있습니다.</p>
                 <p>● 본 검사지의 무단 전재 및 복제를 금합니다.</p>
             </div>
         </div>
-
         <div class="btn-group">
             <button class="btn btn-start" onclick="movePage('pageIntro', 'pageLanding')">검사 안내 및 인적 사항 입력하기</button>
         </div>
@@ -159,12 +123,10 @@
 
     <div id="pageLanding" class="page">
         <h1>두뇌유형 심리검사</h1>
-        
         <div class="notice-guide-box" style="background-color: #e8f4f8;">
             <strong style="display: block; margin-bottom: 8px; font-size: 16px;">다음은 두뇌심리 성향 및 유형을 알아보는 검사입니다.</strong>
             각 문항은 맞고 틀린 답이 있는 것이 아닙니다. 평소 두뇌심리 성향에 대해 솔직하고 정확하게 답변해 주시면 좀 더 명확한 두뇌심리 유형을 알 수 있습니다.
         </div>
-
         <div class="info-form">
             <div class="info-group"><label class="required">이름</label><input type="text" id="studentName" placeholder="홍길동"></div>
             <div class="info-group"><label class="required">생년월일</label><input type="date" id="birthDate"></div>
@@ -175,7 +137,6 @@
             <div class="info-group"><label>검사일</label><input type="date" id="testDate"></div>
             <div class="info-group"><label>담당 전문가</label><input type="text" id="expertName" placeholder="전문가 이름"></div>
         </div>
-
         <div class="btn-group">
             <button class="btn btn-prev" onclick="movePage('pageLanding', 'pageIntro')">이전으로</button>
             <button class="btn btn-start" onclick="startTest()">본 검사 시작하기</button>
@@ -187,68 +148,112 @@
     <div id="resultPage" class="page">
         <div class="capture-wrapper">
             <div id="captureArea">
-                <div class="version-badge-result" id="resultVersion"></div>
                 
-                <h1 class="result-title">[ 두뇌 심리 진단 결과 종합 의견 ]</h1>
-                
-                <div class="result-info-box">
-                    <div><span>이름</span><span id="resName"></span></div>
-                    <div><span>생년월일</span><span id="resBirth"></span></div>
-                    <div><span>성별</span><span id="resGender"></span></div>
-                    <div style="border-bottom: none;"><span>검사일</span><span id="resDate"></span></div>
-                    <div style="border-bottom: none;"><span>담당 전문가</span><span id="resExpert"></span></div>
-                    <div style="border-bottom: none;"><span>기관명</span><span id="resSchool"></span></div>
+                <div class="pdf-page">
+                    <div class="version-badge-result resultVersion"></div>
+                    <h1 class="result-title">[ 두뇌 심리 유형별 특징 ]</h1>
+                    <div class="result-info-box">
+                        <div><span>이름</span><span class="resName"></span></div>
+                        <div><span>생년월일</span><span class="resBirth"></span></div>
+                        <div><span>성별</span><span class="resGender"></span></div>
+                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div>
+                        <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
+                        <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
+                    </div>
+                    <div id="page1-content"></div>
                 </div>
 
-                <div class="chart-container">
-                    <canvas id="radarChart"></canvas>
-                </div>
-                
-                <div class="type-header">
-                    <div class="label">두뇌 심리 유형</div>
-                    <div class="value" id="resPrimaryType"></div>
+                <div class="pdf-page">
+                    <div class="version-badge-result resultVersion"></div>
+                    <h1 class="result-title">[ 두뇌 심리 유형별 학습 성향 ]</h1>
+                    <div class="result-info-box">
+                        <div><span>이름</span><span class="resName"></span></div>
+                        <div><span>생년월일</span><span class="resBirth"></span></div>
+                        <div><span>성별</span><span class="resGender"></span></div>
+                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div>
+                        <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
+                        <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
+                    </div>
+                    <div id="page2-content"></div>
                 </div>
 
-                <table class="feedback-table">
-                    <thead>
-                        <tr>
-                            <th width="15%">구분</th>
-                            <th width="42.5%">장점</th>
-                            <th width="42.5%">보완할 점</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th style="vertical-align: middle;">두뇌 심리<br>특성</th>
-                            <td id="resPsychHigh"></td>
-                            <td id="resPsychLow"></td>
-                        </tr>
-                        <tr>
-                            <th style="vertical-align: middle;">학습 성향</th>
-                            <td id="resLearnHigh"></td>
-                            <td id="resLearnLow"></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <table class="feedback-table">
-                    <tbody>
-                        <tr>
-                            <th width="15%" style="vertical-align: middle;">진로 성향</th>
-                            <td width="85%" id="resCareer"></td>
-                        </tr>
-                        <tr>
-                            <th width="15%" style="vertical-align: middle;">직업군</th>
-                            <td width="85%" id="resJobs"></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div style="text-align: center; font-size: 11.5px; color: #444; margin-top: 15px; line-height: 1.6; border-top: 1px dashed #ccc; padding-top: 10px;">
-                    <strong>[ 안내 ]</strong><br>
-                    본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>
-                    본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.
+                <div class="pdf-page">
+                    <div class="version-badge-result resultVersion"></div>
+                    <h1 class="result-title">[ 두뇌 심리 유형별 진로 성향 및 직업군 ]</h1>
+                    <div class="result-info-box">
+                        <div><span>이름</span><span class="resName"></span></div>
+                        <div><span>생년월일</span><span class="resBirth"></span></div>
+                        <div><span>성별</span><span class="resGender"></span></div>
+                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div>
+                        <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
+                        <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
+                    </div>
+                    <div id="page3-content"></div>
                 </div>
+
+                <div class="pdf-page">
+                    <div class="version-badge-result resultVersion"></div>
+                    <h1 class="result-title">[ 두뇌 심리 진단 결과 종합 의견 ]</h1>
+                    <div class="result-info-box">
+                        <div><span>이름</span><span class="resName"></span></div>
+                        <div><span>생년월일</span><span class="resBirth"></span></div>
+                        <div><span>성별</span><span class="resGender"></span></div>
+                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div>
+                        <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
+                        <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    
+                    <div class="type-header">
+                        <div class="label">두뇌 심리 유형</div>
+                        <div class="value" id="resPrimaryType"></div>
+                    </div>
+
+                    <table class="feedback-table">
+                        <thead>
+                            <tr>
+                                <th width="15%">구분</th>
+                                <th width="42.5%">장점</th>
+                                <th width="42.5%">보완할 점</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th style="vertical-align: middle;">두뇌 심리<br>특성</th>
+                                <td id="resPsychHigh"></td>
+                                <td id="resPsychLow"></td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: middle;">학습 성향</th>
+                                <td id="resLearnHigh"></td>
+                                <td id="resLearnLow"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="feedback-table">
+                        <tbody>
+                            <tr>
+                                <th width="15%" style="vertical-align: middle;">진로 성향</th>
+                                <td width="85%" id="resCareer"></td>
+                            </tr>
+                            <tr>
+                                <th width="15%" style="vertical-align: middle;">직업군</th>
+                                <td width="85%" id="resJobs"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="text-align: center; font-size: 11.5px; color: #444; margin-top: 15px; line-height: 1.6; border-top: 1px dashed #ccc; padding-top: 10px;">
+                        <strong>[ 안내 ]</strong><br>
+                        본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>
+                        본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -280,7 +285,6 @@
       ]
     };
 
-    // 🚀 버전 1.84 반영: feedbackData 업데이트 (mid 데이터 추가 및 문장 수정)
     const feedbackData = {
       "분석가": {
         "high": {
@@ -498,13 +502,46 @@
         const testDate = document.getElementById('testDate').value || "미상";
         const expertName = document.getElementById('expertName').value || "미상";
 
-        document.getElementById('resName').innerText = studentName;
-        document.getElementById('resBirth').innerText = birthDate;
-        document.getElementById('resGender').innerText = gender;
-        document.getElementById('resSchool').innerText = schoolName;
-        document.getElementById('resDate').innerText = testDate;
-        document.getElementById('resExpert').innerText = expertName;
+        // 🚀 인적사항을 4개 페이지의 모든 정보 박스에 일괄 적용
+        document.querySelectorAll('.resName').forEach(el => el.innerText = studentName);
+        document.querySelectorAll('.resBirth').forEach(el => el.innerText = birthDate);
+        document.querySelectorAll('.resGender').forEach(el => el.innerText = gender);
+        document.querySelectorAll('.resSchool').forEach(el => el.innerText = schoolName);
+        document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
+        document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.85';
+        document.querySelectorAll('.resultVersion').forEach(el => el.innerText = currentVersion);
+
+        // 🚀 1, 2, 3 페이지 동적 HTML 생성
+        const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
+        
+        // Page 1: 유형별 특징
+        let html1 = '<table class="feedback-table"><thead><tr><th width="15%">유형</th><th>두뇌 심리 특성 (장점)</th></tr></thead><tbody>';
+        types.forEach(type => {
+            html1 += `<tr><th style="vertical-align: middle; font-size:14px;">${type}</th><td>${makeListHTML(feedbackData[type].high.psychology)}</td></tr>`;
+        });
+        html1 += '</tbody></table>';
+        document.getElementById('page1-content').innerHTML = html1;
+
+        // Page 2: 유형별 학습 성향
+        let html2 = '<table class="feedback-table"><thead><tr><th width="15%">유형</th><th>학습 성향 (장점)</th></tr></thead><tbody>';
+        types.forEach(type => {
+            html2 += `<tr><th style="vertical-align: middle; font-size:14px;">${type}</th><td>${makeListHTML(feedbackData[type].high.learning)}</td></tr>`;
+        });
+        html2 += '</tbody></table>';
+        document.getElementById('page2-content').innerHTML = html2;
+
+        // Page 3: 유형별 진로 성향 및 직업군
+        let html3 = '<table class="feedback-table"><thead><tr><th width="15%">유형</th><th width="50%">진로 성향</th><th width="35%">직업군</th></tr></thead><tbody>';
+        types.forEach(type => {
+            html3 += `<tr><th style="vertical-align: middle; font-size:14px;">${type}</th><td>${makeListHTML(feedbackData[type].career)}</td><td style="vertical-align: middle; font-size:13px; line-height:1.5;">${feedbackData[type].jobs}</td></tr>`;
+        });
+        html3 += '</tbody></table>';
+        document.getElementById('page3-content').innerHTML = html3;
+
+
+        // Page 4: 기존 종합 의견
         let maxScore = -1, minScore = 999;
         let primaryType = "", lowestType = "";
 
@@ -512,9 +549,6 @@
             if(score > maxScore) { maxScore = score; primaryType = chartLabels[index]; }
             if(score < minScore) { minScore = score; lowestType = chartLabels[index]; }
         });
-
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.84';
-        document.getElementById('resultVersion').innerText = currentVersion;
 
         const payload = {
             name: studentName,
@@ -542,12 +576,10 @@
         }
 
         document.getElementById('resPrimaryType').innerText = primaryType;
-
         document.getElementById('resPsychHigh').innerHTML = makeListHTML(feedbackData[primaryType].high.psychology);
         document.getElementById('resLearnHigh').innerHTML = makeListHTML(feedbackData[primaryType].high.learning);
         document.getElementById('resCareer').innerHTML = makeListHTML(feedbackData[primaryType].career);
         document.getElementById('resJobs').innerText = feedbackData[primaryType].jobs;
-
         document.getElementById('resPsychLow').innerHTML = makeListHTML(feedbackData[lowestType].low.psychology);
         document.getElementById('resLearnLow').innerHTML = makeListHTML(feedbackData[lowestType].low.learning);
 
@@ -603,7 +635,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.84';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.85';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -638,6 +670,7 @@
                 letterRendering: true,
                 allowTaint: true
             }, 
+            pagebreak: { mode: 'css', after: '.pdf-page' },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
 
