@@ -42,7 +42,7 @@
         .info-group label { font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #495057; }
         .info-group label.required::after { content: ' *'; color: #e74c3c; }
         
-        /* 🚀 iOS 모바일 인적사항 폼 UI 규격화 강제 적용 (크기 및 삐져나감 수정) */
+        /* iOS 모바일 인적사항 폼 UI 규격화 강제 적용 */
         .info-group input, .info-group select { 
             width: 100%; 
             height: 42px; 
@@ -55,11 +55,11 @@
             background-color: #fff;
             color: #333;
             margin: 0;
-            -webkit-appearance: none; /* 아이폰 기본 스타일 제거 */
+            -webkit-appearance: none;
             appearance: none;
         }
 
-        /* 🚀 날짜 타입에 대한 아이폰 특화 버그 수정 */
+        /* 날짜 타입에 대한 아이폰 특화 버그 수정 */
         .info-group input[type="date"] {
             display: block;
             width: 100%;
@@ -154,7 +154,6 @@
         .footer-center { width: 76%; text-align: center; font-size: 10.5px; color: #444; line-height: 1.5; white-space: nowrap; letter-spacing: -0.5px; }
         .footer-right { width: 12%; text-align: right; font-size: 14px; font-weight: bold; color: #555; padding-bottom: 2px; }
 
-        /* 타이틀 박스 및 파스텔톤 컬러 클래스 적용 */
         .title-box { text-align: center; font-size: 22px; font-weight: bold; padding: 12px 0; margin-top: 5px; margin-bottom: 20px; color: #000; letter-spacing: 1px; }
         .bg-pastel-red { background-color: #ffb3ba; }
         .bg-pastel-green { background-color: #baffc9; }
@@ -177,7 +176,6 @@
         .feedback-table th { background-color: #f4f4f4; color: #333; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; }
         .feedback-table td { border: 1px solid #333; padding: 10px 15px; font-size: 13px; vertical-align: top; text-align: left; line-height: 1.5; }
         
-        /* 순위 박스 디자인 (파스텔 블루 헤더) */
         .rank-header { background-color: #7f8c8d; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 8px; margin-top: 15px; border: 2px solid #333; border-bottom: none;}
         .rank-table { width: 100%; border-collapse: collapse; border: 2px solid #333; border-top: none; margin-bottom: 15px;}
         .rank-table th { background-color: #bae1ff; color: #000; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; vertical-align: middle;}
@@ -188,7 +186,7 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.20</div>
+        <div class="version-badge" id="appVersion">v0.21</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -401,7 +399,7 @@
 
         <div class="btn-group">
             <button class="btn btn-prev" onclick="location.reload()">처음으로 돌아가기</button>
-            <button class="btn btn-pdf" id="pdfBtn" onclick="prepareAndDownloadPDF()">결과지 PDF로 저장</button>
+            <button class="btn btn-pdf" id="pdfBtn" onclick="downloadPDF()">결과지 PDF로 저장</button>
         </div>
     </div>
 </div>
@@ -608,7 +606,6 @@
         ).join('') + "</div>";
     }
 
-    // 🚀 점수 상/중/하 판단 로직
     function getLevel(score) {
         if (score >= 41) return 'high';
         if (score >= 21) return 'mid';
@@ -664,13 +661,11 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        // 🚀 버전을 0.2로 푸터에 세팅
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.20';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.21';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
         
-        // 🚀 PAGE 2 동적 생성: 점수 기반 상/중/하 특징
         let html1 = '';
         types.forEach((type, index) => {
             const lvl = getLevel(scores[index]);
@@ -683,7 +678,6 @@
         });
         document.getElementById('page1-tbody').innerHTML = html1;
 
-        // 🚀 PAGE 3 동적 생성: 점수 기반 상/중/하 학습 성향
         let html2 = '';
         types.forEach((type, index) => {
             const lvl = getLevel(scores[index]);
@@ -696,7 +690,6 @@
         });
         document.getElementById('page2-tbody').innerHTML = html2;
 
-        // 🚀 PAGE 4 동적 생성: 점수 높은 순 1, 2, 3순위 직업군 추출
         const typeScores = types.map((type, index) => ({ type: type, score: scores[index] }));
         typeScores.sort((a, b) => b.score - a.score);
         const top3 = typeScores.slice(0, 3);
@@ -727,7 +720,6 @@
         });
         document.getElementById('page3-content').innerHTML = html3;
 
-        // 🚀 PAGE 5 기존 종합 의견 처리
         let maxScore = -1, minScore = 999;
         let primaryType = "", lowestType = "";
 
@@ -814,29 +806,22 @@
         });
     }
 
-    // 🚀 iOS Safari 팝업 차단 우회를 위한 Two-Step 다운로드 로직
-    let generatedPdfFile = null;
-
-    function prepareAndDownloadPDF() {
-        const pdfBtn = document.getElementById('pdfBtn');
-
-        // 이미 PDF가 생성되어 있다면 즉시 공유/다운로드 실행
-        if (generatedPdfFile) {
-            executeShareOrDownload(generatedPdfFile);
-            return;
-        }
-
+    // 🚀 1단계(One-Step) 다운로드/공유 로직 복구
+    function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
         const gender = document.getElementById('gender').value || '성별미상';
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.20';
+
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.21';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
         const canvas = document.getElementById('radarChart');
         
+        const pdfBtn = document.getElementById('pdfBtn');
+        const originalBtnText = pdfBtn.innerText;
         pdfBtn.innerText = "PDF 생성중... (잠시만 기다려주세요)";
         pdfBtn.style.backgroundColor = "#7f8c8d";
         pdfBtn.disabled = true;
@@ -852,7 +837,10 @@
         element.style.gap = '0';
         element.style.backgroundColor = 'white';
 
+        // 🚀 PC와 모바일 환경을 정확하게 판별
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isMobile = isIOS || isAndroid || /webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         const opt = {
             margin: 0, 
@@ -874,24 +862,40 @@
             element.style.gap = '20px';
             element.style.backgroundColor = '';
             
+            pdfBtn.innerText = originalBtnText;
+            pdfBtn.style.backgroundColor = "#2ecc71";
+            pdfBtn.disabled = false;
             document.getElementById('tempChartImg').remove();
             canvas.style.display = 'block';
 
-            generatedPdfFile = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
+            const file = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
 
-            // 🚀 버튼을 파란색 다운로드 트리거 버튼으로 변경 (Two-Step 완료)
-            pdfBtn.innerText = "📥 생성 완료! 여기를 눌러 저장하세요";
-            pdfBtn.style.backgroundColor = "#3498db";
-            pdfBtn.disabled = false;
-
-            // 1차 자동 시도 (안드로이드나 PC는 바로 받아짐, iOS는 차단될 수 있음)
-            executeShareOrDownload(generatedPdfFile);
-
+            // 🚀 모바일(스마트폰)이면 팝업 스크롤(Share Sheet) 호출, PC면 강제 다운로드
+            if (isMobile) {
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        files: [file],
+                        title: '두뇌심리검사 결과',
+                        text: '검사 결과 PDF 파일입니다.'
+                    }).catch(function(error) {
+                        console.log('공유 취소됨:', error);
+                        // 에러가 나거나 공유를 취소한 경우 강제 다운로드로 폴백
+                        if(error.name !== "AbortError") {
+                           forceDownload(pdfBlob, pdfFilename);
+                        }
+                    });
+                } else {
+                    forceDownload(pdfBlob, pdfFilename);
+                }
+            } else {
+                // PC는 즉시 다운로드 처리
+                forceDownload(pdfBlob, pdfFilename);
+            }
         }).catch(function(error) {
             element.style.gap = '20px';
             element.style.backgroundColor = '';
             alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
-            pdfBtn.innerText = "결과지 PDF로 저장";
+            pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
             pdfBtn.disabled = false;
             document.getElementById('tempChartImg').remove();
@@ -900,29 +904,13 @@
         });
     }
 
-    // 공유(iOS 팝업) 또는 일반 다운로드 실행기
-    function executeShareOrDownload(file) {
-        if (navigator.share) {
-            navigator.share({
-                files: [file],
-                title: '두뇌심리검사 결과',
-                text: '검사 결과 PDF 파일입니다.'
-            }).catch(function(error) {
-                console.log('공유 취소됨 또는 지원하지 않음:', error);
-                if (error.name !== 'AbortError') forceDownload(file);
-            });
-        } else {
-            forceDownload(file);
-        }
-    }
-
-    // 일반 강제 다운로드 (PC 및 안드로이드용)
-    function forceDownload(file) {
-        const url = window.URL.createObjectURL(file);
+    // 🚀 PC 강제 다운로드 전용 함수
+    function forceDownload(blob, filename) {
+        const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = file.name;
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         setTimeout(() => {
