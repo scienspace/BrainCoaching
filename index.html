@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* 🚀 반응형 웹 디자인을 위한 모바일 퍼스트 CSS 적용 */
+        /* 반응형 웹 디자인을 위한 모바일 퍼스트 CSS 적용 */
         * { box-sizing: border-box; } 
         
         body { font-family: 'Pretendard', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding: 15px; }
@@ -53,7 +53,6 @@
         }
         .info-group { display: flex; flex-direction: column; width: 100%; }
         .info-group label { font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #495057; }
-        /* 필수 입력 항목 표시를 위한 별표 스타일 */
         .info-group label.required::after { content: ' *'; color: #e74c3c; }
         .info-group input, .info-group select { padding: 10px; border: 1px solid #ced4da; border-radius: 5px; font-size: 14px; width: 100%; height: 42px; }
         
@@ -118,9 +117,17 @@
         .result-info-box > div > span:first-child { background-color: #f4f4f4; padding: 8px; width: 40%; font-weight: bold; border-right: 1px solid #ccc; }
         .result-info-box > div > span:last-child { padding: 8px; width: 60%; }
         .chart-container { position: relative; margin: 0 auto 10px auto; width: 100%; max-width: 400px; height: 220px; display: flex; justify-content: center; align-items: center; }
+        
         .type-header { display: flex; border: 2px solid #333; margin-bottom: 5px; font-size: 14px; font-weight: bold; align-items: center; }
         .type-header .label { background-color: #f4f4f4; padding: 8px; width: 120px; text-align: center; border-right: 1px solid #ccc; }
         .type-header .value { padding: 8px; flex: 1; color: #2980b9; }
+        
+        /* 🚀 [추가됨] 6개 유형 점수 요약 표 스타일 */
+        .score-summary { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 15px; text-align: center; }
+        .score-item { border: 1px solid #ccc; border-radius: 5px; overflow: hidden; background: #fff;}
+        .score-label { background-color: #f8f9fa; padding: 6px 2px; font-size: 12px; font-weight: bold; border-bottom: 1px solid #ccc; color: #2c3e50; word-break: keep-all; letter-spacing: -0.5px;}
+        .score-value { padding: 8px; font-size: 15px; font-weight: bold; color: #e74c3c; }
+
         .caption { font-size: 11px; color: #666; margin-bottom: 10px; text-align: left; line-height: 1.2; }
         .feedback-table { width: 100%; border-collapse: collapse; border: 2px solid #333; margin-bottom: 5px; }
         .feedback-table th { background-color: #f4f4f4; color: #333; font-weight: bold; border: 1px solid #ccc; padding: 8px; font-size: 13px; text-align: center; }
@@ -134,7 +141,7 @@
 <div id="app">
 
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v1.7</div>
+        <div class="version-badge" id="appVersion">v1.8</div>
 
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
@@ -208,6 +215,8 @@
                     <div class="value" id="resPrimaryType"></div>
                 </div>
                 <div class="caption">※ 6가지 두뇌심리 유형 중에서 가장 높게 나타난 점수의 두뇌심리 유형을 나타냄</div>
+
+                <div class="score-summary" id="resScoreSummary"></div>
 
                 <table class="feedback-table">
                     <thead>
@@ -339,7 +348,7 @@
       "통찰교정형 뇌": {
         "high": {
           "psychology": [ "끊임없이 새로운 일을 계획하고 추진하는 강한 리더 성향이 있다.", "능동적이고 적극적이며 의지가 강하다.", "결단력이 있고 독립심과 자립심이 강하다." ],
-          "learning": [ "자신만의 새로운 공부 방법을 찾으려고 노력한다.", "협력적인 학습 과제보다 경쟁적인 학습 과제를 더 선호한다.", "한계에 부딪혔을 때 자신을 믿고 포기하지 않는다." ]
+          "learning": [ "자신만의 새로운 공부 방법을 찾으려고 노력한다.", "협력적인 학습 과제보다경쟁적인 학습 과제를 더 선호한다.", "한계에 부딪혔을 때 자신을 믿고 포기하지 않는다." ]
         },
         "low": {
           "psychology": [ "결단력이 없고 우유부단한 말과 행동을 한다.", "소극적이고 의지가 약하며 자신감이 부족하다.", "스스로 문제를 해결하려고 하지 않고 다른 사람에게 의존한다." ],
@@ -373,9 +382,10 @@
             const prevPageId = index === 0 ? 'pageLanding' : `page${surveyData.categories[index - 1].id}`;
             const nextPageId = isLastPage ? 'resultPage' : `page${surveyData.categories[index + 1].id}`;
 
+            // 🚀 [수정됨] 상단 제목에 세부 유형명 대신 [ 유형 1 / 6 ] 형태로 표기
             htmlContent += `
             <div id="${pageId}" class="page">
-                <h2 style="border-bottom: 2px solid ${category.color};">&lt;유형 ${category.id}&gt; ${category.title}</h2>
+                <h2 style="border-bottom: 2px solid ${category.color};">[ 유형 ${index + 1} / ${surveyData.categories.length} ]</h2>
                 <div class="table-container">
                     <table>
                         <thead>
@@ -418,35 +428,17 @@
         container.innerHTML = htmlContent;
     }
 
-    // 🚀 [해결] 필수 항목 입력 여부를 체크하는 유효성 검사(Validation) 로직 강화
     function startTest() {
         const nameInput = document.getElementById('studentName');
         const birthInput = document.getElementById('birthDate');
         const genderInput = document.getElementById('gender');
         const schoolInput = document.getElementById('schoolName');
 
-        if (!nameInput.value.trim()) {
-            alert("이름을 입력해주세요.");
-            nameInput.focus();
-            return;
-        }
-        if (!birthInput.value) {
-            alert("생년월일을 입력해주세요.");
-            birthInput.focus();
-            return;
-        }
-        if (!genderInput.value) {
-            alert("성별을 선택해주세요.");
-            genderInput.focus();
-            return;
-        }
-        if (!schoolInput.value.trim()) {
-            alert("기관명(학교명)을 입력해주세요.");
-            schoolInput.focus();
-            return;
-        }
+        if (!nameInput.value.trim()) { alert("이름을 입력해주세요."); nameInput.focus(); return; }
+        if (!birthInput.value) { alert("생년월일을 입력해주세요."); birthInput.focus(); return; }
+        if (!genderInput.value) { alert("성별을 선택해주세요."); genderInput.focus(); return; }
+        if (!schoolInput.value.trim()) { alert("기관명(학교명)을 입력해주세요."); schoolInput.focus(); return; }
 
-        // 모든 필수 항목이 입력되었을 때만 다음 페이지로 넘어갑니다.
         movePage('pageLanding', 'page1');
     }
 
@@ -511,7 +503,19 @@
             if(score < minScore) { minScore = score; lowestType = chartLabels[index]; }
         });
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.3';
+        // 🚀 [추가됨] 6개 유형 점수를 결과지에 세팅하는 로직
+        let scoreHtml = '';
+        scores.forEach((score, index) => {
+            scoreHtml += `
+                <div class="score-item">
+                    <div class="score-label">${chartLabels[index]}</div>
+                    <div class="score-value">${score}점</div>
+                </div>
+            `;
+        });
+        document.getElementById('resScoreSummary').innerHTML = scoreHtml;
+
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.8';
         document.getElementById('resultVersion').innerText = currentVersion;
 
         const payload = {
@@ -582,7 +586,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.3';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.8';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -662,16 +666,12 @@
         });
     }
 
-    // 🚀 [해결] 페이지 로드 시 검사 문항을 만들고, 검사일을 오늘 날짜로 자동 세팅
     window.onload = function() {
         buildSurveyPages();
-        
-        // 브라우저의 로컬 시간을 기준으로 오늘 날짜 포맷팅 (YYYY-MM-DD)
         const today = new Date();
         const year = today.getFullYear();
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
-        
         document.getElementById('testDate').value = `${year}-${month}-${day}`;
     };
 </script>
