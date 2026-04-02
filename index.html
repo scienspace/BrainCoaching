@@ -35,7 +35,7 @@
 
         .version-badge-result {
             position: absolute;
-            top: 25px;
+            top: 20px;
             right: 30px;
             background-color: #f1f2f6;
             color: #7f8c8d;
@@ -108,25 +108,31 @@
             .intro-notice { font-size: 15px; padding: 25px; }
         }
 
+        /* 🚀 결과지 캡처 영역 (A4 사이즈 794x1122 유지, 넘침 방지를 위해 위아래 패딩 약간 축소) */
         .capture-wrapper { width: 100%; overflow-x: auto; background-color: #f0f0f0; padding: 10px; border-radius: 8px; margin-bottom: 20px; }
-        #captureArea { background-color: white; width: 794px; height: 1122px; padding: 40px; box-sizing: border-box; margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); position: relative; }
-        .result-title { font-size: 24px; margin-bottom: 15px; text-align: center; font-weight: bold; color: #000; }
-        .result-info-box { border: 2px solid #333; margin-bottom: 12px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; font-size: 13px; }
+        #captureArea { background-color: white; width: 794px; height: 1122px; padding: 30px 40px; box-sizing: border-box; margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); position: relative; }
+        
+        .result-title { font-size: 24px; margin-bottom: 10px; text-align: center; font-weight: bold; color: #000; }
+        .result-info-box { border: 2px solid #333; margin-bottom: 10px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; font-size: 13px; }
         .result-info-box > div { border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; display: flex; align-items: center; }
         .result-info-box > div:nth-child(3n) { border-right: none; }
         .result-info-box > div > span:first-child { background-color: #f4f4f4; padding: 8px; width: 40%; font-weight: bold; border-right: 1px solid #ccc; }
         .result-info-box > div > span:last-child { padding: 8px; width: 60%; }
         
-        .chart-container { position: relative; margin: 0 auto 20px auto; width: 100%; max-width: 550px; height: 320px; display: flex; justify-content: center; align-items: center; }
+        /* 차트와 표 여백을 약간씩 줄여 한 페이지(A4)에 하단 문구까지 다 나오게 조정 */
+        .chart-container { position: relative; margin: 0 auto 10px auto; width: 100%; max-width: 550px; height: 300px; display: flex; justify-content: center; align-items: center; }
         
-        .type-header { display: flex; border: 2px solid #333; margin-bottom: 15px; font-size: 15px; font-weight: bold; align-items: center; }
+        .type-header { display: flex; border: 2px solid #333; margin-bottom: 10px; font-size: 15px; font-weight: bold; align-items: center; }
         .type-header .label { background-color: #f4f4f4; padding: 10px; width: 130px; text-align: center; border-right: 1px solid #ccc; }
         .type-header .value { padding: 10px; flex: 1; color: #2980b9; }
+        
+        .score-summary { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 10px; text-align: center; }
+        .score-item { border: 1px solid #ccc; border-radius: 5px; background: #f8f9fa; padding: 10px 5px; font-size: 13.5px; font-weight: bold; color: #2c3e50; word-break: keep-all; letter-spacing: -0.5px;}
 
-        .caption { font-size: 11px; color: #666; margin-bottom: 10px; text-align: left; line-height: 1.2; }
-        .feedback-table { width: 100%; border-collapse: collapse; border: 2px solid #333; margin-bottom: 15px; }
+        .caption { font-size: 11px; color: #666; margin-bottom: 5px; text-align: left; line-height: 1.2; }
+        .feedback-table { width: 100%; border-collapse: collapse; border: 2px solid #333; margin-bottom: 10px; }
         .feedback-table th { background-color: #f4f4f4; color: #333; font-weight: bold; border: 1px solid #ccc; padding: 10px; font-size: 13.5px; text-align: center; }
-        .feedback-table td { border: 1px solid #ccc; padding: 12px 15px; font-size: 13px; vertical-align: top; text-align: left; line-height: 1.5; }
+        .feedback-table td { border: 1px solid #ccc; padding: 10px 15px; font-size: 13px; vertical-align: top; text-align: left; line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -134,7 +140,7 @@
 <div id="app">
 
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v1.82</div>
+        <div class="version-badge" id="appVersion">v1.83</div>
 
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
@@ -208,6 +214,8 @@
                     <div class="value" id="resPrimaryType"></div>
                 </div>
 
+                <div class="score-summary" id="resScoreSummary"></div>
+
                 <table class="feedback-table">
                     <thead>
                         <tr>
@@ -229,8 +237,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="caption">※ 장점은 가장 높게 나타난 유형의 두뇌심리 특성/학습성향, 단점은 가장 낮게 나타난 유형을 기술함</div>
-
+                
                 <table class="feedback-table">
                     <tbody>
                         <tr>
@@ -244,7 +251,7 @@
                     </tbody>
                 </table>
 
-                <div style="text-align: center; font-size: 11.5px; color: #444; margin-top: 20px; line-height: 1.6; border-top: 1px dashed #ccc; padding-top: 15px;">
+                <div style="text-align: center; font-size: 11.5px; color: #444; margin-top: 15px; line-height: 1.6; border-top: 1px dashed #ccc; padding-top: 10px;">
                     <strong>[ 안내 ]</strong><br>
                     본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>
                     본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.
@@ -488,7 +495,10 @@
             if(score < minScore) { minScore = score; lowestType = chartLabels[index]; }
         });
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.82';
+        // 🚀 요약 점수 HTML 렌더링 삭제됨
+        document.getElementById('resScoreSummary').innerHTML = '';
+
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.83';
         document.getElementById('resultVersion').innerText = currentVersion;
 
         const payload = {
@@ -532,7 +542,6 @@
         drawRadarChart(scores, radarLabels);
     }
 
-    // 🚀 3, 4. 차트 글자 크기 확대, 색상 진하게(뚜렷하게) 및 선 굵기 등 시각 효과 강화
     function drawRadarChart(scores, labels) {
         const ctx = document.getElementById('radarChart').getContext('2d');
         if(radarChartInstance) radarChartInstance.destroy();
@@ -543,12 +552,12 @@
                 labels: labels,
                 datasets: [{
                     label: '점수', data: scores,
-                    backgroundColor: 'rgba(41, 128, 185, 0.35)', /* 차트 내부 배경색 진하게 */
-                    borderColor: 'rgba(41, 128, 185, 1)', /* 차트 뼈대 선 색상 진하게 */
+                    backgroundColor: 'rgba(41, 128, 185, 0.35)', 
+                    borderColor: 'rgba(41, 128, 185, 1)', 
                     pointBackgroundColor: 'rgba(231, 76, 60, 1)', 
                     pointBorderColor: '#fff', 
-                    borderWidth: 3.5, /* 육각형 선 굵기 강화 */
-                    pointRadius: 5, /* 각 모서리 점 크기 확대 */
+                    borderWidth: 3.5, 
+                    pointRadius: 5, 
                     pointHoverRadius: 7
                 }]
             },
@@ -556,14 +565,14 @@
                 responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: 30 },
                 scales: { 
                     r: { 
-                        angleLines: { display: true, color: 'rgba(0, 0, 0, 0.2)', lineWidth: 1.5 }, /* 거미줄 뻗어나가는 선 뚜렷하게 */
-                        grid: { color: 'rgba(0, 0, 0, 0.15)', lineWidth: 1.5 }, /* 거미줄 가로선 뚜렷하게 */
+                        angleLines: { display: true, color: 'rgba(0, 0, 0, 0.2)', lineWidth: 1.5 }, 
+                        grid: { color: 'rgba(0, 0, 0, 0.15)', lineWidth: 1.5 }, 
                         suggestedMin: 0, 
                         suggestedMax: 50, 
                         ticks: { stepSize: 10, color: '#444', font: { size: 11, weight: 'bold' }, backdropColor: 'transparent' },
                         pointLabels: {
-                            font: { size: 15, weight: 'bolder' }, /* 글자 크기 및 굵기 확대 */
-                            color: '#000' /* 글자 색상 완전 검정색으로 뚜렷하게 */
+                            font: { size: 15, weight: 'bolder' }, 
+                            color: '#000' 
                         }
                     } 
                 },
@@ -579,7 +588,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.82';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.83';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
