@@ -7,11 +7,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* 반응형 웹 디자인을 위한 모바일 퍼스트 CSS 적용 */
         * { box-sizing: border-box; } 
-        
         body { font-family: 'Pretendard', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding: 15px; }
-        
         #app { background: white; width: 100%; max-width: 900px; padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
         h1 { text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 22px; margin-top: 10px; }
@@ -20,24 +17,10 @@
         .page { display: none; position: relative; } 
         .page.active { display: block; }
         
-        .version-badge {
-            position: absolute;
-            top: -10px;
-            right: 0;
-            background-color: #f1f2f6;
-            color: #7f8c8d;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-
-        .notice-guide-box { padding: 15px; border-radius: 8px; margin-bottom: 25px; line-height: 1.6; color: #2c3e50; font-size: 14px; word-break: keep-all; }
+        .version-badge { position: absolute; top: -10px; right: 0; background-color: #f1f2f6; color: #7f8c8d; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; letter-spacing: 0.5px; }
         
-        .info-form { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 30px; 
-            display: flex; flex-direction: column; gap: 15px; 
-        }
+        .notice-guide-box { padding: 15px; border-radius: 8px; margin-bottom: 25px; line-height: 1.6; color: #2c3e50; font-size: 14px; word-break: keep-all; }
+        .info-form { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 30px; display: flex; flex-direction: column; gap: 15px; }
         .info-group { display: flex; flex-direction: column; width: 100%; }
         .info-group label { font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #495057; }
         .info-group label.required::after { content: ' *'; color: #e74c3c; }
@@ -84,7 +67,6 @@
             td { font-size: 14px; padding: 12px 5px; }
             td.q-text { font-size: 15px; }
             input[type="radio"] { transform: scale(1.3); }
-            
             .btn-group { gap: 15px; } 
             .btn { font-size: 16px; padding: 12px; }
             .btn-start, .btn-submit, .btn-pdf { font-size: 18px;}
@@ -93,21 +75,11 @@
             .intro-notice { font-size: 15px; padding: 25px; }
         }
 
-        /* 🚀 PDF 변환용 5장 레이아웃 세팅 (틀어짐 완벽 방지) */
+        /* 🚀 PDF 변환용 5장 레이아웃 세팅 */
         .capture-wrapper { width: 100%; overflow-x: auto; background-color: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         #captureArea { display: flex; flex-direction: column; gap: 20px; width: 794px; margin: 0 auto; }
         
-        .pdf-page { 
-            background-color: white; 
-            width: 794px; 
-            height: 1122px; /* A4 정확한 픽셀 고정으로 밀림 차단 */
-            overflow: hidden; 
-            padding: 40px; 
-            box-sizing: border-box; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            position: relative; 
-            page-break-after: always; 
-        }
+        .pdf-page { background-color: white; width: 794px; height: 1122px; overflow: hidden; padding: 40px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; page-break-after: always; }
         .pdf-page:last-child { page-break-after: auto; }
 
         /* 타이틀 페이지 특별 스타일 */
@@ -115,33 +87,16 @@
         .main-title { font-size: 48px; font-weight: 900; color: #2c3e50; letter-spacing: 2px; margin-top: -100px; }
         .sub-title { position: absolute; bottom: 60px; left: 0; width: 100%; text-align: center; font-size: 22px; font-weight: bold; color: #333; }
 
-        /* 🚀 하단 꼬리말(푸터) 한 줄 정렬 강제 고정 */
-        .page-footer { 
-            position: absolute; 
-            bottom: 30px; 
-            left: 40px; 
-            right: 40px; 
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end; 
-            border-top: 1px dashed #ccc; 
-            padding-top: 10px; 
-        }
-        .footer-left { width: 10%; text-align: left; font-size: 12px; font-weight: bold; color: #7f8c8d; padding-bottom: 2px; }
-        
-        /* [핵심] 줄바꿈 원천 차단을 위해 white-space: nowrap 적용 및 폰트 축소 */
-        .footer-center { 
-            width: 80%; 
-            text-align: center; 
-            font-size: 10.5px; /* PDF에서도 절대 줄바꿈이 일어나지 않는 안전한 크기 */
-            color: #444; 
-            line-height: 1.5; 
-            white-space: nowrap; 
-            letter-spacing: -0.5px; 
-        }
-        .footer-right { width: 10%; text-align: right; font-size: 14px; font-weight: bold; color: #555; padding-bottom: 2px; }
+        /* 하단 꼬리말(푸터) 한 줄 정렬 강제 고정 */
+        .page-footer { position: absolute; bottom: 30px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px dashed #ccc; padding-top: 10px; }
+        .footer-left { width: 12%; text-align: left; font-size: 12px; font-weight: bold; color: #7f8c8d; padding-bottom: 2px; }
+        .footer-center { width: 76%; text-align: center; font-size: 10.5px; color: #444; line-height: 1.5; white-space: nowrap; letter-spacing: -0.5px; }
+        .footer-right { width: 12%; text-align: right; font-size: 14px; font-weight: bold; color: #555; padding-bottom: 2px; }
 
+        /* 🚀 이미지 스타일을 반영한 노란색 타이틀 박스 */
+        .yellow-title-box { background-color: #ffff00; text-align: center; font-size: 22px; font-weight: bold; padding: 12px 0; margin-top: 5px; margin-bottom: 20px; color: #000; letter-spacing: 1px;}
         .result-title { font-size: 24px; margin-bottom: 15px; text-align: center; font-weight: bold; color: #000; margin-top: 10px;}
+        
         .result-info-box { border: 2px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; font-size: 13px; }
         .result-info-box > div { border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; display: flex; align-items: center; }
         .result-info-box > div:nth-child(3n) { border-right: none; }
@@ -153,16 +108,23 @@
         .type-header .label { background-color: #f4f4f4; padding: 10px; width: 130px; text-align: center; border-right: 1px solid #ccc; }
         .type-header .value { padding: 10px; flex: 1; color: #2980b9; }
 
+        /* 🚀 피드백 테이블 (상/중/하 및 순위 디자인 적용) */
         .feedback-table { width: 100%; border-collapse: collapse; border: 2px solid #333; margin-bottom: 10px; }
-        .feedback-table th { background-color: #f4f4f4; color: #333; font-weight: bold; border: 1px solid #ccc; padding: 10px; font-size: 13.5px; text-align: center; }
-        .feedback-table td { border: 1px solid #ccc; padding: 10px 15px; font-size: 13px; vertical-align: top; text-align: left; line-height: 1.5; }
+        .feedback-table th { background-color: #f4f4f4; color: #333; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; }
+        .feedback-table td { border: 1px solid #333; padding: 10px 15px; font-size: 13px; vertical-align: top; text-align: left; line-height: 1.5; }
+        
+        /* 순위 박스 특별 디자인 */
+        .rank-header { background-color: #7f8c8d; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 8px; margin-top: 15px; border: 2px solid #333; border-bottom: none;}
+        .rank-table { width: 100%; border-collapse: collapse; border: 2px solid #333; border-top: none; margin-bottom: 15px;}
+        .rank-table th { background-color: #ffff00; color: #000; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; vertical-align: middle;}
+        .rank-table td { border: 1px solid #333; padding: 10px 15px; font-size: 13px; vertical-align: middle; text-align: left; line-height: 1.5; background-color: #fff;}
     </style>
 </head>
 <body>
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.11</div>
+        <div class="version-badge" id="appVersion">v0.12</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -215,7 +177,7 @@
                 </div>
 
                 <div class="pdf-page">
-                    <h1 class="result-title">[ 두뇌 심리 유형별 특징 ]</h1>
+                    <div class="yellow-title-box">두뇌 심리 유형별 특징</div>
                     <div class="result-info-box">
                         <div><span>이름</span><span class="resName"></span></div>
                         <div><span>생년월일</span><span class="resBirth"></span></div>
@@ -224,7 +186,17 @@
                         <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
                         <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
                     </div>
-                    <div id="page1-content"></div>
+                    
+                    <table class="feedback-table">
+                        <thead>
+                            <tr>
+                                <th width="15%" style="background-color: #fff;">구분</th>
+                                <th width="10%" style="background-color: #fff;">결과</th>
+                                <th width="75%" style="background-color: #fff;">특징</th>
+                            </tr>
+                        </thead>
+                        <tbody id="page1-tbody"></tbody>
+                    </table>
                     
                     <div class="page-footer">
                         <div class="footer-left"><span class="resultVersion"></span></div>
@@ -238,7 +210,7 @@
                 </div>
 
                 <div class="pdf-page">
-                    <h1 class="result-title">[ 두뇌 심리 유형별 학습 성향 ]</h1>
+                    <div class="yellow-title-box">두뇌심리 유형별 학습 성향</div>
                     <div class="result-info-box">
                         <div><span>이름</span><span class="resName"></span></div>
                         <div><span>생년월일</span><span class="resBirth"></span></div>
@@ -247,7 +219,17 @@
                         <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
                         <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
                     </div>
-                    <div id="page2-content"></div>
+                    
+                    <table class="feedback-table">
+                        <thead>
+                            <tr>
+                                <th width="15%" style="background-color: #fff;">구분</th>
+                                <th width="10%" style="background-color: #fff;">결과</th>
+                                <th width="75%" style="background-color: #fff;">특징</th>
+                            </tr>
+                        </thead>
+                        <tbody id="page2-tbody"></tbody>
+                    </table>
                     
                     <div class="page-footer">
                         <div class="footer-left"><span class="resultVersion"></span></div>
@@ -261,8 +243,8 @@
                 </div>
 
                 <div class="pdf-page">
-                    <h1 class="result-title">[ 두뇌 심리 유형별 진로 성향 및 직업군 ]</h1>
-                    <div class="result-info-box">
+                    <div class="yellow-title-box">두뇌심리 유형별 진로 성향 및 직업군</div>
+                    <div class="result-info-box" style="margin-bottom: 5px;">
                         <div><span>이름</span><span class="resName"></span></div>
                         <div><span>생년월일</span><span class="resBirth"></span></div>
                         <div><span>성별</span><span class="resGender"></span></div>
@@ -270,6 +252,7 @@
                         <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
                         <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
                     </div>
+                    
                     <div id="page3-content"></div>
                     
                     <div class="page-footer">
@@ -306,19 +289,19 @@
                     <table class="feedback-table">
                         <thead>
                             <tr>
-                                <th width="15%">구분</th>
-                                <th width="42.5%">장점</th>
-                                <th width="42.5%">보완할 점</th>
+                                <th width="15%" style="background-color: #f4f4f4;">구분</th>
+                                <th width="42.5%" style="background-color: #f4f4f4;">장점</th>
+                                <th width="42.5%" style="background-color: #f4f4f4;">보완할 점</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th style="vertical-align: middle;">두뇌 심리<br>특성</th>
+                                <th style="vertical-align: middle; background-color: #f4f4f4;">두뇌 심리<br>특성</th>
                                 <td id="resPsychHigh"></td>
                                 <td id="resPsychLow"></td>
                             </tr>
                             <tr>
-                                <th style="vertical-align: middle;">학습 성향</th>
+                                <th style="vertical-align: middle; background-color: #f4f4f4;">학습 성향</th>
                                 <td id="resLearnHigh"></td>
                                 <td id="resLearnLow"></td>
                             </tr>
@@ -328,11 +311,11 @@
                     <table class="feedback-table">
                         <tbody>
                             <tr>
-                                <th width="15%" style="vertical-align: middle;">진로 성향</th>
+                                <th width="15%" style="vertical-align: middle; background-color: #f4f4f4;">진로 성향</th>
                                 <td width="85%" id="resCareer"></td>
                             </tr>
                             <tr>
-                                <th width="15%" style="vertical-align: middle;">직업군</th>
+                                <th width="15%" style="vertical-align: middle; background-color: #f4f4f4;">직업군</th>
                                 <td width="85%" id="resJobs"></td>
                             </tr>
                         </tbody>
@@ -384,7 +367,7 @@
       "분석가": {
         "high": {
           "psychology": [ "모든 일에 정확하고 체계적이며 논리적인 언어표현력이 뛰어나다.", "계획을 잘 세우고 효율적이고 합리적으로 일을 처리한다.", "지속적인 자기 계발로 장기적인 성공 목표를 성취해 나간다." ],
-          "learning": [ "자기 스스로 학습계획을 세워서 지속적으로 실천한다.", "조용하고 잘 정돈된 공부 장소를 선호한다.", "논리적이고 분석적인 토의 및 토론을 좋아 단한다." ]
+          "learning": [ "자기 스스로 학습계획을 세워서 지속적으로 실천한다.", "조용하고 잘 정돈된 공부 장소를 선호한다.", "논리적이고 분석적인 토의 및 토론을 좋아한다." ]
         },
         "mid": {
           "psychology": [ "비효율적인 일을 싫어하고 합리적인 일 처리를 선호한다.", "인내심이 강하여 장기적인 계획을 성취해 나간다.", "세부 상황에 집착하며 반복적인 일상적인 일에 잘 적응한다." ],
@@ -561,6 +544,19 @@
         ).join('') + "</div>";
     }
 
+    // 🚀 점수 상/중/하 판단 로직
+    function getLevel(score) {
+        if (score >= 41) return 'high';
+        if (score >= 21) return 'mid';
+        return 'low';
+    }
+    
+    function getLevelText(level) {
+        if (level === 'high') return '상';
+        if (level === 'mid') return '중';
+        return '하';
+    }
+
     let radarChartInstance = null;
 
     function submitTest() {
@@ -604,33 +600,69 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        // 🚀 버전을 0.11로 푸터에 세팅
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.11';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.12';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
         
-        let html1 = '<table class="feedback-table"><thead><tr><th width="15%">유형</th><th>두뇌 심리 특성 (장점)</th></tr></thead><tbody>';
-        types.forEach(type => {
-            html1 += `<tr><th style="vertical-align: middle; font-size:14px;">${type}</th><td>${makeListHTML(feedbackData[type].high.psychology)}</td></tr>`;
+        // 🚀 PAGE 2 동적 생성: 점수 기반 상/중/하 특징
+        let html1 = '';
+        types.forEach((type, index) => {
+            const lvl = getLevel(scores[index]);
+            html1 += `
+            <tr>
+                <th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th>
+                <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}</td>
+                <td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].psychology)}</td>
+            </tr>`;
         });
-        html1 += '</tbody></table>';
-        document.getElementById('page1-content').innerHTML = html1;
+        document.getElementById('page1-tbody').innerHTML = html1;
 
-        let html2 = '<table class="feedback-table"><thead><tr><th width="15%">유형</th><th>학습 성향 (장점)</th></tr></thead><tbody>';
-        types.forEach(type => {
-            html2 += `<tr><th style="vertical-align: middle; font-size:14px;">${type}</th><td>${makeListHTML(feedbackData[type].high.learning)}</td></tr>`;
+        // 🚀 PAGE 3 동적 생성: 점수 기반 상/중/하 학습 성향
+        let html2 = '';
+        types.forEach((type, index) => {
+            const lvl = getLevel(scores[index]);
+            html2 += `
+            <tr>
+                <th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th>
+                <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}</td>
+                <td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].learning)}</td>
+            </tr>`;
         });
-        html2 += '</tbody></table>';
-        document.getElementById('page2-content').innerHTML = html2;
+        document.getElementById('page2-tbody').innerHTML = html2;
 
-        let html3 = '<table class="feedback-table"><thead><tr><th width="15%">유형</th><th width="50%">진로 성향</th><th width="35%">직업군</th></tr></thead><tbody>';
-        types.forEach(type => {
-            html3 += `<tr><th style="vertical-align: middle; font-size:14px;">${type}</th><td>${makeListHTML(feedbackData[type].career)}</td><td style="vertical-align: middle; font-size:13px; line-height:1.5;">${feedbackData[type].jobs}</td></tr>`;
+        // 🚀 PAGE 4 동적 생성: 점수 높은 순 1, 2, 3순위 직업군 추출
+        const typeScores = types.map((type, index) => ({ type: type, score: scores[index] }));
+        typeScores.sort((a, b) => b.score - a.score);
+        const top3 = typeScores.slice(0, 3);
+
+        let html3 = '';
+        top3.forEach((item, i) => {
+            const rank = i + 1;
+            const type = item.type;
+            html3 += `
+            <div class="rank-header">${rank}순위</div>
+            <table class="rank-table">
+                <tbody>
+                    <tr>
+                        <th width="15%">유형</th>
+                        <td width="85%" style="text-align: center; font-weight: bold; font-size: 15px;">${type}</td>
+                    </tr>
+                    <tr>
+                        <th>진로 성향</th>
+                        <td>${makeListHTML(feedbackData[type].career)}</td>
+                    </tr>
+                    <tr>
+                        <th>직업군</th>
+                        <td>${feedbackData[type].jobs}</td>
+                    </tr>
+                </tbody>
+            </table>
+            `;
         });
-        html3 += '</tbody></table>';
         document.getElementById('page3-content').innerHTML = html3;
 
+        // 🚀 PAGE 5 기존 종합 의견 처리
         let maxScore = -1, minScore = 999;
         let primaryType = "", lowestType = "";
 
@@ -724,7 +756,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.11';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.12';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -744,7 +776,6 @@
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        // 🚀 PDF 변환 시 간격 누적(밀림)을 원천 차단하기 위해 임시로 gap 제거
         element.style.gap = '0';
         element.style.backgroundColor = 'white';
 
@@ -768,7 +799,6 @@
         };
 
         html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
-            // 🚀 PDF 생성 완료 후 gap 다시 원복
             element.style.gap = '20px';
             element.style.backgroundColor = '';
             
