@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -116,12 +116,19 @@
         .result-info-box > div:nth-child(3n) { border-right: none; }
         .result-info-box > div > span:first-child { background-color: #f4f4f4; padding: 8px; width: 40%; font-weight: bold; border-right: 1px solid #ccc; }
         .result-info-box > div > span:last-child { padding: 8px; width: 60%; }
-        .chart-container { position: relative; margin: 0 auto 20px auto; width: 100%; max-width: 450px; height: 260px; display: flex; justify-content: center; align-items: center; }
+        
+        /* 🚀 1. 결과지 차트 크기 확대 반영 (max-width 및 height 상향 조정) */
+        .chart-container { position: relative; margin: 0 auto 20px auto; width: 100%; max-width: 550px; height: 320px; display: flex; justify-content: center; align-items: center; }
         
         .type-header { display: flex; border: 2px solid #333; margin-bottom: 15px; font-size: 15px; font-weight: bold; align-items: center; }
         .type-header .label { background-color: #f4f4f4; padding: 10px; width: 130px; text-align: center; border-right: 1px solid #ccc; }
         .type-header .value { padding: 10px; flex: 1; color: #2980b9; }
         
+        /* 🚀 2. 점수 요약 표 스타일 수정 (한 줄 표시) */
+        .score-summary { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 15px; text-align: center; }
+        .score-item { border: 1px solid #ccc; border-radius: 5px; background: #f8f9fa; padding: 10px 5px; font-size: 13.5px; font-weight: bold; color: #2c3e50; word-break: keep-all; letter-spacing: -0.5px;}
+
+        .caption { font-size: 11px; color: #666; margin-bottom: 10px; text-align: left; line-height: 1.2; }
         .feedback-table { width: 100%; border-collapse: collapse; border: 2px solid #333; margin-bottom: 15px; }
         .feedback-table th { background-color: #f4f4f4; color: #333; font-weight: bold; border: 1px solid #ccc; padding: 10px; font-size: 13.5px; text-align: center; }
         .feedback-table td { border: 1px solid #ccc; padding: 12px 15px; font-size: 13px; vertical-align: top; text-align: left; line-height: 1.5; }
@@ -132,7 +139,7 @@
 <div id="app">
 
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v1.8</div>
+        <div class="version-badge" id="appVersion">v1.81</div>
 
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
@@ -206,6 +213,8 @@
                     <div class="value" id="resPrimaryType"></div>
                 </div>
 
+                <div class="score-summary" id="resScoreSummary"></div>
+
                 <table class="feedback-table">
                     <thead>
                         <tr>
@@ -265,7 +274,6 @@
         { value: 5, label: "매우<br>그렇다" }
     ];
 
-    // 🚀 2. 데이터 구조에서 6개 뇌 유형 이름을 분석가, 실험가 등으로 전면 교체
     const surveyData = {
       "totalQuestions": 60,
       "categories": [
@@ -278,7 +286,6 @@
       ]
     };
 
-    // 🚀 진로성향 문장의 1) 2) 번호는 makeListHTML에서 일괄 처리되도록 기존 데이터에서 숫자를 지움
     const feedbackData = {
       "분석가": {
         "high": {
@@ -365,7 +372,6 @@
             const prevPageId = index === 0 ? 'pageLanding' : `page${surveyData.categories[index - 1].id}`;
             const nextPageId = isLastPage ? 'resultPage' : `page${surveyData.categories[index + 1].id}`;
 
-            // 🚀 상단 제목에 세부 유형명 대신 [ 유형 1 / 6 ] 형태로 표기
             htmlContent += `
             <div id="${pageId}" class="page">
                 <h2 style="border-bottom: 2px solid ${category.color};">[ 유형 ${index + 1} / ${surveyData.categories.length} ]</h2>
@@ -431,7 +437,6 @@
         window.scrollTo(0, 0); 
     }
 
-    // 🚀 5~7. 불릿 포인트(•) 대신 1) 2) 형태로 출력하고 글이 길어지면 들여쓰기 맞춤
     function makeListHTML(arr) {
         return "<div style='padding-left: 5px;'>" + arr.map((item, index) => 
             `<div style="margin-bottom: 5px; padding-left: 18px; text-indent: -18px; line-height: 1.5;">${index + 1}) ${item}</div>`
@@ -489,7 +494,14 @@
             if(score < minScore) { minScore = score; lowestType = chartLabels[index]; }
         });
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.8';
+        // 🚀 2. 점수 표기 형식 한 줄로 변경 반영 (분석가 (29) 형식)
+        let scoreHtml = '';
+        scores.forEach((score, index) => {
+            scoreHtml += `<div class="score-item">${chartLabels[index]} (${score})</div>`;
+        });
+        document.getElementById('resScoreSummary').innerHTML = scoreHtml;
+
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.81';
         document.getElementById('resultVersion').innerText = currentVersion;
 
         const payload = {
@@ -529,8 +541,8 @@
 
         movePage(`page${surveyData.categories.length}`, 'resultPage');
         
-        // 🚀 3. 차트 라벨 배열에 점수를 두 줄로 합쳐서 전달 (예: ["분석가", "31점"])
-        const radarLabels = chartLabels.map((label, index) => [label, `${scores[index]}점`]);
+        // 🚀 차트 라벨 배열에도 "분석가 (29)" 형식으로 반영
+        const radarLabels = chartLabels.map((label, index) => `${label} (${scores[index]})`);
         drawRadarChart(scores, radarLabels);
     }
 
@@ -557,7 +569,7 @@
                         suggestedMax: 50, 
                         ticks: { stepSize: 10 },
                         pointLabels: {
-                            font: { size: 12, weight: 'bold' },
+                            font: { size: 13, weight: 'bold' },
                             color: '#2c3e50'
                         }
                     } 
@@ -574,7 +586,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.8';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.81';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -582,7 +594,8 @@
         
         const pdfBtn = document.querySelector('.btn-pdf');
         const originalBtnText = pdfBtn.innerText;
-        pdfBtn.innerText = "고화질 PDF 생성 중... (최대 10초 소요)";
+        // 🚀 3. PDF 로딩 텍스트 수정 적용
+        pdfBtn.innerText = "PDF 생성중... (최대 10초 소요)";
         pdfBtn.style.backgroundColor = "#7f8c8d";
         pdfBtn.disabled = true;
         
