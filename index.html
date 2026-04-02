@@ -42,7 +42,7 @@
         .info-group label { font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #495057; }
         .info-group label.required::after { content: ' *'; color: #e74c3c; }
         
-        /* iOS 모바일 인적사항 폼 UI 규격화 강제 적용 */
+        /* 모바일 인적사항 폼 UI 규격화 강제 적용 */
         .info-group input, .info-group select { 
             width: 100%; 
             height: 42px; 
@@ -59,7 +59,6 @@
             appearance: none;
         }
 
-        /* 날짜 타입에 대한 아이폰 특화 버그 수정 */
         .info-group input[type="date"] {
             display: block;
             width: 100%;
@@ -69,7 +68,6 @@
             -webkit-appearance: none;
         }
 
-        /* Select 화살표 디자인 복구 */
         .info-group select {
             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
             background-repeat: no-repeat;
@@ -128,14 +126,18 @@
             .intro-notice { font-size: 15px; padding: 25px; }
         }
 
-        /* PDF 변환용 5장 레이아웃 세팅 */
+        /* 🚀 PDF 변환용 5장 레이아웃 세팅 (모바일 밀림 원천 차단) */
         .capture-wrapper { width: 100%; overflow-x: auto; background-color: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         #captureArea { display: flex; flex-direction: column; gap: 20px; width: 794px; margin: 0 auto; }
         
         .pdf-page { 
             background-color: white; 
-            width: 794px; 
-            height: 1122px; 
+            width: 794px !important; 
+            min-width: 794px !important;
+            max-width: 794px !important;
+            height: 1122px !important; 
+            min-height: 1122px !important;
+            max-height: 1122px !important;
             overflow: hidden; 
             padding: 40px; 
             box-sizing: border-box; 
@@ -186,7 +188,7 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.21</div>
+        <div class="version-badge" id="appVersion">v0.22</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -661,7 +663,8 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.21';
+        // 🚀 버전을 0.22로 푸터에 세팅
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.22';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
@@ -806,7 +809,7 @@
         });
     }
 
-    // 🚀 1단계(One-Step) 다운로드/공유 로직 복구
+    // 🚀 원스텝(One-Step) 다운로드/공유 로직 복구
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
@@ -814,7 +817,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.21';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.22';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -834,10 +837,13 @@
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
+        // 🚀 PDF 렌더링 시 레이아웃 밀림을 방지하기 위해 갭(gap) 제거 및 패딩 초기화
         element.style.gap = '0';
+        element.style.padding = '0';
+        element.style.margin = '0';
         element.style.backgroundColor = 'white';
 
-        // 🚀 PC와 모바일 환경을 정확하게 판별
+        // PC와 모바일 환경을 정확하게 판별
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         const isAndroid = /Android/i.test(navigator.userAgent);
         const isMobile = isIOS || isAndroid || /webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -852,14 +858,18 @@
                 scrollY: 0,
                 dpi: 300,
                 letterRendering: true,
-                allowTaint: true
+                allowTaint: true,
+                windowWidth: 794 /* 🚀 모바일에서도 무조건 가로 794px 렌더링 비율을 유지하게 강제 고정 */
             }, 
             pagebreak: { mode: 'css', after: '.pdf-page' },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
 
         html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
+            // PDF 렌더링 끝난 후 다시 원상 복구
             element.style.gap = '20px';
+            element.style.padding = '';
+            element.style.margin = '0 auto';
             element.style.backgroundColor = '';
             
             pdfBtn.innerText = originalBtnText;
@@ -870,7 +880,7 @@
 
             const file = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
 
-            // 🚀 모바일(스마트폰)이면 팝업 스크롤(Share Sheet) 호출, PC면 강제 다운로드
+            // 🚀 모바일(스마트폰)이면 팝업(Share Sheet) 호출 시도
             if (isMobile) {
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                     navigator.share({
@@ -878,8 +888,8 @@
                         title: '두뇌심리검사 결과',
                         text: '검사 결과 PDF 파일입니다.'
                     }).catch(function(error) {
-                        console.log('공유 취소됨:', error);
-                        // 에러가 나거나 공유를 취소한 경우 강제 다운로드로 폴백
+                        console.log('공유 취소됨 또는 권한 없음:', error);
+                        // iOS에서 팝업이 차단된 경우에도 강제 다운로드(forceDownload)를 실행하여 안전하게 저장
                         if(error.name !== "AbortError") {
                            forceDownload(pdfBlob, pdfFilename);
                         }
@@ -893,7 +903,10 @@
             }
         }).catch(function(error) {
             element.style.gap = '20px';
+            element.style.padding = '';
+            element.style.margin = '0 auto';
             element.style.backgroundColor = '';
+            
             alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
@@ -904,7 +917,7 @@
         });
     }
 
-    // 🚀 PC 강제 다운로드 전용 함수
+    // PC/모바일 강제 다운로드 전용 함수
     function forceDownload(blob, filename) {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
