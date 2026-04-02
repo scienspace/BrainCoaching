@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -117,16 +117,11 @@
         .result-info-box > div > span:first-child { background-color: #f4f4f4; padding: 8px; width: 40%; font-weight: bold; border-right: 1px solid #ccc; }
         .result-info-box > div > span:last-child { padding: 8px; width: 60%; }
         
-        /* 🚀 1. 결과지 차트 크기 확대 반영 (max-width 및 height 상향 조정) */
         .chart-container { position: relative; margin: 0 auto 20px auto; width: 100%; max-width: 550px; height: 320px; display: flex; justify-content: center; align-items: center; }
         
         .type-header { display: flex; border: 2px solid #333; margin-bottom: 15px; font-size: 15px; font-weight: bold; align-items: center; }
         .type-header .label { background-color: #f4f4f4; padding: 10px; width: 130px; text-align: center; border-right: 1px solid #ccc; }
         .type-header .value { padding: 10px; flex: 1; color: #2980b9; }
-        
-        /* 🚀 2. 점수 요약 표 스타일 수정 (한 줄 표시) */
-        .score-summary { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 15px; text-align: center; }
-        .score-item { border: 1px solid #ccc; border-radius: 5px; background: #f8f9fa; padding: 10px 5px; font-size: 13.5px; font-weight: bold; color: #2c3e50; word-break: keep-all; letter-spacing: -0.5px;}
 
         .caption { font-size: 11px; color: #666; margin-bottom: 10px; text-align: left; line-height: 1.2; }
         .feedback-table { width: 100%; border-collapse: collapse; border: 2px solid #333; margin-bottom: 15px; }
@@ -139,7 +134,7 @@
 <div id="app">
 
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v1.81</div>
+        <div class="version-badge" id="appVersion">v1.82</div>
 
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
@@ -213,8 +208,6 @@
                     <div class="value" id="resPrimaryType"></div>
                 </div>
 
-                <div class="score-summary" id="resScoreSummary"></div>
-
                 <table class="feedback-table">
                     <thead>
                         <tr>
@@ -225,7 +218,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th style="vertical-align: middle;">두뇌 심리<br>성향</th>
+                            <th style="vertical-align: middle;">두뇌 심리<br>특성</th>
                             <td id="resPsychHigh"></td>
                             <td id="resPsychLow"></td>
                         </tr>
@@ -236,6 +229,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="caption">※ 장점은 가장 높게 나타난 유형의 두뇌심리 특성/학습성향, 단점은 가장 낮게 나타난 유형을 기술함</div>
 
                 <table class="feedback-table">
                     <tbody>
@@ -338,7 +332,7 @@
       "개혁가": {
         "high": {
           "psychology": [ "끊임없이 새로운 일을 계획하고 추진하는 강한 리더 성향이 있다.", "능동적이고 적극적이며 의지가 강하다.", "결단력이 있고 독립심과 자립심이 강하다." ],
-          "learning": [ "자신만의 새로운 공부 방법을 찾으려고 노력한다.", "협력적인 학습 과제보다 경쟁적인 학습 과제를 더 선호한다.", "한계에 부딪혔을 때 자신을 믿고 포기하지 않는다." ]
+          "learning": [ "자신만의 새로운 공부 방법을 찾으려고 노력한다.", "협력적인 학습 과제보다 경쟁적인 학습 과제를 더 선호한다.", "한계에 부딪혔을 지라도 자신을 믿고 포기하지 않는다." ]
         },
         "low": {
           "psychology": [ "결단력이 없고 우유부단한 말과 행동을 한다.", "소극적이고 의지가 약하며 자신감이 부족하다.", "스스로 문제를 해결하려고 하지 않고 다른 사람에게 의존한다." ],
@@ -494,14 +488,7 @@
             if(score < minScore) { minScore = score; lowestType = chartLabels[index]; }
         });
 
-        // 🚀 2. 점수 표기 형식 한 줄로 변경 반영 (분석가 (29) 형식)
-        let scoreHtml = '';
-        scores.forEach((score, index) => {
-            scoreHtml += `<div class="score-item">${chartLabels[index]} (${score})</div>`;
-        });
-        document.getElementById('resScoreSummary').innerHTML = scoreHtml;
-
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.81';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.82';
         document.getElementById('resultVersion').innerText = currentVersion;
 
         const payload = {
@@ -541,11 +528,11 @@
 
         movePage(`page${surveyData.categories.length}`, 'resultPage');
         
-        // 🚀 차트 라벨 배열에도 "분석가 (29)" 형식으로 반영
         const radarLabels = chartLabels.map((label, index) => `${label} (${scores[index]})`);
         drawRadarChart(scores, radarLabels);
     }
 
+    // 🚀 3, 4. 차트 글자 크기 확대, 색상 진하게(뚜렷하게) 및 선 굵기 등 시각 효과 강화
     function drawRadarChart(scores, labels) {
         const ctx = document.getElementById('radarChart').getContext('2d');
         if(radarChartInstance) radarChartInstance.destroy();
@@ -556,21 +543,27 @@
                 labels: labels,
                 datasets: [{
                     label: '점수', data: scores,
-                    backgroundColor: 'rgba(52, 152, 219, 0.2)', borderColor: 'rgba(52, 152, 219, 1)',
-                    pointBackgroundColor: 'rgba(231, 76, 60, 1)', pointBorderColor: '#fff', borderWidth: 2
+                    backgroundColor: 'rgba(41, 128, 185, 0.35)', /* 차트 내부 배경색 진하게 */
+                    borderColor: 'rgba(41, 128, 185, 1)', /* 차트 뼈대 선 색상 진하게 */
+                    pointBackgroundColor: 'rgba(231, 76, 60, 1)', 
+                    pointBorderColor: '#fff', 
+                    borderWidth: 3.5, /* 육각형 선 굵기 강화 */
+                    pointRadius: 5, /* 각 모서리 점 크기 확대 */
+                    pointHoverRadius: 7
                 }]
             },
             options: {
                 responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: 30 },
                 scales: { 
                     r: { 
-                        angleLines: { display: true }, 
+                        angleLines: { display: true, color: 'rgba(0, 0, 0, 0.2)', lineWidth: 1.5 }, /* 거미줄 뻗어나가는 선 뚜렷하게 */
+                        grid: { color: 'rgba(0, 0, 0, 0.15)', lineWidth: 1.5 }, /* 거미줄 가로선 뚜렷하게 */
                         suggestedMin: 0, 
                         suggestedMax: 50, 
-                        ticks: { stepSize: 10 },
+                        ticks: { stepSize: 10, color: '#444', font: { size: 11, weight: 'bold' }, backdropColor: 'transparent' },
                         pointLabels: {
-                            font: { size: 13, weight: 'bold' },
-                            color: '#2c3e50'
+                            font: { size: 15, weight: 'bolder' }, /* 글자 크기 및 굵기 확대 */
+                            color: '#000' /* 글자 색상 완전 검정색으로 뚜렷하게 */
                         }
                     } 
                 },
@@ -586,7 +579,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v1.81';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v1.82';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -594,7 +587,6 @@
         
         const pdfBtn = document.querySelector('.btn-pdf');
         const originalBtnText = pdfBtn.innerText;
-        // 🚀 3. PDF 로딩 텍스트 수정 적용
         pdfBtn.innerText = "PDF 생성중... (최대 10초 소요)";
         pdfBtn.style.backgroundColor = "#7f8c8d";
         pdfBtn.disabled = true;
