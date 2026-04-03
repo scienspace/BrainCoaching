@@ -126,7 +126,7 @@
             .intro-notice { font-size: 15px; padding: 25px; }
         }
 
-        /* 🚀 PDF 변환용 5장 레이아웃 세팅 (모바일 밀림 원천 차단) */
+        /* 🚀 PDF 변환용 5장 레이아웃 세팅 (밀림 완벽 방지) */
         .capture-wrapper { width: 100%; overflow-x: auto; background-color: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         #captureArea { display: flex; flex-direction: column; gap: 20px; width: 794px; margin: 0 auto; }
         
@@ -156,6 +156,7 @@
         .footer-center { width: 76%; text-align: center; font-size: 10.5px; color: #444; line-height: 1.5; white-space: nowrap; letter-spacing: -0.5px; }
         .footer-right { width: 12%; text-align: right; font-size: 14px; font-weight: bold; color: #555; padding-bottom: 2px; }
 
+        /* 타이틀 박스 (파스텔톤 컬러) */
         .title-box { text-align: center; font-size: 22px; font-weight: bold; padding: 12px 0; margin-top: 5px; margin-bottom: 20px; color: #000; letter-spacing: 1px; }
         .bg-pastel-red { background-color: #ffb3ba; }
         .bg-pastel-green { background-color: #baffc9; }
@@ -178,6 +179,7 @@
         .feedback-table th { background-color: #f4f4f4; color: #333; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; }
         .feedback-table td { border: 1px solid #333; padding: 10px 15px; font-size: 13px; vertical-align: top; text-align: left; line-height: 1.5; }
         
+        /* 순위 박스 특별 디자인 (파스텔 블루 헤더) */
         .rank-header { background-color: #7f8c8d; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 8px; margin-top: 15px; border: 2px solid #333; border-bottom: none;}
         .rank-table { width: 100%; border-collapse: collapse; border: 2px solid #333; border-top: none; margin-bottom: 15px;}
         .rank-table th { background-color: #bae1ff; color: #000; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; vertical-align: middle;}
@@ -188,7 +190,7 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.22</div>
+        <div class="version-badge" id="appVersion">v0.14</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -663,8 +665,8 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        // 🚀 버전을 0.22로 푸터에 세팅
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.22';
+        // 🚀 버전을 0.14로 푸터에 세팅
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.14';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
@@ -809,7 +811,6 @@
         });
     }
 
-    // 🚀 원스텝(One-Step) 다운로드/공유 로직 복구
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
@@ -817,15 +818,15 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.22';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.14';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
         const canvas = document.getElementById('radarChart');
         
-        const pdfBtn = document.getElementById('pdfBtn');
+        const pdfBtn = document.querySelector('.btn-pdf');
         const originalBtnText = pdfBtn.innerText;
-        pdfBtn.innerText = "PDF 생성중... (잠시만 기다려주세요)";
+        pdfBtn.innerText = "PDF 생성중... (최대 10초 소요)";
         pdfBtn.style.backgroundColor = "#7f8c8d";
         pdfBtn.disabled = true;
         
@@ -837,13 +838,11 @@
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        // 🚀 PDF 렌더링 시 레이아웃 밀림을 방지하기 위해 갭(gap) 제거 및 패딩 초기화
-        element.style.gap = '0';
-        element.style.padding = '0';
+        // 🚀 PDF 밀림 현상 완벽 방지를 위해 임시로 여백(margin) 강제 초기화 적용
+        const originalMargin = element.style.margin;
         element.style.margin = '0';
-        element.style.backgroundColor = 'white';
+        element.style.gap = '0';
 
-        // PC와 모바일 환경을 정확하게 판별
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         const isAndroid = /Android/i.test(navigator.userAgent);
         const isMobile = isIOS || isAndroid || /webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -851,26 +850,22 @@
         const opt = {
             margin: 0, 
             filename: pdfFilename, 
-            image: { type: 'png', quality: 1.0 }, 
+            image: { type: 'jpeg', quality: 1.0 }, 
             html2canvas: { 
-                scale: isIOS ? 2.2 : 3.0, 
+                scale: isIOS ? 2.0 : 2.5, 
                 useCORS: true, 
                 scrollY: 0,
-                dpi: 300,
-                letterRendering: true,
-                allowTaint: true,
-                windowWidth: 794 /* 🚀 모바일에서도 무조건 가로 794px 렌더링 비율을 유지하게 강제 고정 */
+                scrollX: 0
             }, 
             pagebreak: { mode: 'css', after: '.pdf-page' },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
 
         html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
-            // PDF 렌더링 끝난 후 다시 원상 복구
+            
+            // PDF 생성 후 요소 스타일 원복
+            element.style.margin = originalMargin;
             element.style.gap = '20px';
-            element.style.padding = '';
-            element.style.margin = '0 auto';
-            element.style.backgroundColor = '';
             
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
@@ -880,7 +875,6 @@
 
             const file = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
 
-            // 🚀 모바일(스마트폰)이면 팝업(Share Sheet) 호출 시도
             if (isMobile) {
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                     navigator.share({
@@ -888,8 +882,7 @@
                         title: '두뇌심리검사 결과',
                         text: '검사 결과 PDF 파일입니다.'
                     }).catch(function(error) {
-                        console.log('공유 취소됨 또는 권한 없음:', error);
-                        // iOS에서 팝업이 차단된 경우에도 강제 다운로드(forceDownload)를 실행하여 안전하게 저장
+                        console.log('공유 취소됨:', error);
                         if(error.name !== "AbortError") {
                            forceDownload(pdfBlob, pdfFilename);
                         }
@@ -898,15 +891,11 @@
                     forceDownload(pdfBlob, pdfFilename);
                 }
             } else {
-                // PC는 즉시 다운로드 처리
                 forceDownload(pdfBlob, pdfFilename);
             }
         }).catch(function(error) {
+            element.style.margin = originalMargin;
             element.style.gap = '20px';
-            element.style.padding = '';
-            element.style.margin = '0 auto';
-            element.style.backgroundColor = '';
-            
             alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
@@ -917,7 +906,6 @@
         });
     }
 
-    // PC/모바일 강제 다운로드 전용 함수
     function forceDownload(blob, filename) {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
