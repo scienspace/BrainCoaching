@@ -126,7 +126,7 @@
             .intro-notice { font-size: 15px; padding: 25px; }
         }
 
-        /* 🚀 PDF 변환용 5장 레이아웃 세팅 (아이폰 공백 10장 버그 완벽 차단) */
+        /* PDF 변환용 5장 레이아웃 세팅 (밀림 완벽 방지) */
         .capture-wrapper { width: 100%; overflow-x: auto; background-color: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         #captureArea { display: flex; flex-direction: column; gap: 20px; width: 794px; margin: 0 auto; }
         
@@ -143,13 +143,72 @@
             box-sizing: border-box; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
             position: relative; 
-            /* page-break-after: always; 강제 페이지 넘김 삭제 (이중 분할 방지) */
         }
 
-        .title-page-content { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; position: relative; }
-        .main-title { font-size: 48px; font-weight: 900; color: #2c3e50; letter-spacing: 2px; margin-top: -100px; }
-        .sub-title { position: absolute; bottom: 60px; left: 0; width: 100%; text-align: center; font-size: 22px; font-weight: bold; color: #333; }
+        /* 🚀 표지 디자인 v0.24 CSS */
+        .cover-page-layout {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+            align-items: center;
+            height: 100%;
+            padding: 50px 0 60px 0;
+            box-sizing: border-box;
+        }
 
+        .cover-title-box {
+            text-align: center;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .cover-main-title {
+            font-size: 52px; 
+            font-weight: 900;
+            color: #2c3e50;
+            letter-spacing: 2px;
+            margin: 0;
+            word-break: keep-all;
+        }
+
+        .cover-image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+            margin: 40px 0;
+        }
+
+        .cover-brain-img {
+            max-width: 450px; 
+            max-height: 450px;
+            object-fit: contain;
+        }
+
+        .cover-footer-box {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .inst-label {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0 0 15px 0;
+            color: #7f8c8d;
+            letter-spacing: 1px;
+        }
+
+        .inst-name {
+            font-size: 36px; 
+            font-weight: 900;
+            margin: 0;
+            color: #2c3e50;
+            letter-spacing: 1.5px;
+        }
+
+        /* 하단 꼬리말(푸터) 한 줄 정렬 강제 고정 */
         .page-footer { position: absolute; bottom: 30px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px dashed #ccc; padding-top: 10px; }
         .footer-left { width: 12%; text-align: left; font-size: 12px; font-weight: bold; color: #7f8c8d; padding-bottom: 2px; }
         .footer-center { width: 76%; text-align: center; font-size: 10.5px; color: #444; line-height: 1.5; white-space: nowrap; letter-spacing: -0.5px; }
@@ -178,7 +237,6 @@
         .feedback-table th { background-color: #f4f4f4; color: #333; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; }
         .feedback-table td { border: 1px solid #333; padding: 10px 15px; font-size: 13px; vertical-align: top; text-align: left; line-height: 1.5; }
         
-        /* 순위 박스 특별 디자인 */
         .rank-header { background-color: #7f8c8d; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 8px; margin-top: 15px; border: 2px solid #333; border-bottom: none;}
         .rank-table { width: 100%; border-collapse: collapse; border: 2px solid #333; border-top: none; margin-bottom: 15px;}
         .rank-table th { background-color: #bae1ff; color: #000; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; vertical-align: middle;}
@@ -189,7 +247,7 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.23</div>
+        <div class="version-badge" id="appVersion">v0.24</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -235,9 +293,19 @@
             <div id="captureArea">
                 
                 <div class="pdf-page">
-                    <div class="title-page-content">
-                        <div class="main-title">[ 두뇌 심리 유형 진단 ]</div>
-                        <div class="sub-title">진단 기관 : 국제 뇌교육 종합 대학원</div>
+                    <div class="cover-page-layout">
+                        <div class="cover-title-box">
+                            <h1 class="cover-main-title">[ 두뇌심리 성향 검사결과 ]</h1>
+                        </div>
+
+                        <div class="cover-image-container">
+                            <img src="./cover_brain.png" alt="두뇌 이미지" class="cover-brain-img" onerror="this.src='https://via.placeholder.com/400x300?text=뇌+이미지+삽입+(cover_brain.png)'">
+                        </div>
+
+                        <div class="cover-footer-box">
+                            <p class="inst-label">진단기관</p>
+                            <p class="inst-name">해피 브레인 코칭 상담 센터</p>
+                        </div>
                     </div>
                 </div>
 
@@ -511,7 +579,7 @@
       },
       "봉사자": {
         "high": {
-          "psychology": [ "순응적이고 행동이 느긋하고 여유가 있다.", "마음이 따뜻하고 타인의 의견을 수용하며 공감 능력이 탁월하다.", "누군가를 돕거나 봉사할 때 삶의 가치를 찾는다." ],
+          "psychology": [ "순응적이고 행동이 느긋하고 여유가 있다.", "마음이 따뜻하고 타인의 의견을 수용하며 공감 능력이 탁월하다.", "누 স্ক্র를 돕거나 봉사할 때 삶의 가치를 찾는다." ],
           "learning": [ "개인의 독립적인 학습보다는 집단 간 상호작용하는 모둠활동을 선호한다.", "다른 사람들과 소통하는 토의 및 토론 활동을 좋아한다.", "배운 학습 내용을 다른 사람들에게 도움을 주는 것을 좋아한다." ]
         },
         "mid": {
@@ -664,8 +732,7 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        // 🚀 버전을 0.23으로 푸터에 세팅
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.23';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.24';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
@@ -810,7 +877,6 @@
         });
     }
 
-    // 🚀 원스텝(One-Step) 다운로드/공유 로직 복구 완료
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
@@ -818,7 +884,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.23';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.24';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -838,7 +904,7 @@
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        // 🚀 PDF 밀림, 중복 분할을 완벽하게 방지하기 위해 캡처 순간 갭(gap) 제거
+        // PDF 캡처 순간 갭(gap) 제거
         element.style.gap = '0';
 
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -854,16 +920,15 @@
                 useCORS: true, 
                 scrollY: 0,
                 scrollX: 0,
-                windowWidth: 794 /* 🚀 모바일 환경에서도 강제 794px(A4 가로) 렌더링을 적용해 밀림 완벽 차단 */
+                windowWidth: 794 
             }, 
-            // page-break CSS 대신 html2pdf의 자동 분할 시스템에 의존 (10페이지 이중 분할 차단)
             pagebreak: { avoid: '.pdf-page' },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
 
         html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
             
-            element.style.gap = '20px'; // 렌더링 후 화면 갭 원복
+            element.style.gap = '20px'; // 원복
             
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
@@ -873,7 +938,7 @@
 
             const file = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
 
-            // 🚀 스마트폰은 바로 Share 팝업 호출, PC는 바로 다운로드 되도록 원스텝 처리
+            // 스마트폰은 Share 팝업, PC는 바로 다운로드
             if (isMobile) {
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                     navigator.share({
