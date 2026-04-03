@@ -126,7 +126,7 @@
             .intro-notice { font-size: 15px; padding: 25px; }
         }
 
-        /* 🚀 PDF 변환용 5장 레이아웃 세팅 (밀림 완벽 방지) */
+        /* 🚀 PDF 변환용 5장 레이아웃 세팅 (아이폰 공백 10장 버그 완벽 차단) */
         .capture-wrapper { width: 100%; overflow-x: auto; background-color: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         #captureArea { display: flex; flex-direction: column; gap: 20px; width: 794px; margin: 0 auto; }
         
@@ -143,9 +143,8 @@
             box-sizing: border-box; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
             position: relative; 
-            page-break-after: always; 
+            /* page-break-after: always; 강제 페이지 넘김 삭제 (이중 분할 방지) */
         }
-        .pdf-page:last-child { page-break-after: auto; }
 
         .title-page-content { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; position: relative; }
         .main-title { font-size: 48px; font-weight: 900; color: #2c3e50; letter-spacing: 2px; margin-top: -100px; }
@@ -156,7 +155,7 @@
         .footer-center { width: 76%; text-align: center; font-size: 10.5px; color: #444; line-height: 1.5; white-space: nowrap; letter-spacing: -0.5px; }
         .footer-right { width: 12%; text-align: right; font-size: 14px; font-weight: bold; color: #555; padding-bottom: 2px; }
 
-        /* 타이틀 박스 (파스텔톤 컬러) */
+        /* 타이틀 박스 및 파스텔톤 컬러 클래스 적용 */
         .title-box { text-align: center; font-size: 22px; font-weight: bold; padding: 12px 0; margin-top: 5px; margin-bottom: 20px; color: #000; letter-spacing: 1px; }
         .bg-pastel-red { background-color: #ffb3ba; }
         .bg-pastel-green { background-color: #baffc9; }
@@ -179,7 +178,7 @@
         .feedback-table th { background-color: #f4f4f4; color: #333; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; }
         .feedback-table td { border: 1px solid #333; padding: 10px 15px; font-size: 13px; vertical-align: top; text-align: left; line-height: 1.5; }
         
-        /* 순위 박스 특별 디자인 (파스텔 블루 헤더) */
+        /* 순위 박스 특별 디자인 */
         .rank-header { background-color: #7f8c8d; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 8px; margin-top: 15px; border: 2px solid #333; border-bottom: none;}
         .rank-table { width: 100%; border-collapse: collapse; border: 2px solid #333; border-top: none; margin-bottom: 15px;}
         .rank-table th { background-color: #bae1ff; color: #000; font-weight: bold; border: 1px solid #333; padding: 10px; font-size: 13.5px; text-align: center; vertical-align: middle;}
@@ -190,7 +189,7 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.14</div>
+        <div class="version-badge" id="appVersion">v0.23</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -665,8 +664,8 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        // 🚀 버전을 0.14로 푸터에 세팅
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.14';
+        // 🚀 버전을 0.23으로 푸터에 세팅
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.23';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
@@ -811,6 +810,7 @@
         });
     }
 
+    // 🚀 원스텝(One-Step) 다운로드/공유 로직 복구 완료
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
@@ -818,15 +818,15 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.14';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.23';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
         const canvas = document.getElementById('radarChart');
         
-        const pdfBtn = document.querySelector('.btn-pdf');
+        const pdfBtn = document.getElementById('pdfBtn');
         const originalBtnText = pdfBtn.innerText;
-        pdfBtn.innerText = "PDF 생성중... (최대 10초 소요)";
+        pdfBtn.innerText = "PDF 생성중... (잠시만 기다려주세요)";
         pdfBtn.style.backgroundColor = "#7f8c8d";
         pdfBtn.disabled = true;
         
@@ -838,9 +838,7 @@
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        // 🚀 PDF 밀림 현상 완벽 방지를 위해 임시로 여백(margin) 강제 초기화 적용
-        const originalMargin = element.style.margin;
-        element.style.margin = '0';
+        // 🚀 PDF 밀림, 중복 분할을 완벽하게 방지하기 위해 캡처 순간 갭(gap) 제거
         element.style.gap = '0';
 
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -855,17 +853,17 @@
                 scale: isIOS ? 2.0 : 2.5, 
                 useCORS: true, 
                 scrollY: 0,
-                scrollX: 0
+                scrollX: 0,
+                windowWidth: 794 /* 🚀 모바일 환경에서도 강제 794px(A4 가로) 렌더링을 적용해 밀림 완벽 차단 */
             }, 
-            pagebreak: { mode: 'css', after: '.pdf-page' },
+            // page-break CSS 대신 html2pdf의 자동 분할 시스템에 의존 (10페이지 이중 분할 차단)
+            pagebreak: { avoid: '.pdf-page' },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
 
         html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
             
-            // PDF 생성 후 요소 스타일 원복
-            element.style.margin = originalMargin;
-            element.style.gap = '20px';
+            element.style.gap = '20px'; // 렌더링 후 화면 갭 원복
             
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
@@ -875,6 +873,7 @@
 
             const file = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
 
+            // 🚀 스마트폰은 바로 Share 팝업 호출, PC는 바로 다운로드 되도록 원스텝 처리
             if (isMobile) {
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                     navigator.share({
@@ -894,7 +893,6 @@
                 forceDownload(pdfBlob, pdfFilename);
             }
         }).catch(function(error) {
-            element.style.margin = originalMargin;
             element.style.gap = '20px';
             alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
             pdfBtn.innerText = originalBtnText;
