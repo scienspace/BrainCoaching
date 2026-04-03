@@ -145,7 +145,7 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.26</div>
+        <div class="version-badge" id="appVersion">v0.27</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -388,7 +388,7 @@
         { "id": 3, "title": "관리자", "color": "#2ecc71", "questions": [ "나는 약속시간을 거의 잘 지킨다.", "나는 계획한 대로 잘 실천한다.", "나는 새로운 것을 시작할 때 두렵다.", "나는 나의 방과 책상을 잘 정리정돈한다.", "나는 해야 할 일들을 구체적으로 메모하여 처리 날짜를 한다.", "나는 물건의 사용설명서 내용을 자세히 읽는다.", "나는 변화가 많은 것보다는 안정적인 것을 더 좋아한다.", "나는 일을 처리할 때 정해진 순서와 방법대로 따라한다.", "나는 구성원들과 일을 같이할 때 자세하게 알려주는 편이다.", "나는 내가 하던 방법과 형식을 잘 바꾸지 않는다." ] },
         { "id": 4, "title": "조정가", "color": "#e84393", "questions": [ "나는 처음 보는 사람도 쉽게 사귄다.", "나는 다른 사람들의 부탁을 잘 들어준다.", "나는 음악 듣는 것을 매우 좋아한다.", "나는 다른 사람보다 내가 먼저 인사한다.", "나는 사람들과 만나면 말을 많이 하는 편이다.", "나는 슬픈 영화나 연속극을 보면서 눈물을 잘 흘린다.", "나는 혼자서도 분위기나 기분에 잘 빠져든다.", "나는 눈치있다는 말을 많이 듣는다.", "나는 얼굴표정이나 몸짓 등으로 구체적인 특성을 표현하면서 말을 한다.", "나는 다른 사람들이 어떻게 느끼고 있는지를 쉽게 잘 알아낸다." ] },
         { "id": 5, "title": "개혁가", "color": "#e67e22", "questions": [ "나는 어렵고 힘든 일이 있어도 최선을 다한다.", "나는 내가 세운 목표를 달성하기 위해 실천을 잘한다.", "나는 모든 일에 열정적이고 적극적이다.", "나는 새로운 도전을 좋아한다.", "나는 내 자신을 믿는다.", "나는 어려운 일에 앞장서서 행동한다.", "나는 생활 속에서 즐거운 활동을 찾아낸다.", "나는 변화에 능동적으로 맞서 이겨낸다.", "나는 문제가 생겼을 때 적극적으로 해결하려고 노력한다.", "나는 바람직한 가치관을 가지고 있다." ] },
-        { "id": 6, "title": "봉사자", "color": "#16a085", "questions": [ "나는 친절하다는 말을 자주 듣는다.", "나는 친구의 고민을 잘 들어준다.", "나는 다른 사람을 잘 도와준다.", "나는 말한 것을 지키려고 노력한다.", "나는 다른 사람에게 모범을 보여야 한다고 생각한다.", "나는 내가 속한 단체가 함께하는 것이 중요하다고 생각한다.", "나는 개인의 이익보다는 전체 이익을 중요시한다.", "나는 다른 사람의 부탁을 잘 받아들인다.", "나는 말을 할 때 나의 감정이나 느낌보다는 다른 사람들의 감정이나 느낌을 중요시한다.", "나는 결정을 할 때 다른 사람들의 요구와 이해를 깊이 참고하여 알아준다." ] }
+        { "id": 6, "title": "봉사자", "color": "#16a085", "questions": [ "나는 친절하다는 말을 자주 듣는다.", "나는 친구의 고민을 잘 들어준다.", "나는 다른 사람을 잘 도와준다.", "나는 말한 것을 지키려고 노력한다.", "나는 다른 사람에게 모범을 보여야 한다고 생각한다.", "나는 내가 속한 단체에서 함께하는 것이 중요한 가치라고 생각한다.", "나는 개인의 이익보다는 전체 이익을 중요시한다.", "나는 다른 사람의 부탁을 잘 받아들인다.", "나는 말을 할 때 나의 감정이나 느낌보다는 다른 사람들의 감정이나 느낌을 중요시한다.", "나는 결정을 할 때 다른 사람들의 요구와 이해를 깊이 참고하여 알아준다." ] }
       ]
     };
 
@@ -628,8 +628,8 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        // 🚀 버전을 0.26으로 푸터에 세팅
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.26';
+        // 🚀 버전을 0.27로 푸터에 세팅
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.27';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
@@ -782,7 +782,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.26';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.27';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -806,6 +806,7 @@
         const originalMargin = element.style.margin;
         element.style.margin = '0';
         element.style.gap = '0';
+        element.style.zoom = '1'; // 🚀 PDF 캡처 시 강제 축소 해제 (고화질 유지)
 
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         const isAndroid = /Android/i.test(navigator.userAgent);
@@ -835,6 +836,7 @@
             // 🚀 PDF 생성 후 기존 화면 여백 원상 복구
             element.style.margin = originalMargin || '0 auto';
             element.style.gap = '20px';
+            element.style.zoom = ''; // 🚀 축소 상태 원상 복구
             
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
@@ -865,6 +867,7 @@
         }).catch(function(error) {
             element.style.margin = originalMargin || '0 auto';
             element.style.gap = '20px';
+            element.style.zoom = ''; // 🚀 축소 상태 원상 복구
             alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
