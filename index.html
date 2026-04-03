@@ -145,7 +145,7 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.25</div>
+        <div class="version-badge" id="appVersion">v0.26</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -628,8 +628,8 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        // 🚀 버전을 0.25로 푸터에 세팅
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.25';
+        // 🚀 버전을 0.26으로 푸터에 세팅
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.26';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
@@ -640,7 +640,7 @@
             html1 += `
             <tr>
                 <th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th>
-                <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}</td>
+            <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td>
                 <td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].psychology)}</td>
             </tr>`;
         });
@@ -652,7 +652,7 @@
             html2 += `
             <tr>
                 <th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th>
-                <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}</td>
+            <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td>
                 <td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].learning)}</td>
             </tr>`;
         });
@@ -782,7 +782,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.25';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.26';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
