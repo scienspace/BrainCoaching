@@ -10,11 +10,15 @@
         * { box-sizing: border-box; } 
         body { font-family: 'Pretendard', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding: 15px; }
         #app { background: white; width: 100%; max-width: 900px; padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        
         h1 { text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 22px; margin-top: 10px; }
         h2 { text-align: center; color: #2c3e50; padding-bottom: 10px; margin-bottom: 20px; font-size: 18px; margin-top: 10px; }
+        
         .page { display: none; position: relative; } 
         .page.active { display: block; }
+        
         .version-badge { position: absolute; top: -10px; right: 0; background-color: #f1f2f6; color: #7f8c8d; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; letter-spacing: 0.5px; }
+        
         .notice-guide-box { padding: 15px; border-radius: 8px; margin-bottom: 25px; line-height: 1.6; color: #2c3e50; font-size: 14px; word-break: keep-all; }
         .info-form { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 30px; display: flex; flex-direction: column; gap: 15px; }
         .info-group { display: flex; flex-direction: column; width: 100%; }
@@ -75,9 +79,9 @@
             .intro-notice { font-size: 15px; padding: 25px; }
         }
 
-        /* PDF 변환용 5장 레이아웃 세팅 (밀림 완벽 방지) */
+        /* 🚀 결과지 레이아웃 세팅 */
         .capture-wrapper { width: 100%; overflow-x: auto; background-color: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        #captureArea { display: flex; flex-direction: column; gap: 20px; width: 794px; margin: 0 auto; background-color: white;}
+        #captureArea { display: flex; flex-direction: column; gap: 20px; width: 794px; margin: 0 auto; background-color: transparent;}
         
         .pdf-page { 
             background-color: white; 
@@ -87,7 +91,7 @@
             height: 1122px !important; 
             min-height: 1122px !important;
             max-height: 1122px !important;
-            overflow: hidden; 
+            overflow: hidden !important; 
             padding: 40px; 
             box-sizing: border-box; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
@@ -96,7 +100,13 @@
         }
         .pdf-page:last-child { page-break-after: auto; }
 
-        /* 표지 레이아웃 (수정됨) */
+        /* 🚀 스마트폰/태블릿 화면 맞춤 축소 (화면에서만 적용됨, PDF 변환엔 영향 없음) */
+        @media (max-width: 840px) {
+            .capture-wrapper { padding: 10px 0; overflow-x: hidden; }
+            #captureArea { zoom: calc(100vw / 820); } /* 모바일 화면 크기에 딱 맞게 강제 축소 */
+        }
+
+        /* 표지 레이아웃 */
         .cover-page-layout { display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%; padding: 50px 0 60px 0; box-sizing: border-box; }
         .cover-title-box { text-align: center; width: 100%; margin-top: 40px; }
         .cover-main-title { font-size: 52px; font-weight: 900; color: #2c3e50; letter-spacing: 2px; margin: 0; word-break: keep-all; }
@@ -145,7 +155,7 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.27</div>
+        <div class="version-badge" id="appVersion">v0.28</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -196,7 +206,7 @@
                             <h1 class="cover-main-title">[ 두뇌심리 성향 검사결과 ]</h1>
                         </div>
                         <div class="cover-image-container">
-                            <img src="./cover_brain.png" alt="두뇌 이미지" class="cover-brain-img" onerror="this.src='https://via.placeholder.com/400x300?text=뇌+이미지+삽입+(cover_brain.png)'">
+                            <img src="./artsybeekids-brain-5623489.jpg" alt="두뇌 이미지" class="cover-brain-img" onerror="this.src='https://via.placeholder.com/400x300?text=뇌+이미지+삽입+(artsybeekids-brain-5623489.jpg)'">
                         </div>
                         <div class="cover-footer-box">
                             <p class="inst-label">진단기관</p>
@@ -628,8 +638,8 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        // 🚀 버전을 0.27로 푸터에 세팅
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.27';
+        // 🚀 버전을 0.28로 푸터에 세팅
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.28';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
@@ -640,7 +650,7 @@
             html1 += `
             <tr>
                 <th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th>
-            <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td>
+                <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td>
                 <td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].psychology)}</td>
             </tr>`;
         });
@@ -652,7 +662,7 @@
             html2 += `
             <tr>
                 <th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th>
-            <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td>
+                <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td>
                 <td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].learning)}</td>
             </tr>`;
         });
@@ -774,7 +784,7 @@
         });
     }
 
-    // 🚀 PDF 다운로드 로직 (PC는 자동다운로드, Mobile은 Share 시트 호출)
+    // 🚀 PDF 다운로드 로직 (PC/모바일 밀림 원천 차단 및 원스텝 다운로드)
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
@@ -782,7 +792,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.27';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.28';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -802,16 +812,21 @@
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        // 🚀 PDF 밀림 방지를 위해 캡처 영역의 여백 강제 초기화
+        // 🚀 PDF 렌더링 시 중복 페이지 나누기(10장 생성) 및 밀림 차단을 위해 강제 초기화
         const originalMargin = element.style.margin;
+        const originalGap = element.style.gap;
+        const originalZoom = element.style.zoom;
+        
         element.style.margin = '0';
         element.style.gap = '0';
-        element.style.zoom = '1'; // 🚀 PDF 캡처 시 강제 축소 해제 (고화질 유지)
+        element.style.zoom = '1';
 
+        // 🚀 모바일과 PC 환경 구분
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         const isAndroid = /Android/i.test(navigator.userAgent);
         const isMobile = isIOS || isAndroid || /webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+        // 🚀 CSS에 정의된 페이지 넘김(page-break)만을 인식하도록 avoid 설정
         const opt = {
             margin: 0, 
             filename: pdfFilename, 
@@ -826,17 +841,17 @@
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
 
-        // 🚀 모바일 기기에서만 화면 비율(가로)을 A4 사이즈에 맞게 강제 고정하여 10장으로 늘어나는 버그 차단
+        // 🚀 모바일 기기일 때만 html2canvas가 그리는 가로 영역을 A4(794px)로 강제 고정하여 확대/축소로 인한 밀림 방지
         if (isMobile) {
             opt.html2canvas.windowWidth = 794;
         }
 
         html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
             
-            // 🚀 PDF 생성 후 기존 화면 여백 원상 복구
+            // 🚀 PDF 생성 후 화면 스타일 원상 복구
             element.style.margin = originalMargin || '0 auto';
-            element.style.gap = '20px';
-            element.style.zoom = ''; // 🚀 축소 상태 원상 복구
+            element.style.gap = originalGap || '20px';
+            element.style.zoom = originalZoom || ''; 
             
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
@@ -846,6 +861,7 @@
 
             const file = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
 
+            // 🚀 모바일 기기면 즉시 Share Sheet 호출, PC면 즉시 다운로드 (원스텝)
             if (isMobile) {
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                     navigator.share({
@@ -866,8 +882,8 @@
             }
         }).catch(function(error) {
             element.style.margin = originalMargin || '0 auto';
-            element.style.gap = '20px';
-            element.style.zoom = ''; // 🚀 축소 상태 원상 복구
+            element.style.gap = originalGap || '20px';
+            element.style.zoom = originalZoom || ''; 
             alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
