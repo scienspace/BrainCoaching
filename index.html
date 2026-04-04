@@ -145,7 +145,7 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.27</div>
+        <div class="version-badge" id="appVersion">v0.28</div>
         <div class="intro-box">
             <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
             <div class="intro-contact">
@@ -628,8 +628,8 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        // 🚀 버전을 0.27로 푸터에 세팅
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.27';
+        // 🚀 버전을 0.28로 푸터에 세팅
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.28';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
@@ -782,7 +782,7 @@
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.27';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.28';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
@@ -815,7 +815,7 @@
         const opt = {
             margin: 0, 
             filename: pdfFilename, 
-            image: { type: 'jpeg', quality: 1.0 }, 
+            image: { type: 'png', quality: 1.0 }, // 🚀 고화질 png 로 변경
             html2canvas: { 
                 scale: isIOS ? 2.0 : 2.5, 
                 useCORS: true, 
