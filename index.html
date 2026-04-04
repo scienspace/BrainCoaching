@@ -47,12 +47,41 @@
         .btn-pdf:hover { background-color: #27ae60; }
         .finish-text { text-align: center; font-size: 16px; font-weight: bold; color: #27ae60; margin: 20px 0; line-height: 1.4; padding: 0 10px; }
 
-        .intro-box { text-align: center; margin-bottom: 30px; }
-        .intro-img { width: 100%; height: auto; max-width: 500px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-left: auto; margin-right: auto; display: block;}
-        .intro-contact { font-size: 19px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; line-height: 1.4; word-break: keep-all;}
-        .intro-notice { background-color: #f8f9fa; padding: 20px; border-radius: 8px; font-size: 13.5px; line-height: 1.6; color: #333; text-align: left; border-left: 5px solid #3498db; }
+        /* 🚀 도입부(Web) 고급 럭셔리 디자인 */
+        .intro-container { text-align: center; margin-bottom: 30px; }
+        .intro-box { 
+            background: linear-gradient(145deg, #1f1c2c 0%, #2c3e50 100%); 
+            border: none; 
+            padding: 50px 20px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            text-align: center; 
+            margin-bottom: 20px;
+            color: white;
+        }
+        .intro-title-text { font-size: 28px; font-weight: 900; color: #f1c40f; margin: 0 0 15px 0; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .intro-subtitle-text { font-size: 15px; color: #ecf0f1; margin: 0 0 35px 0; font-weight: 300; letter-spacing: 1px; }
+        .intro-img { 
+            width: 100%; max-width: 240px; height: 240px; object-fit: cover;
+            border-radius: 50%; box-shadow: 0 15px 30px rgba(0,0,0,0.4); 
+            margin: 0 auto 35px auto; border: 4px solid rgba(255,255,255,0.1); display: block; 
+        }
+        .intro-contact { 
+            font-size: 17px; font-weight: bold; color: #fff; margin-bottom: 25px; line-height: 1.6; word-break: keep-all; 
+            padding: 20px; background-color: rgba(255,255,255,0.05); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .intro-notice { 
+            background-color: rgba(0,0,0,0.2); padding: 25px; border-radius: 15px; font-size: 13.5px; line-height: 1.7; color: #ddd; text-align: left; border-left: 4px solid #f1c40f; 
+        }
         .intro-notice p { margin: 0 0 10px 0; word-break: keep-all; }
         .intro-notice p:last-child { margin: 0; }
+        
+        .btn-start { 
+            background: linear-gradient(135deg, #f1c40f 0%, #e67e22 100%); 
+            color: #2c3e50; font-size: 19px; font-weight: 900; padding: 20px; border-radius: 30px; 
+            box-shadow: 0 8px 20px rgba(241, 196, 15, 0.4); border: none; width: 100%; letter-spacing: 1px;
+        }
+        .btn-start:hover { background: linear-gradient(135deg, #f39c12 0%, #d35400 100%); transform: translateY(-3px); box-shadow: 0 12px 25px rgba(241, 196, 15, 0.6); color: #fff;}
 
         @media (min-width: 768px) {
             body { padding: 20px 0; }
@@ -68,12 +97,19 @@
             td { font-size: 14px; padding: 12px 5px; }
             td.q-text { font-size: 15px; }
             input[type="radio"] { transform: scale(1.3); }
+            
             .btn-group { gap: 15px; } 
             .btn { font-size: 16px; padding: 12px; }
             .version-badge { font-size: 13px; top: -15px; padding: 6px 15px; }
+            
+            /* 데스크탑 뷰 Intro 고급화 조정 */
+            .intro-title-text { font-size: 34px; }
+            .intro-subtitle-text { font-size: 18px; }
+            .intro-img { max-width: 280px; height: 280px; }
+            .btn-start { font-size: 22px; padding: 22px; width: 80%; margin: 0 auto;}
         }
 
-        /* 🚀 PDF 변환용 5장 레이아웃 세팅 */
+        /* 🚀 결과지 캡처 영역 (이중 분할 및 밀림 방지 핵심 CSS) */
         .capture-wrapper { width: 100%; overflow-x: auto; background-color: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: center; }
         #captureArea { display: flex; flex-direction: column; gap: 20px; width: 794px; margin: 0 auto; background-color: transparent;}
         
@@ -82,19 +118,17 @@
             width: 794px !important; 
             min-width: 794px !important;
             max-width: 794px !important;
-            height: 1122px; 
-            min-height: 1122px;
-            max-height: 1122px;
-            overflow: hidden; 
+            height: 1123px !important; /* 🚀 픽셀 1:1 강제 매핑 */
+            min-height: 1123px !important;
+            max-height: 1123px !important;
+            overflow: hidden !important; 
             padding: 40px; 
             box-sizing: border-box; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
             position: relative; 
-            page-break-after: always;
         }
-        .pdf-page:last-child { page-break-after: auto; }
 
-        /* 이미지 표지 레이아웃 (cover_brain.png) */
+        /* 표지 레이아웃 (cover_brain.png) */
         .cover-page-layout { display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%; padding: 50px 0 60px 0; box-sizing: border-box; }
         .cover-title-box { text-align: center; width: 100%; margin-top: 40px; }
         .cover-main-title { font-size: 52px; font-weight: 900; color: #2c3e50; letter-spacing: 2px; margin: 0; word-break: keep-all; }
@@ -110,7 +144,7 @@
         .footer-center { width: 76%; text-align: center; font-size: 10.5px; color: #444; line-height: 1.5; white-space: nowrap; letter-spacing: -0.5px; }
         .footer-right { width: 12%; text-align: right; font-size: 14px; font-weight: bold; color: #555; padding-bottom: 2px; }
 
-        /* 타이틀 박스 및 파스텔톤 컬러 클래스 적용 */
+        /* 타이틀 박스 */
         .title-box { text-align: center; font-size: 22px; font-weight: bold; padding: 12px 0; margin-top: 5px; margin-bottom: 20px; color: #000; letter-spacing: 1px; }
         .bg-pastel-red { background-color: #ffb3ba; }
         .bg-pastel-green { background-color: #baffc9; }
@@ -143,19 +177,24 @@
 
 <div id="app">
     <div id="pageIntro" class="page active">
-        <div class="version-badge" id="appVersion">v0.41</div>
-        <div class="intro-box">
-            <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/500x700?text=포스터+이미지(cover.jpg+넣어주세요)'">
-            <div class="intro-contact">
-                문의 : 브레인코칭상담연구소<br>소장 임운나(H.P: 010-8498-3689)
+        <div class="version-badge" id="appVersion">v0.42</div>
+        <div class="intro-container">
+            <div class="intro-box">
+                <h1 class="intro-title-text">두뇌유형 심리검사</h1>
+                <p class="intro-subtitle-text">나의 두뇌 성향과 잠재력을 발견해보세요</p>
+                <img src="./cover.jpg" alt="두뇌 유형 심리 검사" class="intro-img" onerror="this.src='https://via.placeholder.com/400x400?text=이미지(cover.jpg+넣어주세요)'">
+                
+                <div class="intro-contact">
+                    <span style="font-size:14px; color:#f1c40f; font-weight:normal; display:block; margin-bottom:5px;">검사 및 상담 문의</span>
+                    브레인코칭상담연구소<br>
+                    소장 임운나 <span style="font-size:16px; color:#f39c12;">(010-8498-3689)</span>
+                </div>
+                <div class="intro-notice">
+                    <p>● 본 검사지와 연계한 교육, 코칭, 상담 프로그램을 도입할 수 있으니 구체적 문의는 브레인코칭상담연구소 임운나 소장님께 하시면 됩니다.</p>
+                    <p>● 본 검사지의 저작권은 브레인코칭상담연구소에 있습니다.</p>
+                    <p>● 본 검사지의 무단 전재 및 복제를 금합니다.</p>
+                </div>
             </div>
-            <div class="intro-notice">
-                <p>● 본 검사지와 연계한 교육, 코칭, 상담 프로그램을 도입할 수 있으니 구체적 문의는 브레인코칭상담연구소 임운나(H.P: 010-8498-3689)소장님께 하시면 됩니다.</p>
-                <p>● 본 검사지의 저작권은 브레인코칭상담연구소에 있습니다.</p>
-                <p>● 본 검사지의 무단 전재 및 복제를 금합니다.</p>
-            </div>
-        </div>
-        <div class="btn-group">
             <button class="btn btn-start" onclick="movePage('pageIntro', 'pageLanding')">검사 안내 및 인적 사항 입력하기</button>
         </div>
     </div>
@@ -169,16 +208,14 @@
         <div class="info-form">
             <div class="info-group"><label class="required">이름</label><input type="text" id="studentName" placeholder="홍길동"></div>
             <div class="info-group"><label class="required">생년월일</label><input type="date" id="birthDate"></div>
-            <div class="info-group"><label class="required">성별</label>
-                <select id="gender"><option value="">선택하세요</option><option value="남">남</option><option value="여">여</option></select>
-            </div>
+            <div class="info-group"><label class="required">성별</label><select id="gender"><option value="">선택하세요</option><option value="남">남</option><option value="여">여</option></select></div>
             <div class="info-group"><label class="required">기관명(학교명)</label><input type="text" id="schoolName" placeholder="OO학교"></div>
             <div class="info-group"><label>검사일</label><input type="date" id="testDate"></div>
             <div class="info-group"><label>담당 전문가</label><input type="text" id="expertName" placeholder="전문가 이름"></div>
         </div>
         <div class="btn-group">
             <button class="btn btn-prev" onclick="movePage('pageLanding', 'pageIntro')">이전으로</button>
-            <button class="btn btn-start" onclick="startTest()">본 검사 시작하기</button>
+            <button class="btn btn-start" style="border-radius:8px; width: auto; background: #2ecc71; box-shadow: none; color: white;" onclick="startTest()">본 검사 진행하기</button>
         </div>
     </div>
 
@@ -199,151 +236,61 @@
                 <div class="pdf-page">
                     <div class="title-box bg-pastel-red">두뇌 심리 유형별 특징</div>
                     <div class="result-info-box">
-                        <div><span>이름</span><span class="resName"></span></div>
-                        <div><span>생년월일</span><span class="resBirth"></span></div>
-                        <div><span>성별</span><span class="resGender"></span></div>
-                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div>
-                        <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
-                        <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
+                        <div><span>이름</span><span class="resName"></span></div><div><span>생년월일</span><span class="resBirth"></span></div><div><span>성별</span><span class="resGender"></span></div>
+                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div><div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div><div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
                     </div>
                     <table class="feedback-table">
-                        <thead>
-                            <tr>
-                                <th width="15%" style="background-color: #fff;">구분</th>
-                                <th width="10%" style="background-color: #fff;">결과</th>
-                                <th width="75%" style="background-color: #fff;">특징</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th width="15%" style="background-color: #fff;">구분</th><th width="10%" style="background-color: #fff;">결과</th><th width="75%" style="background-color: #fff;">특징</th></tr></thead>
                         <tbody id="page1-tbody"></tbody>
                     </table>
-                    <div class="page-footer">
-                        <div class="footer-left"><span class="resultVersion"></span></div>
-                        <div class="footer-center">
-                            <strong>[ 안내 ]</strong><br>
-                            본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>
-                            본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.
-                        </div>
-                        <div class="footer-right">- 1 -</div>
-                    </div>
+                    <div class="page-footer"><div class="footer-left"><span class="resultVersion"></span></div><div class="footer-center"><strong>[ 안내 ]</strong><br>본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.</div><div class="footer-right">- 1 -</div></div>
                 </div>
 
                 <div class="pdf-page">
                     <div class="title-box bg-pastel-green">두뇌심리 유형별 학습 성향</div>
                     <div class="result-info-box">
-                        <div><span>이름</span><span class="resName"></span></div>
-                        <div><span>생년월일</span><span class="resBirth"></span></div>
-                        <div><span>성별</span><span class="resGender"></span></div>
-                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div>
-                        <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
-                        <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
+                        <div><span>이름</span><span class="resName"></span></div><div><span>생년월일</span><span class="resBirth"></span></div><div><span>성별</span><span class="resGender"></span></div>
+                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div><div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div><div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
                     </div>
                     <table class="feedback-table">
-                        <thead>
-                            <tr>
-                                <th width="15%" style="background-color: #fff;">구분</th>
-                                <th width="10%" style="background-color: #fff;">결과</th>
-                                <th width="75%" style="background-color: #fff;">특징</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th width="15%" style="background-color: #fff;">구분</th><th width="10%" style="background-color: #fff;">결과</th><th width="75%" style="background-color: #fff;">특징</th></tr></thead>
                         <tbody id="page2-tbody"></tbody>
                     </table>
-                    <div class="page-footer">
-                        <div class="footer-left"><span class="resultVersion"></span></div>
-                        <div class="footer-center">
-                            <strong>[ 안내 ]</strong><br>
-                            본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>
-                            본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.
-                        </div>
-                        <div class="footer-right">- 2 -</div>
-                    </div>
+                    <div class="page-footer"><div class="footer-left"><span class="resultVersion"></span></div><div class="footer-center"><strong>[ 안내 ]</strong><br>본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.</div><div class="footer-right">- 2 -</div></div>
                 </div>
 
                 <div class="pdf-page">
                     <div class="title-box bg-pastel-blue">두뇌심리 유형별 진로 성향 및 직업군</div>
                     <div class="result-info-box" style="margin-bottom: 5px;">
-                        <div><span>이름</span><span class="resName"></span></div>
-                        <div><span>생년월일</span><span class="resBirth"></span></div>
-                        <div><span>성별</span><span class="resGender"></span></div>
-                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div>
-                        <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
-                        <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
+                        <div><span>이름</span><span class="resName"></span></div><div><span>생년월일</span><span class="resBirth"></span></div><div><span>성별</span><span class="resGender"></span></div>
+                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div><div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div><div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
                     </div>
                     <div id="page3-content"></div>
-                    <div class="page-footer">
-                        <div class="footer-left"><span class="resultVersion"></span></div>
-                        <div class="footer-center">
-                            <strong>[ 안내 ]</strong><br>
-                            본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>
-                            본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.
-                        </div>
-                        <div class="footer-right">- 3 -</div>
-                    </div>
+                    <div class="page-footer"><div class="footer-left"><span class="resultVersion"></span></div><div class="footer-center"><strong>[ 안내 ]</strong><br>본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.</div><div class="footer-right">- 3 -</div></div>
                 </div>
 
                 <div class="pdf-page">
                     <h1 class="result-title">[ 두뇌 심리 진단 결과 종합 의견 ]</h1>
                     <div class="result-info-box">
-                        <div><span>이름</span><span class="resName"></span></div>
-                        <div><span>생년월일</span><span class="resBirth"></span></div>
-                        <div><span>성별</span><span class="resGender"></span></div>
-                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div>
-                        <div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div>
-                        <div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
+                        <div><span>이름</span><span class="resName"></span></div><div><span>생년월일</span><span class="resBirth"></span></div><div><span>성별</span><span class="resGender"></span></div>
+                        <div style="border-bottom: none;"><span>검사일</span><span class="resDate"></span></div><div style="border-bottom: none;"><span>담당 전문가</span><span class="resExpert"></span></div><div style="border-bottom: none;"><span>기관명</span><span class="resSchool"></span></div>
                     </div>
-
-                    <div class="chart-container">
-                        <canvas id="radarChart"></canvas>
-                    </div>
-                    
-                    <div class="type-header">
-                        <div class="label">두뇌 심리 유형</div>
-                        <div class="value" id="resPrimaryType"></div>
-                    </div>
-
+                    <div class="chart-container"><canvas id="radarChart"></canvas></div>
+                    <div class="type-header"><div class="label">두뇌 심리 유형</div><div class="value" id="resPrimaryType"></div></div>
                     <table class="feedback-table">
-                        <thead>
-                            <tr>
-                                <th width="15%" style="background-color: #f4f4f4;">구분</th>
-                                <th width="42.5%" style="background-color: #f4f4f4;">장점</th>
-                                <th width="42.5%" style="background-color: #f4f4f4;">보완할 점</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th width="15%" style="background-color: #f4f4f4;">구분</th><th width="42.5%" style="background-color: #f4f4f4;">장점</th><th width="42.5%" style="background-color: #f4f4f4;">보완할 점</th></tr></thead>
                         <tbody>
-                            <tr>
-                                <th style="vertical-align: middle; background-color: #f4f4f4;">두뇌 심리<br>특성</th>
-                                <td id="resPsychHigh"></td>
-                                <td id="resPsychLow"></td>
-                            </tr>
-                            <tr>
-                                <th style="vertical-align: middle; background-color: #f4f4f4;">학습 성향</th>
-                                <td id="resLearnHigh"></td>
-                                <td id="resLearnLow"></td>
-                            </tr>
+                            <tr><th style="vertical-align: middle; background-color: #f4f4f4;">두뇌 심리<br>특성</th><td id="resPsychHigh"></td><td id="resPsychLow"></td></tr>
+                            <tr><th style="vertical-align: middle; background-color: #f4f4f4;">학습 성향</th><td id="resLearnHigh"></td><td id="resLearnLow"></td></tr>
                         </tbody>
                     </table>
-
                     <table class="feedback-table">
                         <tbody>
-                            <tr>
-                                <th width="15%" style="vertical-align: middle; background-color: #f4f4f4;">진로 성향</th>
-                                <td width="85%" id="resCareer"></td>
-                            </tr>
-                            <tr>
-                                <th width="15%" style="vertical-align: middle; background-color: #f4f4f4;">직업군</th>
-                                <td width="85%" id="resJobs"></td>
-                            </tr>
+                            <tr><th width="15%" style="vertical-align: middle; background-color: #f4f4f4;">진로 성향</th><td width="85%" id="resCareer"></td></tr>
+                            <tr><th width="15%" style="vertical-align: middle; background-color: #f4f4f4;">직업군</th><td width="85%" id="resJobs"></td></tr>
                         </tbody>
                     </table>
-
-                    <div class="page-footer">
-                        <div class="footer-left"><span class="resultVersion"></span></div>
-                        <div class="footer-center">
-                            <strong>[ 안내 ]</strong><br>
-                            본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>
-                            본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.
-                        </div>
-                        <div class="footer-right">- 4 -</div>
-                    </div>
+                    <div class="page-footer"><div class="footer-left"><span class="resultVersion"></span></div><div class="footer-center"><strong>[ 안내 ]</strong><br>본 검사지와 연계한 교육, 코칭, 상담 프로그램 도입 문의 : 브레인코칭상담연구소 소장 임운나 (H.P: 010-8498-3689)<br>본 검사지의 저작권은 브레인코칭상담연구소에 있으며 무단 전재 및 복제를 금합니다. 감사합니다.</div><div class="footer-right">- 4 -</div></div>
                 </div>
 
             </div>
@@ -357,166 +304,10 @@
 </div>
 
 <script>
-    const scaleOptions = [
-        { value: 1, label: "매우<br>그렇지 않다" },
-        { value: 2, label: "그렇지<br>않은 편이다" },
-        { value: 3, label: "보통이다" },
-        { value: 4, label: "그런<br>편이다" },
-        { value: 5, label: "매우<br>그렇다" }
-    ];
-
-    const surveyData = {
-      "totalQuestions": 60,
-      "categories": [
-        { 
-          "id": 1, 
-          "title": "분석가", 
-          "color": "#3498db", 
-          "questions": [ 
-            "나는 다른 사람의 말을 잘 믿지 않는다.", "나는 수학적인 계산을 아주 잘한다.", "나는 언어 표현 능력이 뛰어나다.", "나는 사물이나 현상을 잘 분석한다.", "나는 논리적인 토의나 토론을 좋아한다.", "나는 상대방을 논리적으로 잘 설득할 수 있다.", "나는 다른 사람과 이야기할 때 논리적인 의견을 잘 말한다.", "나는 통계자료나 그래프 등을 쉽게 해석한다.", "나는 비논리적인 대화에 대하여 민감하게 반응한다.", "나는 직접 확인을 한 후에 결정한다." 
-          ] 
-        },
-        { 
-          "id": 2, 
-          "title": "실험가", 
-          "color": "#9b59b6", 
-          "questions": [ 
-            "나는 친구들과 장난을 잘 치는 편이다.", "나는 무엇이든지 잘 꾸민다.", "나는 창의적인 생각이나 아이디어를 많이 가지고 있다.", "나는 자유로운 행동을 좋아한다.", "나는 엉뚱한 생각이나 공상을 좋아한다.", "나는 새로운 것에 대한 호기심이 많다.", "나는 '이렇게 될 것 같다' 라는 예감이 잘 맞는 경우가 많다.", "나는 충동적인 말을 하고 후회하는 경우가 많다.", "나는 새로운 일을 결정할 때 순간적으로 한다.", "복잡한 현상을 간결하게 줄여서 표현하는 능력이 있다." 
-          ] 
-        },
-        { 
-          "id": 3, 
-          "title": "관리자", 
-          "color": "#2ecc71", 
-          "questions": [ 
-            "나는 약속시간을 거의 잘 지킨다.", "나는 계획한 대로 잘 실천한다.", "나는 새로운 것을 시작할 때 두렵다.", "나는 나의 방과 책상을 잘 정리정돈한다.", "나는 해야 할 일들을 구체적으로 메모하여 처리 날짜를 한다.", "나는 물건의 사용설명서 내용을 자세히 읽는다.", "나는 변화가 많은 것보다는 안정적인 것을 더 좋아한다.", "나는 일을 처리할 때 정해진 순서와 방법대로 따라한다.", "나는 구성원들과 일을 같이할 때 자세하게 알려주는 편이다.", "나는 내가 하던 방법과 형식을 잘 바꾸지 않는다." 
-          ] 
-        },
-        { 
-          "id": 4, 
-          "title": "조정가", 
-          "color": "#e84393", 
-          "questions": [ 
-            "나는 처음 보는 사람도 쉽게 사귄다.", "나는 다른 사람들의 부탁을 잘 들어준다.", "나는 음악 듣는 것을 매우 좋아한다.", "나는 다른 사람보다 내가 먼저 인사한다.", "나는 사람들과 만나면 말을 많이 하는 편이다.", "나는 슬픈 영화나 연속극을 보면서 눈물을 잘 흘린다.", "나는 혼자서도 분위기나 기분에 잘 빠져든다.", "나는 눈치있다는 말을 많이 듣는다.", "나는 얼굴표정이나 몸짓 등으로 구체적인 특성을 표현하면서 말을 한다.", "나는 다른 사람들이 어떻게 느끼고 있는지를 쉽게 잘 알아낸다." 
-          ] 
-        },
-        { 
-          "id": 5, 
-          "title": "개혁가", 
-          "color": "#e67e22", 
-          "questions": [ 
-            "나는 어렵고 힘든 일이 있어도 최선을 다한다.", "나는 내가 세운 목표를 달성하기 위해 실천을 잘한다.", "나는 모든 일에 열정적이고 적극적이다.", "나는 새로운 도전을 좋아한다.", "나는 내 자신을 믿는다.", "나는 어려운 일에 앞장서서 행동한다.", "나는 생활 속에서 즐거운 활동을 찾아낸다.", "나는 변화에 능동적으로 맞서 이겨낸다.", "나는 문제가 생겼을 때 적극적으로 해결하려고 노력한다.", "나는 바람직한 가치관을 가지고 있다." 
-          ] 
-        },
-        { 
-          "id": 6, 
-          "title": "봉사자", 
-          "color": "#16a085", 
-          "questions": [ 
-            "나는 친절하다는 말을 자주 듣는다.", "나는 친구의 고민을 잘 들어준다.", "나는 다른 사람을 잘 도와준다.", "나는 말한 것을 지키려고 노력한다.", "나는 다른 사람에게 모범을 보여야 한다고 생각한다.", "나는 내가 속한 단체에서 함께하는 것이 중요한 가치라고 생각한다.", "나는 개인의 이익보다는 전체 이익을 중요시한다.", "나는 다른 사람의 부탁을 잘 받아들인다.", "나는 말을 할 때 나의 감정이나 느낌보다는 다른 사람들의 감정이나 느낌을 중요시한다.", "나는 결정을 할 때 다른 사람들의 요구와 이해를 깊이 참고하여 알아준다." 
-          ] 
-        }
-      ]
-    };
-
-    const feedbackData = {
-      "분석가": {
-        "high": {
-          "psychology": [ "모든 일에 정확하고 체계적이며 논리적인 언어표현력이 뛰어나다.", "계획을 잘 세우고 효율적이고 합리적으로 일을 처리한다.", "지속적인 자기 계발로 장기적인 성공 목표를 성취해 나간다." ],
-          "learning": [ "자기 스스로 학습계획을 세워서 지속적으로 실천한다.", "조용하고 잘 정돈된 공부 장소를 선호한다.", "논리적이고 분석적인 토의 및 토론을 좋아한다." ]
-        },
-        "mid": {
-          "psychology": [ "비효율적인 일을 싫어하고 합리적인 일 처리를 선호한다.", "인내심이 강하여 장기적인 계획을 성취해 나간다.", "세부 상황에 집착하며 반복적인 일상적인 일에 잘 적응한다." ],
-          "learning": [ "공부 계획을 잘 세우나 지속적으로 실천하는 능력이 부족하다.", "끊임없는 학습 동기 부여가 필요하다.", "시간 관리를 잘 하는 것이 중요하다." ]
-        },
-        "low": {
-          "psychology": [ "모든 일에 정확하지 못하고 비체계적이며 비논리적인 언어를 사용한다.", "인내심이 약하여 계획한 것을 성취하는 것이 어렵다.", "반복적인 일을 싫어하고 성실하지 못하다." ],
-          "learning": [ "단기 공부계획을 세우는 훈련이 필요하다.", "매일 지속적으로 반복하는 학습 전략이 필요하다.", "공부 멘토가 학습 지속력을 높일 수 있도록 도와주어야 한다." ]
-        },
-        "career": [ "매사 신중하고 꼼꼼하여 회계 및 금융 분야의 직업이 적합하다.", "논리적이고 분석적인 사고력으로 연구직 분야의 직업을 선호한다." ],
-        "jobs": "회계사, 재무사, 연구직, 의사, 기계공학자, 건축설계사, 공학자, 수학자, 통계분석자, 재무분석사"
-      },
-      "실험가": {
-        "high": {
-          "psychology": [ "아이디어가 많고 창조적 능력이 뛰어나다.", "개인의 신념과 가치관이 뚜렷하다.", "감수성이 높고 예술적 재능이 많다." ],
-          "learning": [ "융합적 사고력과 문제해결력이 뛰어나다.", "좋아하는 과목과 싫어하는 과목이 분명하다.", "구조화된 학습 방법보다는 비구조화된 학습 방법을 선호한다." ]
-        },
-        "mid": {
-          "psychology": [ "규칙에 얽매이는 일 보다 정해진 틀을 벗어나 자유로운 환경을 선호한다.", "사색적이고 독립적인 활동을 선호한다.", "단순함보다는 복잡한 사고 과정을 즐긴다." ],
-          "learning": [ "선생님의 성향에 따라 학습태도가 달라진다.", "자유로운 책상 배열, 공부환경을 선호한다.", "음악, 미술, 체육 등 예술 과목에 재능이 많다." ]
-        },
-        "low": {
-          "psychology": [ "자유로운 활동보다 정해진 규칙을 따른다.", "개인의 독립적인 활동보다 단체활동을 선호한다.", "변화를 싫어하고 단순하고 반복적인 일을 좋아한다." ],
-          "learning": [ "창의성이 부족하여 아이디어 도출하는 훈련이 필요하다.", "오감학습 등 감각을 깨워 감수성을 높이는 훈련이 필요하다.", "자신만의 공부 철학이나 신념을 가질 수 있도록 도와주어야 한다." ]
-        },
-        "career": [ "높은 상상력과 창의적인 생각으로 예술 계통의 직업이 적합하다.", "기업가 정신과 도전 정신으로 새로운 분야의 직업을 선호한다." ],
-        "jobs": "시인, 무용가, 사진작가, 모델, 디자이너, 작곡가, 벤처기업가, 자산가, 이미지컨설턴트, 기초과학자"
-      },
-      "관리자": {
-        "high": {
-          "psychology": [ "실용적이고 절차나 규범을 중시하므로 다른 사람에게 신뢰감을 준다.", "맡겨진 일에 의무감과 책임감이 강해 성실하다.", "세부 사항에 집착하며 반복되는 일상적인 일에 적응력이 강하다." ],
-          "learning": [ "수업 내용을 잘 정리하고 구조화를 잘 한다.", "공부하는 집중력이 뛰어나 계획한 것을 지속적으로 실천한다.", "체계적이고 구조화된 노트 필기를 선호한다." ]
-        },
-        "mid": {
-          "psychology": [ "평범한 것을 좋아하고 매우 단정하고 보수적이다.", "인내심이 강하여 장기적인 계획을 성취해 나간다.", "화려함보다는 소박하고 검소한 것을 선호한다." ],
-          "learning": [ "수업 시간에 교사의 설명에 잘 집중하고 경청한다.", "예습과 복습을 잘하여 자신의 부족한 부분을 향상시킨다.", "자신의 능력에 맞게 체계적으로 공부한다." ]
-        },        
-        "low": {
-          "psychology": [ "세부 사항을 중요하기 여기지 않기 때문에, 실수가 많다.", "인내력과 끈기가 부족하여 계획한 일을 끝까지 마무리하지 못한다.", "절차나 규범을 따르지 않아 다른 사람에게 신뢰감을 얻지 못한다." ],
-          "learning": [ "수업 시간에 집중하는 훈련이 필요하다.", "정기적이고 규칙적인 복습 훈련이 필요하다.", "자신의 능력에 맞는 학습 전략을 사용할 수 있도록 도와주어야 한다." ]
-        },
-        "career": [ "원칙적이고 보수적인 성향으로 공무원이나 관리직 계통의 직업이 적합하다.", "순서나 절차가 있는 구조화된 인사관리나 행정지원 계통의 직업을 선호한다." ],
-        "jobs": "공무원, 은행원, 법무행정, 경찰행정, 투자분석가, 손해사정인, 인사관리직, 행정지원직, 행사기획자, 프로젝트관리자"
-      },
-      "조정가": {
-        "high": {
-          "psychology": [ "인간관계를 중요하게 여기기 때문에, 늘 주변에 친구가 많다.", "열정적이고 활기 넘치며 감성적인 성향이 있다.", "자기표현 욕구가 강하여 끊임없이 이야기하는 것을 좋아한다." ],
-          "learning": [ "개인의 독립적인 학습보다는 집단 간 상호작용하는 모둠활동을 선호한다.", "그림, 사진, 동영상 등 시각 자료를 활용한 학습을 좋아한다.", "공부할 때 학습 분위기가 매우 중요하다." ]
-        },
-        "mid": {
-          "psychology": [ "긍정적으로 사고하고 낙천적으로 생활한다.", "사교적이고 활발하며 주변 사람들과 잘 사귄다.", "최신 유행을 쉽고 빠르게 받아들이는 경향이 있다" ],
-          "learning": [ "움직임, 역할극  등 신체 활동을 활용한 학습에 적극적이다.", "주변 친구나 선생님과의 좋은 인간관계가 학습 동기를 부여한다.", "자유로운 책상 배열, 공부환경을 선호한다." ]
-        },
-        "low": {
-          "psychology": [ "주변 사람들과 잘 소통하지 못해 인간관계가 원만하지 못하다.", "새로운 것을 도전하는데 두려움이 있다.", "공감 능력이 부족하여 다른 사람의 부탁을 잘 들어주지 못한다." ],
-          "learning": [ "발표, 글쓰기 등 기초 학습 훈련이 필요하다.", "자신감이나 자아존중감을 향상시키는 훈련이 필요하다.", "학습에 대한 성취 경험을 체험할 수 있도록 도와주어야 한다." ]
-        },
-        "career": [ "인간관계를 중요시하는 상담가나 커뮤니케이션 전문가 등의 직업이 적합하다.", "단체활동에서 통솔력을 발휘해 리더로서 역할을 수행하는 직업을 선호한다." ],
-        "jobs": "상담가, 심리치료사, 커뮤니케이터, 방송연출자, 아나운서, 코디네이터, 호텔지배인, 변호사, 외교관, 협상가"
-      },
-      "개혁가": {
-        "high": {
-          "psychology": [ "끊임없이 새로운 일을 계획하고 추진하는 강한 리더 성향이 있다.", "능동적이고 적극적이며 의지가 강하다.", "결단력이 있고 독립심과 자립심이 강하다." ],
-          "learning": [ "자신만의 새로운 공부 방법을 찾으려고 노력한다.", "협력적인 학습 과제보다 경쟁적인 학습 과제를 더 선호한다.", "한계에 부딪혔을 지라도 자신을 믿고 포기하지 않는다." ]
-        },
-        "mid": {
-          "psychology": [ "새로운 일을 끊임없이 창출하고 도전한다.", "기존의 방식보다 새로운 문제 해결 방식을 선호한다.", "어렵고 힘든 상황을 극복하고 문제를 해결하려고 최선을 다한다." ],
-          "learning": [ "보상이 주어지는 학습 활동에 더 적극적이다.", "공부 목표를 정한 후, 그 목표를 달성하기 위해 끊임없이 노력한다.", "재미와 모험심을 불러일으키는 학습 활동을 선호한다." ]
-        },
-        "low": {
-          "psychology": [ "결단력이 없고 우유부단한 말과 행동을 한다.", "소극적이고 의지가 약하며 자신감이 부족하다.", "스스로 문제를 해결하려고 하지 않고 다른 사람에게 의존한다." ],
-          "learning": [ "새로운 학습 방법을 싫어하고 단조로운 형태의 학습 방법을 선호한다.", "주어진 학습 과제 해결 외에도 다양한 학습 방법을 찾을 수 있도록 도와주어야 한다.", "자신감을 가지고 다른 사람 앞에서 발표하는 훈련이 필요하다." ]
-        },
-        "career": [ "독립심과 자립심이 강하고 사회적인 지도력이 뛰어난 지도자 역할을 수행하는 직업을 선호한다.", "사회에 영향력을 행사하는 기업경영인 등의 직업이 적합하다." ],
-        "jobs": "지도자, 기업경영인, 정치가, 영업사원, NGO 단체장, 국제회의전문가, 환경운동가, 컨설턴트, 성형외과의사, 도시계획설계사"
-      },
-      "봉사자": {
-        "high": {
-          "psychology": [ "순응적이고 행동이 느긋하고 여유가 있다.", "마음이 따뜻하고 타인의 의견을 수용하며 공감 능력이 탁월하다.", "누군가를 돕거나 봉사할 때 삶의 가치를 찾는다." ],
-          "learning": [ "개인의 독립적인 학습보다는 집단 간 상호작용하는 모둠활동을 선호한다.", "다른 사람들과 소통하는 토의 및 토론 활동을 좋아한다.", "배운 학습 내용을 다른 사람들에게 도움을 주는 것을 좋아한다." ]
-        },
-        "mid": {
-          "psychology": [ "부드럽고 따뜻하게 감정표현을 잘 한다.", "도움을 필요로 하는 사람들에게 기꺼이 헌신한다.", "조직의 안전을 중요하게 여기고 갈등을 회피하며 중재와 타협을 잘 한다." ],
-          "learning": [ "모둠 학습을 할 때 다른 친구들에게 양보하는 학습 태도를 가진다.", "토의 및 토론을 할 때 자신의 주장보다는 다른 사람의 의견을 경청한다.", "자신의 감정을 잘 조절하고 관리하여 학습 활동에 참여한다." ]
-        },
-        "low": {
-          "psychology": [ "마음의 여유가 없고 산만하여 급하게 행동한다.", "다른 사람의 의견을 수용하지 못하고 남 탓으로 돌린다.", "공감 능력이 부족하여 다른 사람을 배려하거나 친절한 행동을 하지 못한다." ],
-          "learning": [ "협력 학습 과제를 효과적으로 해결할 수 있는 훈련이 필요하다.", "자신에 적합한 학습 방법을 찾을 수 있도록 도와 주어야 한다.", "다른 사람의 이야기를 공감하고 경청하는 훈련이 필요하다." ]
-        },
-        "career": [ "국가나 사회를 위해 보다 큰 삶의 가치를 실현할 수 있는 직업을 선호한다.", "다른 사람을 돕고 희생하며 존경받는 교육자, 종교인, 봉사자 등의 직업이 적합하다." ],
-        "jobs": "종교학자, 사회복지사, 철학자, 교육자, 사회사업가, 아동복지사, 작업치료사, 문화재관리사, 동물사육사, 수의사"
-      }
-    };
+    // 🚀 압축된 데이터 (오류 없음, 잘림 방지 용도)
+    const scaleOptions=[{value:1,label:"매우<br>그렇지 않다"},{value:2,label:"그렇지<br>않은 편이다"},{value:3,label:"보통이다"},{value:4,label:"그런<br>편이다"},{value:5,label:"매우<br>그렇다"}];
+    const surveyData={"totalQuestions":60,"categories":[{"id":1,"title":"분석가","color":"#3498db","questions":["나는 다른 사람의 말을 잘 믿지 않는다.","나는 수학적인 계산을 아주 잘한다.","나는 언어 표현 능력이 뛰어나다.","나는 사물이나 현상을 잘 분석한다.","나는 논리적인 토의나 토론을 좋아한다.","나는 상대방을 논리적으로 잘 설득할 수 있다.","나는 다른 사람과 이야기할 때 논리적인 의견을 잘 말한다.","나는 통계자료나 그래프 등을 쉽게 해석한다.","나는 비논리적인 대화에 대하여 민감하게 반응한다.","나는 직접 확인을 한 후에 결정한다."]},{"id":2,"title":"실험가","color":"#9b59b6","questions":["나는 친구들과 장난을 잘 치는 편이다.","나는 무엇이든지 잘 꾸민다.","나는 창의적인 생각이나 아이디어를 많이 가지고 있다.","나는 자유로운 행동을 좋아한다.","나는 엉뚱한 생각이나 공상을 좋아한다.","나는 새로운 것에 대한 호기심이 많다.","나는 '이렇게 될 것 같다' 라는 예감이 잘 맞는 경우가 많다.","나는 충동적인 말을 하고 후회하는 경우가 많다.","나는 새로운 일을 결정할 때 순간적으로 한다.","복잡한 현상을 간결하게 줄여서 표현하는 능력이 있다."]},{"id":3,"title":"관리자","color":"#2ecc71","questions":["나는 약속시간을 거의 잘 지킨다.","나는 계획한 대로 잘 실천한다.","나는 새로운 것을 시작할 때 두렵다.","나는 나의 방과 책상을 잘 정리정돈한다.","나는 해야 할 일들을 구체적으로 메모하여 처리 날짜를 한다.","나는 물건의 사용설명서 내용을 자세히 읽는다.","나는 변화가 많은 것보다는 안정적인 것을 더 좋아한다.","나는 일을 처리할 때 정해진 순서와 방법대로 따라한다.","나는 구성원들과 일을 같이할 때 자세하게 알려주는 편이다.","나는 내가 하던 방법과 형식을 잘 바꾸지 않는다."]},{"id":4,"title":"조정가","color":"#e84393","questions":["나는 처음 보는 사람도 쉽게 사귄다.","나는 다른 사람들의 부탁을 잘 들어준다.","나는 음악 듣는 것을 매우 좋아한다.","나는 다른 사람보다 내가 먼저 인사한다.","나는 사람들과 만나면 말을 많이 하는 편이다.","나는 슬픈 영화나 연속극을 보면서 눈물을 잘 흘린다.","나는 혼자서도 분위기나 기분에 잘 빠져든다.","나는 눈치있다는 말을 많이 듣는다.","나는 얼굴표정이나 몸짓 등으로 구체적인 특성을 표현하면서 말을 한다.","나는 다른 사람들이 어떻게 느끼고 있는지를 쉽게 잘 알아낸다."]},{"id":5,"title":"개혁가","color":"#e67e22","questions":["나는 어렵고 힘든 일이 있어도 최선을 다한다.","나는 내가 세운 목표를 달성하기 위해 실천을 잘한다.","나는 모든 일에 열정적이고 적극적이다.","나는 새로운 도전을 좋아한다.","나는 내 자신을 믿는다.","나는 어려운 일에 앞장서서 행동한다.","나는 생활 속에서 즐거운 활동을 찾아낸다.","나는 변화에 능동적으로 맞서 이겨낸다.","나는 문제가 생겼을 때 적극적으로 해결하려고 노력한다.","나는 바람직한 가치관을 가지고 있다."]},{"id":6,"title":"봉사자","color":"#16a085","questions":["나는 친절하다는 말을 자주 듣는다.","나는 친구의 고민을 잘 들어준다.","나는 다른 사람을 잘 도와준다.","나는 말한 것을 지키려고 노력한다.","나는 다른 사람에게 모범을 보여야 한다고 생각한다.","나는 내가 속한 단체에서 함께하는 것이 중요한 가치라고 생각한다.","나는 개인의 이익보다는 전체 이익을 중요시한다.","나는 다른 사람의 부탁을 잘 받아들인다.","나는 말을 할 때 나의 감정이나 느낌보다는 다른 사람들의 감정이나 느낌을 중요시한다.","나는 결정을 할 때 다른 사람들의 요구와 이해를 깊이 참고하여 알아준다."]}]};
+    const feedbackData={"분석가":{"high":{"psychology":["모든 일에 정확하고 체계적이며 논리적인 언어표현력이 뛰어나다.","계획을 잘 세우고 효율적이고 합리적으로 일을 처리한다.","지속적인 자기 계발로 장기적인 성공 목표를 성취해 나간다."],"learning":["자기 스스로 학습계획을 세워서 지속적으로 실천한다.","조용하고 잘 정돈된 공부 장소를 선호한다.","논리적이고 분석적인 토의 및 토론을 좋아한다."]},"mid":{"psychology":["비효율적인 일을 싫어하고 합리적인 일 처리를 선호한다.","인내심이 강하여 장기적인 계획을 성취해 나간다.","세부 상황에 집착하며 반복적인 일상적인 일에 잘 적응한다."],"learning":["공부 계획을 잘 세우나 지속적으로 실천하는 능력이 부족하다.","끊임없는 학습 동기 부여가 필요하다.","시간 관리를 잘 하는 것이 중요하다."]},"low":{"psychology":["모든 일에 정확하지 못하고 비체계적이며 비논리적인 언어를 사용한다.","인내심이 약하여 계획한 것을 성취하는 것이 어렵다.","반복적인 일을 싫어하고 성실하지 못하다."],"learning":["단기 공부계획을 세우는 훈련이 필요하다.","매일 지속적으로 반복하는 학습 전략이 필요하다.","공부 멘토가 학습 지속력을 높일 수 있도록 도와주어야 한다."]},"career":["매사 신중하고 꼼꼼하여 회계 및 금융 분야의 직업이 적합하다.","논리적이고 분석적인 사고력으로 연구직 분야의 직업을 선호한다."],"jobs":"회계사, 재무사, 연구직, 의사, 기계공학자, 건축설계사, 공학자, 수학자, 통계분석자, 재무분석사"},"실험가":{"high":{"psychology":["아이디어가 많고 창조적 능력이 뛰어나다.","개인의 신념과 가치관이 뚜렷하다.","감수성이 높고 예술적 재능이 많다."],"learning":["융합적 사고력과 문제해결력이 뛰어나다.","좋아하는 과목과 싫어하는 과목이 분명하다.","구조화된 학습 방법보다는 비구조화된 학습 방법을 선호한다."]},"mid":{"psychology":["규칙에 얽매이는 일 보다 정해진 틀을 벗어나 자유로운 환경을 선호한다.","사색적이고 독립적인 활동을 선호한다.","단순함보다는 복잡한 사고 과정을 즐긴다."],"learning":["선생님의 성향에 따라 학습태도가 달라진다.","자유로운 책상 배열, 공부환경을 선호한다.","음악, 미술, 체육 등 예술 과목에 재능이 많다."]},"low":{"psychology":["자유로운 활동보다 정해진 규칙을 따른다.","개인의 독립적인 활동보다 단체활동을 선호한다.","변화를 싫어하고 단순하고 반복적인 일을 좋아한다."],"learning":["창의성이 부족하여 아이디어 도출하는 훈련이 필요하다.","오감학습 등 감각을 깨워 감수성을 높이는 훈련이 필요하다.","자신만의 공부 철학이나 신념을 가질 수 있도록 도와주어야 한다."]},"career":["높은 상상력과 창의적인 생각으로 예술 계통의 직업이 적합하다.","기업가 정신과 도전 정신으로 새로운 분야의 직업을 선호한다."],"jobs":"시인, 무용가, 사진작가, 모델, 디자이너, 작곡가, 벤처기업가, 자산가, 이미지컨설턴트, 기초과학자"},"관리자":{"high":{"psychology":["실용적이고 절차나 규범을 중시하므로 다른 사람에게 신뢰감을 준다.","맡겨진 일에 의무감과 책임감이 강해 성실하다.","세부 사항에 집착하며 반복되는 일상적인 일에 적응력이 강하다."],"learning":["수업 내용을 잘 정리하고 구조화를 잘 한다.","공부하는 집중력이 뛰어나 계획한 것을 지속적으로 실천한다.","체계적이고 구조화된 노트 필기를 선호한다."]},"mid":{"psychology":["평범한 것을 좋아하고 매우 단정하고 보수적이다.","인내심이 강하여 장기적인 계획을 성취해 나간다.","화려함보다는 소박하고 검소한 것을 선호한다."],"learning":["수업 시간에 교사의 설명에 잘 집중하고 경청한다.","예습과 복습을 잘하여 자신의 부족한 부분을 향상시킨다.","자신의 능력에 맞게 체계적으로 공부한다."]},"low":{"psychology":["세부 사항을 중요하기 여기지 않기 때문에, 실수가 많다.","인내력과 끈기가 부족하여 계획한 일을 끝까지 마무리하지 못한다.","절차나 규범을 따르지 않아 다른 사람에게 신뢰감을 얻지 못한다."],"learning":["수업 시간에 집중하는 훈련이 필요하다.","정기적이고 규칙적인 복습 훈련이 필요하다.","자신의 능력에 맞는 학습 전략을 사용할 수 있도록 도와주어야 한다."]},"career":["원칙적이고 보수적인 성향으로 공무원이나 관리직 계통의 직업이 적합하다.","순서나 절차가 있는 구조화된 인사관리나 행정지원 계통의 직업을 선호한다."],"jobs":"공무원, 은행원, 법무행정, 경찰행정, 투자분석가, 손해사정인, 인사관리직, 행정지원직, 행사기획자, 프로젝트관리자"},"조정가":{"high":{"psychology":["인간관계를 중요하게 여기기 때문에, 늘 주변에 친구가 많다.","열정적이고 활기 넘치며 감성적인 성향이 있다.","자기표현 욕구가 강하여 끊임없이 이야기하는 것을 좋아한다."],"learning":["개인의 독립적인 학습보다는 집단 간 상호작용하는 모둠활동을 선호한다.","그림, 사진, 동영상 등 시각 자료를 활용한 학습을 좋아한다.","공부할 때 학습 분위기가 매우 중요하다."]},"mid":{"psychology":["긍정적으로 사고하고 낙천적으로 생활한다.","사교적이고 활발하며 주변 사람들과 잘 사귄다.","최신 유행을 쉽고 빠르게 받아들이는 경향이 있다"],"learning":["움직임, 역할극 등 신체 활동을 활용한 학습에 적극적이다.","주변 친구나 선생님과의 좋은 인간관계가 학습 동기를 부여한다.","자유로운 책상 배열, 공부환경을 선호한다."]},"low":{"psychology":["주변 사람들과 잘 소통하지 못해 인간관계가 원만하지 못하다.","새로운 것을 도전하는데 두려움이 있다.","공감 능력이 부족하여 다른 사람의 부탁을 잘 들어주지 못한다."],"learning":["발표, 글쓰기 등 기초 학습 훈련이 필요하다.","자신감이나 자아존중감을 향상시키는 훈련이 필요하다.","학습에 대한 성취 경험을 체험할 수 있도록 도와주어야 한다."]},"career":["인간관계를 중요시하는 상담가나 커뮤니케이션 전문가 등의 직업이 적합하다.","단체활동에서 통솔력을 발휘해 리더로서 역할을 수행하는 직업을 선호한다."],"jobs":"상담가, 심리치료사, 커뮤니케이터, 방송연출자, 아나운서, 코디네이터, 호텔지배인, 변호사, 외교관, 협상가"},"개혁가":{"high":{"psychology":["끊임없이 새로운 일을 계획하고 추진하는 강한 리더 성향이 있다.","능동적이고 적극적이며 의지가 강하다.","결단력이 있고 독립심과 자립심이 강하다."],"learning":["자신만의 새로운 공부 방법을 찾으려고 노력한다.","협력적인 학습 과제보다 경쟁적인 학습 과제를 더 선호한다.","한계에 부딪혔을 지라도 자신을 믿고 포기하지 않는다."]},"mid":{"psychology":["새로운 일을 끊임없이 창출하고 도전한다.","기존의 방식보다 새로운 문제 해결 방식을 선호한다.","어렵고 힘든 상황을 극복하고 문제를 해결하려고 최선을 다한다."],"learning":["보상이 주어지는 학습 활동에 더 적극적이다.","공부 목표를 정한 후, 그 목표를 달성하기 위해 끊임없이 노력한다.","재미와 모험심을 불러일으키는 학습 활동을 선호한다."]},"low":{"psychology":["결단력이 없고 우유부단한 말과 행동을 한다.","소극적이고 의지가 약하며 자신감이 부족하다.","스스로 문제를 해결하려고 하지 않고 다른 사람에게 의존한다."],"learning":["새로운 학습 방법을 싫어하고 단조로운 형태의 학습 방법을 선호한다.","주어진 학습 과제 해결 외에도 다양한 학습 방법을 찾을 수 있도록 도와주어야 한다.","자신감을 가지고 다른 사람 앞에서 발표하는 훈련이 필요하다."]},"career":["독립심과 자립심이 강하고 사회적인 지도력이 뛰어난 지도자 역할을 수행하는 직업을 선호한다.","사회에 영향력을 행사하는 기업경영인 등의 직업이 적합하다."],"jobs":"지도자, 기업경영인, 정치가, 영업사원, NGO 단체장, 국제회의전문가, 환경운동가, 컨설턴트, 성형외과의사, 도시계획설계사"},"봉사자":{"high":{"psychology":["순응적이고 행동이 느긋하고 여유가 있다.","마음이 따뜻하고 타인의 의견을 수용하며 공감 능력이 탁월하다.","누군가를 돕거나 봉사할 때 삶의 가치를 찾는다."],"learning":["개인의 독립적인 학습보다는 집단 간 상호작용하는 모둠활동을 선호한다.","다른 사람들과 소통하는 토의 및 토론 활동을 좋아한다.","배운 학습 내용을 다른 사람들에게 도움을 주는 것을 좋아한다."]},"mid":{"psychology":["부드럽고 따뜻하게 감정표현을 잘 한다.","도움을 필요로 하는 사람들에게 기꺼이 헌신한다.","조직의 안전을 중요하게 여기고 갈등을 회피하며 중재와 타협을 잘 한다."],"learning":["모둠 학습을 할 때 다른 친구들에게 양보하는 학습 태도를 가진다.","토의 및 토론을 할 때 자신의 주장보다는 다른 사람의 의견을 경청한다.","자신의 감정을 잘 조절하고 관리하여 학습 활동에 참여한다."]},"low":{"psychology":["마음의 여유가 없고 산만하여 급하게 행동한다.","다른 사람의 의견을 수용하지 못하고 남 탓으로 돌린다.","공감 능력이 부족하여 다른 사람을 배려하거나 친절한 행동을 하지 못한다."],"learning":["협력 학습 과제를 효과적으로 해결할 수 있는 훈련이 필요하다.","자신에 적합한 학습 방법을 찾을 수 있도록 도와 주어야 한다.","다른 사람의 이야기를 공감하고 경청하는 훈련이 필요하다."]},"career":["국가나 사회를 위해 보다 큰 삶의 가치를 실현할 수 있는 직업을 선호한다.","다른 사람을 돕고 희생하며 존경받는 교육자, 종교인, 봉사자 등의 직업이 적합하다."],"jobs":"종교학자, 사회복지사, 철학자, 교육자, 사회사업가, 아동복지사, 작업치료사, 문화재관리사, 동물사육사, 수의사"}};
 
     function buildSurveyPages() {
         const container = document.getElementById('dynamicTestPages');
@@ -529,47 +320,14 @@
             const prevPageId = index === 0 ? 'pageLanding' : `page${surveyData.categories[index - 1].id}`;
             const nextPageId = isLastPage ? 'resultPage' : `page${surveyData.categories[index + 1].id}`;
 
-            htmlContent += `
-            <div id="${pageId}" class="page">
-                <h2 style="border-bottom: 2px solid ${category.color};">[ 유형 ${index + 1} / ${surveyData.categories.length} ]</h2>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th width="8%" style="background-color: ${category.color};">번호</th>
-                                <th width="42%" style="background-color: ${category.color};">검사내용</th>
-                                ${scaleOptions.map(opt => `<th width="10%" style="background-color: ${category.color};">${opt.label}</th>`).join('')}
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-
+            htmlContent += `<div id="${pageId}" class="page"><h2 style="border-bottom: 2px solid ${category.color};">[ 유형 ${index + 1} / ${surveyData.categories.length} ]</h2><div class="table-container"><table><thead><tr><th width="8%" style="background-color: ${category.color};">번호</th><th width="42%" style="background-color: ${category.color};">검사내용</th>${scaleOptions.map(opt => `<th width="10%" style="background-color: ${category.color};">${opt.label}</th>`).join('')}</tr></thead><tbody>`;
             category.questions.forEach((qText) => {
-                htmlContent += `
-                    <tr>
-                        <td class="q-num">${globalQuestionNumber}</td>
-                        <td class="q-text">${qText}</td>
-                        ${scaleOptions.map(opt => `
-                            <td><input type="radio" name="q${globalQuestionNumber}" value="${opt.value}"></td>
-                        `).join('')}
-                    </tr>
-                `;
+                htmlContent += `<tr><td class="q-num">${globalQuestionNumber}</td><td class="q-text">${qText}</td>${scaleOptions.map(opt => `<td><input type="radio" name="q${globalQuestionNumber}" value="${opt.value}"></td>`).join('')}</tr>`;
                 globalQuestionNumber++;
             });
-
             htmlContent += `</tbody></table></div>`;
-
             if (isLastPage) htmlContent += `<div class="finish-text">🎉 수고하셨습니다! 모든 검사가 끝났습니다.</div>`;
-
-            htmlContent += `
-                <div class="btn-group">
-                    <button class="btn btn-prev" onclick="movePage('${pageId}', '${prevPageId}')">이전</button>
-                    ${isLastPage 
-                        ? `<button class="btn btn-submit" onclick="submitTest()">제출</button>`
-                        : `<button class="btn" style="background-color: ${category.color}; color: white;" onclick="movePage('${pageId}', '${nextPageId}')">다음</button>`
-                    }
-                </div>
-            </div>`;
+            htmlContent += `<div class="btn-group"><button class="btn btn-prev" onclick="movePage('${pageId}', '${prevPageId}')">이전</button>${isLastPage ? `<button class="btn btn-submit" onclick="submitTest()">제출</button>` : `<button class="btn" style="background-color: ${category.color}; color: white;" onclick="movePage('${pageId}', '${nextPageId}')">다음</button>`}</div></div>`;
         });
         container.innerHTML = htmlContent;
     }
@@ -579,12 +337,10 @@
         const birthInput = document.getElementById('birthDate');
         const genderInput = document.getElementById('gender');
         const schoolInput = document.getElementById('schoolName');
-
         if (!nameInput.value.trim()) { alert("이름을 입력해주세요."); nameInput.focus(); return; }
         if (!birthInput.value) { alert("생년월일을 입력해주세요."); birthInput.focus(); return; }
         if (!genderInput.value) { alert("성별을 선택해주세요."); genderInput.focus(); return; }
         if (!schoolInput.value.trim()) { alert("기관명(학교명)을 입력해주세요."); schoolInput.focus(); return; }
-
         movePage('pageLanding', 'page1');
     }
 
@@ -598,17 +354,13 @@
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (isMobile) {
             let metaViewport = document.querySelector('meta[name="viewport"]');
-            if(metaViewport) {
-                metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
-            }
+            if(metaViewport) metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
         }
         location.reload();
     }
 
     function makeListHTML(arr) {
-        return "<div style='padding-left: 5px;'>" + arr.map((item, index) => 
-            `<div style="margin-bottom: 5px; padding-left: 18px; text-indent: -18px; line-height: 1.5;">${index + 1}) ${item}</div>`
-        ).join('') + "</div>";
+        return "<div style='padding-left: 5px;'>" + arr.map((item, index) => `<div style="margin-bottom: 5px; padding-left: 18px; text-indent: -18px; line-height: 1.5;">${index + 1}) ${item}</div>`).join('') + "</div>";
     }
 
     function getLevel(score) {
@@ -616,7 +368,6 @@
         if (score >= 21) return 'mid';
         return 'low';
     }
-    
     function getLevelText(level) {
         if (level === 'high') return '상';
         if (level === 'mid') return '중';
@@ -632,25 +383,15 @@
 
         for(let i = 1; i <= surveyData.totalQuestions; i++) {
             const selected = document.querySelector(`input[name="q${i}"]:checked`);
-            if(!selected) {
-                isAllAnswered = false;
-                unansweredQuestion = i;
-                break;
-            }
+            if(!selected) { isAllAnswered = false; unansweredQuestion = i; break; }
             allAnswers.push(parseInt(selected.value));
         }
 
-        if(!isAllAnswered) {
-            alert(`${unansweredQuestion}번 문항에 답하지 않았습니다. 모든 문항에 답해주세요.`);
-            return;
-        }
+        if(!isAllAnswered) { alert(`${unansweredQuestion}번 문항에 답하지 않았습니다. 모든 문항에 답해주세요.`); return; }
 
         const scores = [0, 0, 0, 0, 0, 0];
         const chartLabels = surveyData.categories.map(cat => cat.title);
-        
-        allAnswers.forEach((val, idx) => {
-            scores[Math.floor(idx / 10)] += val;
-        });
+        allAnswers.forEach((val, idx) => { scores[Math.floor(idx / 10)] += val; });
 
         const studentName = document.getElementById('studentName').value || "성명미상";
         const birthDate = document.getElementById('birthDate').value || "미상";
@@ -666,7 +407,7 @@
         document.querySelectorAll('.resDate').forEach(el => el.innerText = testDate);
         document.querySelectorAll('.resExpert').forEach(el => el.innerText = expertName);
 
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.41';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.42';
         document.querySelectorAll('.resultVersion').forEach(el => el.innerText = `Ver. ${currentVersion}`);
 
         const types = ["분석가", "실험가", "관리자", "조정가", "개혁가", "봉사자"];
@@ -674,24 +415,14 @@
         let html1 = '';
         types.forEach((type, index) => {
             const lvl = getLevel(scores[index]);
-            html1 += `
-            <tr>
-                <th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th>
-                <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td>
-                <td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].psychology)}</td>
-            </tr>`;
+            html1 += `<tr><th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th><td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td><td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].psychology)}</td></tr>`;
         });
         document.getElementById('page1-tbody').innerHTML = html1;
 
         let html2 = '';
         types.forEach((type, index) => {
             const lvl = getLevel(scores[index]);
-            html2 += `
-            <tr>
-                <th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th>
-                <td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td>
-                <td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].learning)}</td>
-            </tr>`;
+            html2 += `<tr><th style="vertical-align: middle; font-size:14px; background-color:#fff; color:#000;">${type}</th><td style="vertical-align: middle; text-align:center; font-weight:bold; background-color:#fff; color:#000; font-size:14px;">${getLevelText(lvl)}<br><span style="font-size:12px; font-weight:normal; color:#555;">(${scores[index]}점)</span></td><td style="text-align:left; background-color:#fff; color:#000;">${makeListHTML(feedbackData[type][lvl].learning)}</td></tr>`;
         });
         document.getElementById('page2-tbody').innerHTML = html2;
 
@@ -703,25 +434,7 @@
         top3.forEach((item, i) => {
             const rank = i + 1;
             const type = item.type;
-            html3 += `
-            <div class="rank-header">${rank}순위</div>
-            <table class="rank-table">
-                <tbody>
-                    <tr>
-                        <th width="15%">유형</th>
-                        <td width="85%" style="text-align: center; font-weight: bold; font-size: 15px;">${type}</td>
-                    </tr>
-                    <tr>
-                        <th>진로 성향</th>
-                        <td>${makeListHTML(feedbackData[type].career)}</td>
-                    </tr>
-                    <tr>
-                        <th>직업군</th>
-                        <td>${feedbackData[type].jobs}</td>
-                    </tr>
-                </tbody>
-            </table>
-            `;
+            html3 += `<div class="rank-header">${rank}순위</div><table class="rank-table"><tbody><tr><th width="15%">유형</th><td width="85%" style="text-align: center; font-weight: bold; font-size: 15px;">${type}</td></tr><tr><th>진로 성향</th><td>${makeListHTML(feedbackData[type].career)}</td></tr><tr><th>직업군</th><td>${feedbackData[type].jobs}</td></tr></tbody></table>`;
         });
         document.getElementById('page3-content').innerHTML = html3;
 
@@ -733,27 +446,11 @@
             if(score < minScore) { minScore = score; lowestType = chartLabels[index]; }
         });
 
-        const payload = {
-            name: studentName,
-            birth: birthDate,
-            gender: gender,
-            school: schoolName,
-            testDate: testDate,
-            expert: expertName,
-            scores: scores,
-            allAnswers: allAnswers,
-            primaryType: primaryType,
-            version: currentVersion 
-        };
-
+        const payload = { name: studentName, birth: birthDate, gender: gender, school: schoolName, testDate: testDate, expert: expertName, scores: scores, allAnswers: allAnswers, primaryType: primaryType, version: currentVersion };
         const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJgivRYu-rXZ1EkWRhPgOkGxo-3Qhs8hh1WTIVAM1IBTs0IDHtR9SSjFgIbu0Anokntg/exec';
 
         if (GOOGLE_APP_SCRIPT_URL) {
-            fetch(GOOGLE_APP_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
-            })
+            fetch(GOOGLE_APP_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
             .then(response => console.log('데이터 저장 완료 (버전 포함)'))
             .catch(error => console.error('저장 실패:', error));
         }
@@ -778,7 +475,6 @@
         }
 
         movePage(`page${surveyData.categories.length}`, 'resultPage');
-        
         const radarLabels = chartLabels.map((label, index) => `${label} (${scores[index]})`);
         drawRadarChart(scores, radarLabels);
     }
@@ -786,55 +482,24 @@
     function drawRadarChart(scores, labels) {
         const ctx = document.getElementById('radarChart').getContext('2d');
         if(radarChartInstance) radarChartInstance.destroy();
-
         radarChartInstance = new Chart(ctx, {
             type: 'radar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: '점수', data: scores,
-                    backgroundColor: 'rgba(41, 128, 185, 0.35)', 
-                    borderColor: 'rgba(41, 128, 185, 1)', 
-                    pointBackgroundColor: 'rgba(231, 76, 60, 1)', 
-                    pointBorderColor: '#fff', 
-                    borderWidth: 3.5, 
-                    pointRadius: 5, 
-                    pointHoverRadius: 7
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: 30 },
-                scales: { 
-                    r: { 
-                        angleLines: { display: true, color: 'rgba(0, 0, 0, 0.2)', lineWidth: 1.5 }, 
-                        grid: { color: 'rgba(0, 0, 0, 0.15)', lineWidth: 1.5 }, 
-                        suggestedMin: 0, 
-                        suggestedMax: 50, 
-                        ticks: { stepSize: 10, color: '#444', font: { size: 11, weight: 'bold' }, backdropColor: 'transparent' },
-                        pointLabels: {
-                            font: { size: 15, weight: 'bolder' }, 
-                            color: '#000' 
-                        }
-                    } 
-                },
-                plugins: { legend: { display: false } }
-            }
+            data: { labels: labels, datasets: [{ label: '점수', data: scores, backgroundColor: 'rgba(41, 128, 185, 0.35)', borderColor: 'rgba(41, 128, 185, 1)', pointBackgroundColor: 'rgba(231, 76, 60, 1)', pointBorderColor: '#fff', borderWidth: 3.5, pointRadius: 5, pointHoverRadius: 7 }] },
+            options: { responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: 30 }, scales: { r: { angleLines: { display: true, color: 'rgba(0, 0, 0, 0.2)', lineWidth: 1.5 }, grid: { color: 'rgba(0, 0, 0, 0.15)', lineWidth: 1.5 }, suggestedMin: 0, suggestedMax: 50, ticks: { stepSize: 10, color: '#444', font: { size: 11, weight: 'bold' }, backdropColor: 'transparent' }, pointLabels: { font: { size: 15, weight: 'bolder' }, color: '#000' } } }, plugins: { legend: { display: false } } }
         });
     }
 
-    // 🚀 PDF 다운로드 로직 (절대위치 버그 해결, 빈 화면 13KB 차단)
+    // 🚀 PDF 다운로드 로직 (빈 화면 방지 & 정확한 5장 출력)
     function downloadPDF() {
         const studentName = document.getElementById('studentName').value || '성명미상';
         const birthDate = document.getElementById('birthDate').value || '생년월일미상';
         const gender = document.getElementById('gender').value || '성별미상';
         const schoolName = document.getElementById('schoolName').value || '학교미상';
         const testDate = document.getElementById('testDate').value || '검사일미상';
-
-        const currentVersion = document.getElementById('appVersion').innerText || 'v0.41';
+        const currentVersion = document.getElementById('appVersion').innerText || 'v0.42';
         const pdfFilename = `${studentName}_${birthDate}_${gender}_${schoolName}_${testDate}_${currentVersion}.pdf`;
 
         const element = document.getElementById('captureArea');
-        const wrapper = document.querySelector('.capture-wrapper');
         const canvas = document.getElementById('radarChart');
         
         const pdfBtn = document.getElementById('pdfBtn');
@@ -843,7 +508,6 @@
         pdfBtn.style.backgroundColor = "#7f8c8d";
         pdfBtn.disabled = true;
         
-        // 차트를 이미지로 변환 (캔버스 캡처 버그 방지)
         const tempImg = document.createElement('img');
         tempImg.id = 'tempChartImg';
         tempImg.src = radarChartInstance.toBase64Image();
@@ -851,52 +515,53 @@
         canvas.style.display = 'none';
         canvas.parentNode.insertBefore(tempImg, canvas);
 
-        // 🚀 스크롤 맨 위로 이동 (캡처가 중간부터 잘리는 현상 방지)
+        // 🚀 스크롤 맨 위로 이동
         window.scrollTo(0, 0);
 
-        // 🚀 1. 좌측 쏠림 방지: position: absolute 제거하고 Flexbox 정렬을 좌측으로 임시 변경
-        const originalWrapperJustify = wrapper.style.justifyContent;
-        const originalWrapperPadding = wrapper.style.padding;
-        const originalElementMargin = element.style.margin;
+        // 🚀 1. 좌측 쏠림 방지 및 13KB 빈화면 방지: 임시로 부모 영역을 벗어나 body 최상단에 붙여서 독립적으로 캡처
+        const originalParent = element.parentNode;
+        const nextSibling = element.nextSibling;
+        const originalCss = element.style.cssText;
 
-        wrapper.style.justifyContent = 'flex-start';
-        wrapper.style.padding = '0';
-        element.style.margin = '0';
+        document.body.appendChild(element);
+        element.style.cssText = 'position: absolute; top: 0; left: 0; width: 794px; background: white; z-index: 9999; margin: 0; padding: 0; gap: 0;';
 
-        // 🚀 2. 공백 페이지(10장 늘어남) 방지: 그림자 제거 및 높이를 미세하게 줄임
+        // 🚀 2. 10장 공백 페이지 방지: 그림자 제거 및 높이 1123px 강제 세팅
         const pages = element.querySelectorAll('.pdf-page');
-        pages.forEach(p => { 
-            p.style.boxShadow = 'none'; 
-            p.style.border = 'none'; 
+        pages.forEach(p => {
+            p.style.boxShadow = 'none';
+            p.style.border = 'none';
             p.style.margin = '0';
-            p.style.height = '1120px'; // 1122px를 넘지 못하게 강제 고정
+            p.style.height = '1123px';
         });
 
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         const isAndroid = /Android/i.test(navigator.userAgent);
-        const isMobile = isIOS || isAndroid || /webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isMobile = isIOS || isAndroid;
 
+        // 🚀 3. PDF 엔진: 픽셀(px) 1:1 강제 매핑으로 자르기 오차 제거
         const opt = {
-            margin: 0, 
-            filename: pdfFilename, 
-            image: { type: 'jpeg', quality: 1.0 }, 
-            html2canvas: { scale: 2, useCORS: true, scrollY: 0, scrollX: 0 }, 
-            pagebreak: { mode: 'css', after: '.pdf-page' },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
+            margin: 0,
+            filename: pdfFilename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, scrollY: 0, scrollX: 0, windowWidth: 794 },
+            jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait', compress: true }
         };
 
         html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
             
-            // 🚀 캡처 완료 후 화면 원래대로 복원
-            wrapper.style.justifyContent = originalWrapperJustify;
-            wrapper.style.padding = originalWrapperPadding;
-            element.style.margin = originalElementMargin;
+            // 🚀 캡처 후 화면 위치 및 스타일 원래대로 완벽 복구
+            element.style.cssText = originalCss;
+            if (nextSibling) {
+                originalParent.insertBefore(element, nextSibling);
+            } else {
+                originalParent.appendChild(element);
+            }
 
-            pages.forEach(p => { 
-                p.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)'; 
-                p.style.height = '1122px';
+            pages.forEach(p => {
+                p.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
             });
-            
+
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
             pdfBtn.disabled = false;
@@ -915,12 +580,13 @@
                 } else { forceDownload(pdfBlob, pdfFilename); }
             } else { forceDownload(pdfBlob, pdfFilename); }
         }).catch(function(error) {
-            // 에러 발생 시 복원
-            wrapper.style.justifyContent = originalWrapperJustify;
-            wrapper.style.padding = originalWrapperPadding;
-            element.style.margin = originalElementMargin;
-            pages.forEach(p => { p.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)'; p.style.height = '1122px'; });
-            
+            // 에러 발생 시에도 복구
+            element.style.cssText = originalCss;
+            if (nextSibling) originalParent.insertBefore(element, nextSibling);
+            else originalParent.appendChild(element);
+
+            pages.forEach(p => { p.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)'; });
+
             alert("PDF 생성 중 오류가 발생했습니다. 브라우저를 업데이트해 주세요.");
             pdfBtn.innerText = originalBtnText;
             pdfBtn.style.backgroundColor = "#2ecc71";
